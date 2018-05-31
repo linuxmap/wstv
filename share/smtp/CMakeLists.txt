@@ -1,0 +1,17 @@
+
+INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/libs/include)
+INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/libs/include/wolfssl)
+PROJECT(SMTPLIB)
+
+if(OPENSSL_ENABLE)
+	ADD_DEFINITIONS(-DOPENSSL_ENABLE)
+endif()
+
+ADD_LIBRARY(smtp STATIC 
+		base64
+		CSmtp
+		md5
+		smtp
+	)
+
+		

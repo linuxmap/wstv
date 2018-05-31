@@ -1,0 +1,19 @@
+
+#set(BOARD_LINK_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+set(BOARD_LINK_DIRECTORIES ${IPCAM_SOURCE_DIR}/porting/${BOARD}/lib)
+
+set(BOARD_LIBRARY
+					mpi
+					tde
+					isp
+					_hiae
+					_hiawb
+					_hiaf
+					VoiceEngine
+					_hidefog
+					m
+					ive
+					md
+					dnvqe
+					upvqe
+					)

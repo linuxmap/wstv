@@ -1,0 +1,634 @@
+body {
+  position: absolute;
+  min-width: 1280px;
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+}
+
+#header {
+  border-bottom: solid 1px black;
+  height: 54px;
+  position: relative;
+}
+
+#header .inner {
+  background: url(/img/nav-bg.png);
+  background-size: 100% 100%;
+  height: 54px;
+  line-height: 54px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.title-bar {
+  height: 2em;
+  background: url(/img/title-bg.png);
+}
+
+.menu-bar {
+  text-align: center;
+  overflow: hidden;
+  width: 80%;
+  margin: 0 auto;
+  border-right: solid 2px black;
+}
+
+.menu-bar .logo img {
+  width: 90%;
+  vertical-align: middle;
+  position: relative;
+  top: -5px;
+}
+
+.menu-bar .logo:hover {
+  background: none;
+}
+
+.menu-bar span {
+  display: block;
+  width: 13%;
+  float: left;
+  cursor: pointer;
+  color: white;
+}
+
+.menu-bar span + span {
+  border-left: solid 1px #252525;
+}
+
+.menu-bar span.right {
+  float: right;
+}
+
+.menu-bar span:hover {
+  font-weight: bold;
+  background-color: #06a2d3;
+}
+
+#container {
+  background-color: #ABABAB;
+  position: absolute;
+  top: 54px;
+  bottom: 1em;
+  left: 0;
+  right: 0;
+}
+
+#container .inner {
+  margin: 0 auto;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+#stream-list, #player, #ptz-panel  {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+#stream-list {
+  background: #424041;
+  left: 0;
+  width: 15%;
+}
+
+#stream-list .list {
+  overflow-y: auto;
+  height: 100%;
+}
+
+#stream-list .item {
+  padding: 0.4em 0;
+  text-align: center;
+}
+
+/*#stream-list .item:nth-child(2n) {*/
+  /*background: #4B4B4B;*/
+/*}*/
+
+#stream-list .item:hover {
+  background: #4B4B4B;
+  border-right: solid 2px white;
+}
+
+#stream-list .item.current {
+  background: #4B4B4B;
+  border-right: solid 2px white;
+}
+
+#stream-list a {
+  text-decoration: none;
+  color: blue;
+}
+
+#stream-list a img {
+  vertical-align: middle;
+  width: 1em;
+}
+
+#ptz-panel {
+  background: #424041;
+  left: 85%; right: 0;
+}
+
+#player {
+  left: 15%;
+  right: 15%;
+  border-left: solid 3px #303030;
+  border-right: solid 3px #303030;
+}
+
+#player .panel {
+  height: 2.5em;
+  background: url(/img/play-panel-bg.png);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+#player img {
+  width: 2.8em;
+  height: 2.8em;
+  vertical-align: middle;
+  line-height: 2em;
+  border-radius: 1px;
+}
+
+#player .panel a {
+  color: white;
+  text-decoration: none;
+  line-height: 2em;
+}
+
+#player .panel .full {
+  background: url(/img/icon-single.png) no-repeat 100% 100%;
+}
+
+#player .screen {
+  position: absolute;
+  left: 0.3em;
+  right: 0.3em;
+  top: 0;
+  bottom: 2.5em;
+}
+
+#footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1em;
+  text-align: center;
+  line-height: 1em;
+  color: black;
+  font-size: 0.8em;
+}
+
+.direction {
+  position: relative;
+  height: 139px;
+  width: 139px;
+  margin: 0.2em auto;
+  text-align: center;
+  overflow: hidden;
+  background: url(/img/ptz-bg.png) no-repeat 100% 100%;
+  background-position: center center;
+}
+
+.direction .r {
+  height: 33.33333%;
+}
+.direction .r div {
+  float: left;
+  width: 33.33333%;
+  cursor: pointer;
+  position: relative;
+}
+
+.direction .r div img {
+}
+
+.direction .r div:hover .noshow {
+  visibility: hidden;
+}
+
+.direction .c {
+  top: -3.8px;
+}
+
+.direction .w {
+  top: -3.8px;
+}
+
+.direction .en {
+  left: -13.5px;
+}
+
+.direction .s {
+  top: -14px;
+}
+
+.direction .ws {
+  top: -14px;
+}
+
+.direction .es {
+  top: -14px;
+  left: -13.5px;
+}
+
+.direction .e {
+  top: -3.8px;
+  left: -13.5px;
+}
+
+.optics .item {
+  text-align: center;
+  margin: 0.5em 0;
+  overflow: hidden;
+  zoom: 1;
+}
+
+.optics .all {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.optics .all div {
+  float: left;
+}
+
+.optics .a {
+  cursor: pointer;
+  width: 20%;
+}
+
+.optics .l {
+  width: 60%;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#ptz-panel .speed {
+  display: block;
+  text-align: center;
+  padding-bottom: 0.5em;
+}
+
+#ptz-panel .speed label {
+  padding: 0 0.5em;
+}
+
+#ptz-panel .title {
+  margin: 0.2em;
+}
+
+.item {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.optics .item .title {
+  text-align: left;
+  padding-left: 0.7em;
+  margin-bottom: 0.5em;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.slider {
+  height: 15px;
+  margin: 0 auto;
+  line-height: 15px;
+  /* with same as direction */
+  width: 139px;
+  vertical-align: bottom;
+}
+
+.slider-bar {
+  width: 67%;
+  background: #101011;
+  position: relative;
+  cursor: pointer;
+  float: left;
+  height: 5px;
+  top: 5px;
+  vertical-align: bottom;
+  zoom: 1;
+}
+
+.slider .up, .slider .down {
+  width: 15%;
+  cursor: pointer;
+  float: left;
+  vertical-align: bottom;
+}
+
+.optics img {
+  height: 18px;
+  vertical-align: middle;
+}
+
+.slider-bar .cursor {
+  position: relative;
+  top: -5px;
+  width: 15px;
+  height: 15px;
+  background: url(/img/slider-cursor-bg.png) no-repeat center center;
+  cursor: pointer;
+  position: relative;
+}
+
+.addition-panel {
+  position: relative;
+  width: 100%;
+}
+
+.addition-panel .switch{
+  overflow: hidden;
+}
+
+.addition-panel .switch img {
+  width: 100%;
+  height: 1.8em;
+  margin: 0.5em 0;
+}
+
+.addition-panel .switch span {
+  width: 50%;
+  display: inline-block;
+  float: left;
+  position: relative;
+  text-align: center;
+  top: -2.3em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0 0.3em;
+  cursor: pointer;
+}
+
+.addition-panel .panel {
+  width: 100%;
+  margin-top: -1.5em;
+}
+
+.addition-panel .panel .title {
+  margin: 0.2em 0.2em;
+}
+
+.addition-panel .panel .button {
+  width: 117px;
+  margin: 1em auto;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  background: url(/img/button-bg.png);
+  cursor: pointer;
+}
+
+.addition-panel .panel .button:hover {
+  background: url(/img/button-bg2.png);
+}
+
+.none {
+  display: none;
+}
+
+.n80 {
+  width: 80%;
+}
+
+.noshow {
+  visibility: visible;
+}
+
+.subscreen {
+  float: left;
+  border: solid 1px black;
+}
+
+.screen {
+  border: solid 1px black;
+}
+
+.subscreen:hover, .subscreen.current {
+  border-color: white;
+}
+
+#login {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: #424041;
+  background: #404040;
+  z-index: 1;
+  text-align: center;
+}
+
+#login form {
+  position: absolute;
+  top: 45%;
+  margin-top: -249px;
+  width: 415px;
+  height: 534px;
+  left: 50%;
+  margin-left: -189.5px;
+  background: url(/img/login-bg.png);
+  color: black;
+  padding-left: 36px;
+}
+
+:lang(en) #login form {
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+#login div {
+  margin: 1em 0 1em 35px;
+  overflow: hidden;
+  color: #424242;
+}
+
+#login div.title {
+  margin-top: 2em;
+  text-align: left;
+  margin-bottom: 1em;
+  font-size: 2em;
+  font-family: "微软雅黑", "黑体";
+  font-weight: bold;
+}
+
+:lang(en) #login div.title {
+  font-size: 1.8em;
+}
+
+#login div.lang {
+  position: fixed;
+  top: 0.5em;
+  right: 1em;
+  text-align: right;
+}
+
+#login-rememberme {
+  width: 1em !important;
+  margin-right: 0.3em !important;
+}
+
+#login-rememberme, .rememberme {
+  border-style: none !important;
+  font-size: 15px !important;
+  height: 25px !important;
+  line-height: 25px !important;
+}
+
+#login label {
+  float: left;
+  height: 2.5em;
+  line-height: 2.5em;
+  border-bottom: solid 2px #E6E6E6;
+  font-size: 1.5em;
+}
+
+#login input {
+  float: left;
+  border-style: none;
+  border-bottom: solid 2px #E6E6E6;
+  padding: 0.3em 0.1em;
+  height: 2.5em;
+  line-height: 2.5em;
+  font-size: 1.5em;
+  width: 9em;
+}
+
+:lang(en) #login input {
+  width: 7.5em;
+}
+
+#login button {
+  margin-top: 2em;
+  text-align: center;
+  padding: 0.35em 2em;
+  color: white;
+  float: left;
+  background: #2D82F6;
+  cursor: pointer;
+  font-size: 1.3em;
+  border-radius: 3px;
+}
+
+.full {
+  position: absolute !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 3 !important;
+  background: white;
+}
+
+.preset, .patrol {
+  text-align: center;
+  margin-bottom: 0.5em;
+}
+
+.preset .action img, .patrol .action img {
+  vertical-align: middle;
+}
+
+.preset select, .patrol select {
+  width: 5em;
+  border-style: none;
+}
+
+.pop-win {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.pop-win .inner {
+  position: absolute;
+  width: 25em;
+  top: 20%;
+  left: 50%;
+  margin-left: -12.5em;
+  border: solid 2px #424041;
+  background: #5B5B5B;
+}
+
+.pop-win .inner .buttons {
+  text-align: center;
+  padding: 0.3em;
+}
+
+.pop-win .inner .buttons button {
+  cursor: pointer;
+  width: 4em;
+  text-align: center;
+}
+
+.pop-win .inner .title {
+  border-bottom: solid 2px #424041;
+  padding: 0.3em 0;
+}
+
+.add-preset label {
+  display: block;
+  width: 4em;
+  float: left;
+  text-align: right;
+  padding-right: 0.5em;
+}
+
+.add-preset input {
+}
+
+.add-preset .content div {
+  overflow: hidden;
+  margin: 0.5em 2em;
+}
+
+.add-patrol-preset .content {
+  max-height: 15em;
+  overflow-y: auto;
+}
+
+.add-patrol-preset table {
+  width: 100%;
+}
+
+.add-patrol-preset td , .add-patrol-preset th {
+  text-align: center;
+  width: 33.333%;
+}
+
+.add-patrol-preset tr:nth-child(2n) {
+  background: #4B4B4B;
+}
+
+.add-patrol-preset td input {
+  width: 100%;
+}
+
+.play-dialog input {
+  margin-right: 0.3em;
+}
+
+.play-dialog .content div {
+  padding: 0.5em;
+}
+
+.play-dialog .content .remember{
+  margin-top: 0.5em;
+}

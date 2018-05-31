@@ -1,0 +1,80 @@
+[
+    {
+        "method": "account_get_users",
+		"level":"Administrator",
+        "param": {},
+        "result": 
+		{
+			"users":
+			[
+				{
+					"name": "username",
+					"level": "admin,operator,user,anonymous,extended",
+					"description": "This is Adiministrator"
+				}
+			]
+		},
+        "error": {}
+    },
+    {
+        "method": "account_add_user",
+		"level":"Administrator",
+        "param": 
+		{
+			"name": "username",
+			"passwd": "123456",
+			"level": "admin,operator,user,anonymous,extended",
+			"description": "This is Adiministrator"
+		},
+        "result": {},
+        "error": {
+			"errorcode": -32602,
+			"message":"Invalid Params"
+		}
+    },
+    {
+        "method": "account_del_user",
+		"level":"Administrator",
+        "param":
+		{
+			"name": "username"
+		},
+        "result": {},
+        "error": {}
+    },
+    {
+        "method": "account_modify_user",
+		"level":"Administrator",
+        "param": 
+		{
+			"name": "username",
+			"passwd": "123456",
+			"level": "admin,operator,user,anonymous,extended",
+			"description": "This is Adiministrator"
+		},
+        "result": {},
+        "error": {}
+    },
+    {
+	    "method": "account_login",
+    	"comments": "grpc supply login ,but some device may need login cmd.",
+	    "param": 
+	   	{
+	        "username": "abc",
+	        "password": "123" 
+	    },
+        "result": {},
+        "error": {}
+   	},
+	{
+    	"method": "account_login_force",
+    	"comments": "if client force login, server must disconnect other clients.",
+	    "param": 
+	    {
+	        "username": "abc",
+	        "password": "123" 
+	    },
+        "result": {},
+        "error": {}
+	}
+]

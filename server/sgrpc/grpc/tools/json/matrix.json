@@ -1,0 +1,491 @@
+[
+	{
+	    "method": "matrix_set_work_mode",
+    	"comments": "设置级联工作模式，machineDevID是设备物理ID的基数，默认0。DevMode是主设备工作模式:mix(转发数据+解码)/data(只转发数据)，默认mix",
+	    "param": {
+	    	"machineDevID": 0,
+	    	"workMode": "mix,data"
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_get_matrix",
+    	"comments": "获取矩阵排列方式",
+	    "param": {},
+	    "result": {
+	    	"row": 2,
+	        "column": 2
+		},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_set_matrix",
+    	"comments": "设置矩阵排列方式",
+	    "param": {
+	        "row": 2,
+	        "column": 2
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_get_physical_screen_info",
+	    "comments": "获取物理屏信息。bSupportMerge是否支持融合，bSupportCellOverlap是否支持矩阵单元叠加",
+	    "param": {},
+	    "result": {
+	    	"abality": {
+	    		"bSupportMerge": 0,
+	    		"bSupportCellOverlap": 0
+	    	},
+	    	"resolution":{
+			        "width": 540,
+			        "height":480
+	    	},
+			"resolutionList": [
+				{
+					"width": 1024,
+					"height": 768
+				},
+				{
+					"width": 1280,
+					"height": 800
+				},
+				{
+					"width": 1280,
+					"height": 1024
+				},
+				{
+					"width": 1440,
+					"height": 900
+				},
+				{
+					"width": 1920,
+					"height": 1080
+				}
+			],
+			"cntScreen": 4
+		},
+	    "error": {}
+	},
+	{
+		"method": "matrix_get_image_parm",
+		"comments": "获取逻辑屏图像调节参数",
+		"param": {
+			"logicID": 0
+		},
+		"result": {
+			"nBright": 30,
+			"nContrast": 35,
+			"nSaturation": 45
+		},
+		"error": {}
+	},
+	{
+		"method": "matrix_set_image_parm",
+		"comments": "设置逻辑屏图像调节参数",
+		"param": {
+			"logicID": 0,
+			"nBright": 50,
+			"nContrast": 55,
+			"nSaturation": 55
+		},
+		"result": {},
+		"error": {}
+	},
+	{
+		"method": "matrix_get_resolution",
+		"comments": "获取物理屏的分辨率",
+		"param": {},
+		"result": {
+			"resolution": {
+				"width": 1280,
+				"height": 1024
+			}
+		},
+		"error": {}
+	},
+	{
+		"method": "matrix_set_resolution",
+		"comments": "设置物理屏的分辨率",
+		"param": {
+			"resolution": {
+				"width": 1280,
+				"height": 1024
+			}
+		},
+		"result": {},
+		"error": {}
+	},
+	{
+	    "method": "matrix_display_physical_screen_ID",
+	    "comments": "显示物理屏ID，帮助用户做逻辑屏和物理屏的映射",
+	    "param": {
+	    	"bDisplay": 1
+	    	},
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_get_logic_screen_map",
+	    "comments": "获取逻辑屏到物理屏的映射",
+	    "param": {},
+	    "result": {
+	       	"map": [0,1,2,3]
+			},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_set_logic_screen_map",
+	    "comments": "设置逻辑屏到物理屏的映射",
+	    "param": {
+	    	"map": [3,1,2,0]
+		},
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_get_cell",
+	    "comments": [
+			"矩阵单元(cell): 可以是一块逻辑屏，也可以是多个逻辑屏融合而成。",
+			"坐标单位：单块物理屏的宽和高是1000000;",
+			"zorder: cell的顺序。取值0～7，越大优先级越高"
+		],
+	    "param": {},
+	    "result": {
+	    	"cell": [
+		    	{
+			        "cellID": 0,
+					"zorder": 0,
+			        "x": 0,
+			        "y": 0,
+			        "w": 1000000,
+			        "h": 1000000,
+					"maxResource": 9,
+					"modeList": [1,4,8,9]
+		        },
+		    	{
+			        "cellID": 1,
+					"zorder": 0,
+			        "x": 1000000,
+			        "y": 0,
+			        "w": 1000000,
+			        "h": 1000000,
+					"maxResource": 9,
+					"modeList": [1,4,8,9]
+		        }
+	        ]
+	    },
+		"error": {}
+    },
+	{
+	    "method": "matrix_set_cell",
+	    "comments": [
+			"设置矩阵单元，原有的单元会被删除。",
+			"矩阵单元包含多块逻辑屏时就是融合。",
+			"坐标单位：单块物理屏的宽和高是1000000",
+			"zorder: cell的顺序。取值0～7，越大优先级越高"
+		],
+	    "param": {
+	    	"cell": [
+		    	{
+			        "cellID": 0,
+					"zorder": 0,
+			        "x": 0,
+			        "y": 0,
+			        "w": 1000000,
+			        "h": 1000000
+		        },
+		    	{
+			        "cellID": 1,
+					"zorder": 0,
+			        "x": 1000000,
+			        "y": 0,
+			        "w": 1000000,
+			        "h": 1000000
+		        }
+	        ]
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_modify_cell",
+	    "comments": [
+			"修改矩阵单元。矩阵单元包含多块逻辑屏时就是融合。",
+			"坐标单位：单块物理屏的宽和高是1000000",
+			"zorder: cell的顺序。取值0～7，越大优先级越高"
+		],
+	    "param": {
+	        "cellID": 0,
+			"zorder": 0,
+	        "x": 0,
+	        "y": 0,
+	        "w": 1000000,
+	        "h": 1000000
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_add_cell",
+	    "comments": [
+			"添加矩阵单元。矩阵单元包含多块逻辑屏时就是融合。",
+			"坐标单位：单块物理屏的宽和高是1000000",
+			"zorder: cell的顺序。取值0～7，越大优先级越高"
+		],
+	    "param": {
+	        "cellID": 0,
+			"zorder": 0,
+	        "x": 0,
+	        "y": 0,
+	        "w": 1000000,
+	        "h": 1000000
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_del_cell",
+	    "comments": "删除矩阵单元",
+	    "param": {
+	        "cellID": 0
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_set_cell_video",
+	    "comments": "设置矩阵单元的视频源，原有的视频源会被删除",
+	    "param": {
+	        "cellID": 0,
+	        "spiltnum": 4,
+	        "resource": [
+	            {
+	            	"indexResource": 0,
+	                "cloudnum": "A361",
+	                "name": "演示点1",
+	                "ip": "192.168.6.141",
+	                "port": 9101,
+	                "chnindex": 1,
+	                "netuser": "abc",
+	                "netpwd": "123", 
+	                "type": "yst,onvif",
+	                "serviceAddr": ""
+	            },
+	            {
+	            	"indexResource": 1,
+	                "cloudnum": "A362",
+	                "name": "演示点2",
+	                "ip": "192.168.6.141",
+	                "port": 9101,
+	                "chnindex": 0,
+	                "netuser": "abc",
+	                "netpwd": "123", 
+	                "type": "yst,onvif",
+	                "serviceAddr": ""
+	            }
+            ]
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_modify_cell_video",
+	    "comments": "修改矩阵单元的视频源",
+	    "param": {
+	        "cellID": 0,
+        	"indexResource": 0,
+	        "resource": {
+                "cloudnum": "A361",
+                "name": "演示点1",
+                "ip": "192.168.6.141",
+                "port": 9101,
+                "chnindex": 1,
+                "netuser": "abc",
+                "netpwd": "123", 
+                "type": "yst,onvif",
+                "serviceAddr": "" 
+            }
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_add_cell_video",
+	    "comments": "添加矩阵单元的视频源",
+	    "param": {
+	        "cellID": 0,
+        	"indexResource": 0,
+	        "resource": {
+                "cloudnum": "A361",
+                "name": "演示点1",
+                "ip": "192.168.6.141",
+                "port": 9101,
+                "chnindex": 1,
+                "netuser": "abc",
+                "netpwd": "123", 
+                "type": "yst,onvif",
+                "serviceAddr": "" 
+            }
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_del_cell_video",
+	    "comments": "删除矩阵单元的视频源",
+	    "param": {
+	        "cellID": 0,
+	        "indexResource": 0
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_get_cell_video",
+	    "comments": "获取矩阵单元的视频源",
+	    "param": {
+	    	"cellID": 0
+		},
+	    "result": {
+	        "spiltnum": 4,
+	        "resource": [
+	            {
+	            	"indexResource": 0,
+	                "cloudnum": "A361",
+	                "name": "演示点1",
+	                "ip": "",
+	                "port": 9101,
+	                "chnindex": 1,
+	                "netuser": "abc",
+	                "netpwd": "123",
+	                "type": "yst,onvif",
+	                "serviceAddr": "",
+                    "status": "no video,disconnect,connecting,connected,password error,connect timeout,server stop,connect break,decoder failed,decoder over range,over link count,IP conflict"
+	            },
+	            {
+	            	"indexResource": 1,
+	                "cloudnum": "A362",
+	                "name": "演示点2",
+	                "ip": "192.168.1.10",
+	                "port": 9101,
+	                "chnindex": 1,
+	                "netuser": "abc",
+	                "netpwd": "123",
+	                "type": "yst,onvif",
+	                "serviceAddr": "",
+                    "status": "no video,disconnect,connecting,connected,password error,connect timeout,server stop,connect break,decoder failed,decoder over range,over link count,IP conflict"
+	            }
+	        ]
+	    },
+	    "error": {}
+	},
+	{
+		"method": "matrix_set_cell_video_pos",
+		"comments": "reset the video position",
+		"param": {
+	    	"cellID": 0,
+			"newPosResource": [
+				1,
+				2,
+				3,
+				0,
+				4
+			]
+		},
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_set_cell_cycle",
+	    "comments": "设置矩阵单元的轮显视频源，indexResource 指参与轮显的视频源，如果为空，则在现有的视频源中轮显",
+	    "param": {
+	        "cellID": 0,
+	        "elapse":5,
+	    	"state": "start,pause,stop",
+	        "indexResource": [
+				0,
+				1,
+				2,
+				3
+	        ]
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_get_cell_cycle",
+	    "comments": "获取矩阵单元的轮显视频源",
+	    "param": {
+	        "cellID": 0
+	    },
+	    "result": {
+	        "elapse": 30,
+	    	"state": "start,pause,stop",
+	        "indexResource": [
+				0,
+				1,
+				2,
+				3
+	        ]
+	    },
+	    "error": {}
+	},
+	{
+	    "method": "matrix_set_cell_cycle_state",
+	    "comments": "开始/暂停/停止轮显",
+	    "param": {
+	        "cellID": 0,
+	    	"state": "start,pause,stop" 
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_set_cell_single",
+	    "comments": "在多画面显示时，临时放大某一画面或者恢复（实现双击放大、缩小功能）",
+	    "param": {
+			"single": true,
+	        "cellID": 0,
+	    	"show_index":2
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_get_cell_single",
+	    "comments": "获取当前状态是临时放大某一画面，还是正常显示",
+	    "param": {
+	        "cellID": 0
+	    },
+		"result": {
+			"single": true,
+	    	"show_index":2
+	    },
+	    "error": {}
+	},
+	{
+	    "method": "matrix_set_cell_multi",
+	    "comments": "设置多画面显示的起始画面和分屏数。start_index指当视频源超过分屏数时，可以指定从某一个开始显示",
+	    "param": {
+	        "cellID": 0,
+	        "spiltnum": 4,
+	        "start_index": 0
+	    },
+	    "result": {},
+	    "error": {}
+	},
+	{
+	    "method": "matrix_get_cell_multi",
+	    "comments": "多画面显示的状态。主要获取分屏数和从哪个视频源开始显示",
+	    "param": {
+	        "cellID": 0
+	    },
+	    "result": {
+	        "spiltnum": 4,
+	        "start_index": 0
+		},
+	    "error": {}
+	}
+]

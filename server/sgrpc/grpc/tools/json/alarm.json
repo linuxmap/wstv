@@ -1,0 +1,436 @@
+[
+    {
+        "method": "alarmin_start",
+        "param": {
+            "channelid": 0
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarmin_stop",
+        "param": {
+            "channelid": 0
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarmin_get_param",
+        "param": {
+            "channelid": 0
+        },
+        "result": {
+            "bEnable": false,
+            "bNormallyClosed": false,
+            "bEnableRecord": false,
+            "bStarting": false,
+            "bBuzzing": false,
+            "bSendtoClient": false,
+            "bSendEmail": false,
+            "u8AlarmNum": 0,
+            "nSOS": 1,
+            "nDelay": 10,
+            "nGuardChn": 0,
+            "type": [
+                {
+                    "type": 3,
+                    "bAlarmOut": true
+                }
+            ]
+        },
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarmin_set_param",
+        "param": {
+            "channelid": 0,
+            "bEnable": false,
+            "bNormallyClosed": false,
+            "bEnableRecord": false,
+            "bStarting": false,
+            "bBuzzing": false,
+            "bSendtoClient": false,
+            "bSendEmail": false,
+            "u8AlarmNum": 0,
+            "nSOS": 1,
+            "nDelay": 10,
+            "nGuardChn": 0,
+            "type": [
+                {
+                    "type": 3,
+                    "bAlarmOut": true
+                }
+            ]
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarmin_b_onduty",
+        "param": {
+            "channelid": 0
+        },
+        "result": {
+            "bOnduty": true
+        },
+        "error": {}
+    },
+    {
+        "method": "alarmin_b_alarming",
+        "param": {
+            "channelid": 0
+        },
+        "result": {
+            "bAlarming": true
+        },
+        "error": {}
+    },
+    {
+        "method": "alarm_get_param",
+        "param": {},
+        "result": {
+            "delay": 10,
+            "port": 110,
+            "sender": "lfx@jovision.com",
+            "server": "lfx@jovision.com",
+            "username": "lfx",
+            "passwd": "123456",
+            "receiver": [
+                "qlc@jovision.com"
+            ]
+        },
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarm_set_param",
+        "param": {
+            "delay": 10,
+            "port": 110,
+            "sender": "lfx@jovision.com",
+            "server": "lfx@jovision.com",
+            "username": "lfx",
+            "passwd": "123456",
+            "receiver": [
+                "qlc@jovision.com"
+            ]
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarm_link_preset_get",
+        "param": {
+            "channelid": 0
+        },
+        "result": {
+            "presetno": 1
+        },
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarm_link_preset_set",
+        "param": {
+            "channelid": 0,
+            "presetno": 1
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarmin_link_preset_get",
+        "param": {
+            "channelid": 0
+        },
+        "result": {
+            "link": [
+                {
+                    "bWireless": true,
+                    "alarmin": 1,
+                    "presetno": 1
+                },
+                {
+                    "bWireless": true,
+                    "alarmin": 2,
+                    "presetno": 2
+                }
+            ]
+        },
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarmin_link_preset_set",
+        "param": {
+            "channelid": 0,
+            "link": [
+                {
+                    "bWireless": true,
+                    "alarmin": 1,
+                    "presetno": 1
+                },
+                {
+                    "bWireless": true,
+                    "alarmin": 2,
+                    "presetno": 2
+                }
+            ]
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarm_link_out_get",
+        "param": {
+            "channelid": 0
+        },
+        "result": {
+            "link": [
+                {
+                    "alarm_type": 1,
+                    "alarm_out": [
+                        1,
+                        2
+                    ]
+                },
+                {
+                    "alarm_type": 2,
+                    "alarm_out": [
+                        1
+                    ]
+                },
+                {
+                    "alarm_type": 3,
+                    "alarm_out": [
+                        2
+                    ]
+                }
+            ]
+        },
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarm_link_out_set",
+        "param": {
+            "channelid": 0,
+            "link": [
+                {
+                    "alarm_type": 1,
+                    "alarm_out": [
+                        1,
+                        2
+                    ]
+                },
+                {
+                    "alarm_type": 2,
+                    "alarm_out": [
+                        1
+                    ]
+                },
+                {
+                    "alarm_type": 3,
+                    "alarm_out": [
+                        2
+                    ]
+                }
+            ]
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarm_report",
+        "param": {
+            "dev_id": "A402153844",
+            "dev_type": "card,dvr,ipc,nvr",
+            "type": "video,io,analyse",
+            "subtype": "videoLost,motionDetect,videoBlock,hardDriverLost,doorAlarm,smoke,pir,invasion",
+            "pir_code": "alarm details",
+            "detector_id": "xxx",
+            "channel": 1
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "login",
+        "param": {
+            "dev_id": "A402153844",
+            "data": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ]
+        },
+        "result": {
+            "tm": "20150901120000"
+        },
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "keep_online",
+        "param": {
+            "dev_id": "A402153844"
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "get_streamserver_addr",
+        "param": {
+            "channelid": 0,
+            "streamid": 0
+        },
+        "result": {
+            "channelid": 0,
+            "streamid": 0,
+            "enable": true,
+            "url": "rtmp://42.157.5.251:1935/live/B153080736_0_1?token=YJYCnRgmnidCLlMHhXATtoT5dkn5pIqDHILVtZ1xu3RcZ3",
+            "videoType": "live,record",
+            "file": "Aystnum_20151111120000_0_1.mp4",
+            "userId": ""
+        },
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "set_streamserver_addr",
+        "param": {
+            "channelid": 0,
+            "streamid": 0,
+            "enable": true,
+            "url": "rtmp://42.157.5.251:1935/live/B153080736_0_1?token=YJYCnRgmnidCLlMHhXATtoT5dkn5pIqDHILVtZ1xu3RcZ3",
+            "videoType": "live,record",
+            "file": "Aystnum_20151111120000_0_1.mp4",
+            "userId": "nouse",
+            "streamToken": ""
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarm_deployment",
+        "param": {
+            "enable": true,
+            "bCloudRecord": true,
+            "timeRange": [
+                {
+                    "dayOfWeek": 1,
+                    "bProtection": true,
+                    "time": "23:59:59"
+                }
+            ]
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarm_deployment_query",
+        "param": {
+            "cid": 1
+        },
+        "result": {
+            "cid": 1,
+            "enable": true,
+            "bCloudRecord": true,
+            "timeRange": [
+                {
+                    "dayOfWeek": 1,
+                    "bProtection": true,
+                    "time": "23:59:59"
+                }
+            ]
+        },
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarm_deployment_push",
+        "param": {
+            "enable": true,
+            "bCloudRecord": true,
+            "timeRange": [
+                {
+                    "dayOfWeek": 1,
+                    "bProtection": true,
+                    "time": "23:59:59"
+                }
+            ]
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarm_out",
+        "comment": "status: true: on, false: off.",
+        "param": {
+            "port": 0,
+            "status": true
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    },
+    {
+        "method": "alarm_get_status",
+        "comment": "status: true: on, false: off.",
+        "param": {
+            "port": 0
+        },
+        "result": {
+            "port": 0,
+            "status": true
+        },
+        "error": {
+            "errorcode": 0
+        }
+    }
+]

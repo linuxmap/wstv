@@ -1,0 +1,377 @@
+[
+    {
+        "method": "ivp_start",
+        "param": {
+            "channelid": 0
+        },
+        "result": {},
+        "error": {
+            "errorcode": -1,
+            "message": "Failed to start ivp!"
+        }
+    },
+    {
+        "method": "ivp_stop",
+        "param": {
+            "channelid": 0
+        },
+        "result": {},
+        "error": {
+            "errorcode": -1,
+            "message": "Failed to stop ivp!"
+        }
+    },
+    {
+        "method": "ivp_get_param",
+        "param": {
+            "channelid": 0
+        },
+        "result": {
+            "bEnable": false,
+            "nDelay": 10,
+            "bStarting": false,
+            "nRgnCnt": 0,
+            "stRegion": [
+                {
+                    "nCnt": 0,
+                    "stPoints": [
+                        {
+                            "x": 0,
+                            "y": 0
+                        }
+                    ],
+                    "nIvpCheckMode": 0
+                }
+            ],
+            "bDrawFrame": false,
+            "bFlushFrame": false,
+            "bMarkObject": false,
+            "bMarkAll": false,
+            "bOpenCount": false,
+            "bShowCount": false,
+            "bPlateSnap": false,
+            "nAlpha": 0,
+            "nSen": 0,
+            "nThreshold": 0,
+            "nStayTime": 0,
+            "bEnableRecord": false,
+            "bOutAlarm1": false,
+            "bOutClient": false,
+            "bOutEMail": false,
+            "bOutVMS": false,
+            "bNeedRestart": false,
+            "eCountOSDPos": 0,
+            "nCountOSDColor": 0,
+            "nCountSaveDays": 0,
+            "nTimeIntervalReport": 0,
+            "sSnapRes": "",
+            "bLPREn": false,
+            "ivpLprDir": 0,
+            "bIvpLprDisplay": false,
+            "ivpLprPos": 0,
+            "ivpLprROI": {
+                "x": 0,
+                "y": 0,
+                "width": 0,
+                "height": 0
+            },
+            "ivpLprHttpServer": {
+                "ivpLprHttpIP": "192.168.1.243",
+                "ivpLprHttpPort": 8080,
+                "ivpLprHttpAddr": "/devicemanagement/php/plateresult.php"
+            },
+            "ivpLprFtpServer": {
+                "ivpLprFtpIP": "192.168.1.243",
+                "ivpLprFtpPort": 21,
+                "ivpLprFtpAccount": "admin",
+                "ivpLprFtpPasswd": "123456",
+                "ivpLprFtpDir": "/lpr/"
+            },
+            "bIvpLprImgFull": false,
+            "bIvpLprImgLP": false,
+            "ivpLprReUploadInt": 3,
+            "uploadTimeout": 3
+        },
+        "error": {
+            "errorcode": -1,
+            "message": "Failed to get ivp parameters!"
+        }
+    },
+    {
+        "method": "ivp_set_param",
+        "param": {
+            "channelid": 0,
+            "bEnable": false,
+            "nDelay": 10,
+            "bStarting": false,
+            "nRgnCnt": 0,
+            "stRegion": [
+                {
+                    "nCnt": 0,
+                    "stPoints": [
+                        {
+                            "x": 0,
+                            "y": 0
+                        }
+                    ],
+                    "nIvpCheckMode": 0
+                }
+            ],
+            "bDrawFrame": false,
+            "bFlushFrame": false,
+            "bMarkObject": false,
+            "bMarkAll": false,
+            "bOpenCount": false,
+            "bShowCount": false,
+            "bPlateSnap": false,
+            "nAlpha": 0,
+            "nSen": 0,
+            "nThreshold": 0,
+            "nStayTime": 0,
+            "bEnableRecord": false,
+            "bOutAlarm1": false,
+            "bOutClient": false,
+            "bOutEMail": false,
+            "bOutVMS": false,
+            "bNeedRestart": false,
+            "eCountOSDPos": 0,
+            "nCountOSDColor": 0,
+            "nCountSaveDays": 0,
+            "nTimeIntervalReport": 0,
+            "sSnapRes": "",
+            "bLPREn": false,
+            "ivpLprDir": 0,
+            "bIvpLprDisplay": false,
+            "ivpLprPos": 0,
+            "ivpLprROI": {
+                "x": 0,
+                "y": 0,
+                "width": 0,
+                "height": 0
+            },
+            "ivpLprHttpServer": {
+                "ivpLprHttpIP": "192.168.1.243",
+                "ivpLprHttpPort": 8080,
+                "ivpLprHttpAddr": "/devicemanagement/php/plateresult.php"
+            },
+            "ivpLprFtpServer": {
+                "ivpLprFtpIP": "192.168.1.243",
+                "ivpLprFtpPort": 21,
+                "ivpLprFtpAccount": "admin",
+                "ivpLprFtpPasswd": "123456",
+                "ivpLprFtpDir": "/lpr/"
+            },
+            "bIvpLprImgFull": false,
+            "bIvpLprImgLP": false,
+            "ivpLprReUploadInt": 3,
+            "uploadTimeout": 3
+        },
+        "result": {},
+        "error": {
+            "errorcode": -1,
+            "message": "Failed to set ivp parameters!"
+        }
+    },
+    {
+        "method": "ivp_lpr_trigger",
+        "param": {},
+        "result": {},
+        "error": {
+            "errorcode": -1
+        }
+    },
+    {
+        "method": "ivp_lpr_import_wblist",
+        "param": {
+            "whiteList": [
+                {
+                    "lpstr": "³A88888",
+                    "expDate": "20150630"
+                }
+            ],
+            "blackList": [
+                {
+                    "lpstr": "³A88888",
+                    "expDate": "20150630"
+                }
+            ]
+        },
+        "result": {},
+        "error": {
+            "errorcode": -1,
+            "message": "Failed to import wblist!"
+        }
+    },
+    {
+        "method": "ivp_lpr_export_wblist",
+        "param": {},
+        "result": {
+            "whiteList": [
+                {
+                    "lpstr": "³A88888",
+                    "expDate": "20150630"
+                }
+            ],
+            "blackList": [
+                {
+                    "lpstr": "³A88888",
+                    "expDate": "20150630"
+                }
+            ]
+        },
+        "error": {
+            "errorcode": -1,
+            "message": "Failed to export wblist!"
+        }
+    },
+    {
+        "method": "ivp_lpr_manual_open_gate",
+        "param": {},
+        "result": {},
+        "error": {
+            "errorcode": -1
+        }
+    },
+    {
+        "method": "ivp_lpr_manual_close_gate",
+        "param": {},
+        "result": {},
+        "error": {
+            "errorcode": -1
+        }
+    },
+    {
+        "method": "ivp_lpr_get_last_record",
+        "param": {
+            "channelid": 0
+        },
+        "result": {
+            "recordID": 123,
+            "bright": 0,
+            "carBright": 0,
+            "carColor": 0,
+            "colorType": 0,
+            "colorValue": 0,
+            "confidence": 0,
+            "direction": 0,
+            "imagePath": "/mmc/LPRCap/2015_09_09/lpr_1714224504_full.jpg",
+            "lpImagePath": "/mmc/LPRCap/2015_09_09/lpr_1714224504_lp.jpg",
+            "license": "NULL",
+            "location": {
+                "RECT": {
+                    "bottom": 0,
+                    "left": 0,
+                    "right": 0,
+                    "top": 0
+                }
+            },
+            "timeStamp": {
+                "Timeval": {
+                    "sec": 1441815171,
+                    "usec": 672241
+                }
+            },
+            "timeUsed": 0,
+            "triggerType": 4,
+            "type": 0
+        },
+        "error": {
+            "errorcode": -1
+        }
+    },
+    {
+        "method": "ivp_lpr_get_max_record_id",
+        "param": {
+            "channelid": 0
+        },
+        "result": {
+            "maxID": "1024"
+        },
+        "error": {
+            "errorcode": -1
+        }
+    },
+    {
+        "method": "ivp_lpr_get_record_list",
+        "param": {
+            "channelid": 0
+        },
+        "result": {
+            "recordList": [
+                {
+                    "recordID": 123,
+                    "bright": 0,
+                    "carBright": 0,
+                    "carColor": 0,
+                    "colorType": 0,
+                    "colorValue": 0,
+                    "confidence": 0,
+                    "direction": 0,
+                    "imagePath": "/mmc/LPRCap/2015_09_09/lpr_1714224504_full.jpg",
+                    "lpImagePath": "/mmc/LPRCap/2015_09_09/lpr_1714224504_lp.jpg",
+                    "license": "NULL",
+                    "location": {
+                        "RECT": {
+                            "bottom": 0,
+                            "left": 0,
+                            "right": 0,
+                            "top": 0
+                        }
+                    },
+                    "timeStamp": {
+                        "Timeval": {
+                            "sec": 1441815171,
+                            "usec": 672241
+                        }
+                    },
+                    "timeUsed": 0,
+                    "triggerType": 4,
+                    "type": 0
+                }
+            ]
+        },
+        "error": {
+            "errorcode": -1
+        }
+    },
+    {
+        "method": "ivp_lpr_get_record",
+        "param": {
+            "channelid": 0,
+            "recordID": 123
+        },
+        "result": {
+            "recordID": 123,
+            "bright": 0,
+            "carBright": 0,
+            "carColor": 0,
+            "colorType": 0,
+            "colorValue": 0,
+            "confidence": 0,
+            "direction": 0,
+            "imagePath": "/mmc/LPRCap/2015_09_09/lpr_1714224504_full.jpg",
+            "lpImagePath": "/mmc/LPRCap/2015_09_09/lpr_1714224504_lp.jpg",
+            "license": "NULL",
+            "location": {
+                "RECT": {
+                    "bottom": 0,
+                    "left": 0,
+                    "right": 0,
+                    "top": 0
+                }
+            },
+            "timeStamp": {
+                "Timeval": {
+                    "sec": 1441815171,
+                    "usec": 672241
+                }
+            },
+            "timeUsed": 0,
+            "triggerType": 4,
+            "type": 0
+        },
+        "error": {
+            "errorcode": -1
+        }
+    }
+]

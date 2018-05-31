@@ -1,0 +1,14 @@
+
+PROJECT(PTZLIB)
+
+
+ADD_LIBRARY(PTZ STATIC 
+				libPTZ.c
+				)
+
+TARGET_LINK_LIBRARIES(PTZ  
+						porting
+						)
+#ADD_EXECUTABLE(rs485 rs485.c)
+
+#TARGET_LINK_LIBRARIES(rs485 PTZ pthread)

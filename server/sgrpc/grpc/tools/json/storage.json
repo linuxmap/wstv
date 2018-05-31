@@ -1,0 +1,57 @@
+[
+    {
+        "method": "storage_get_info",
+        "param": {},
+        "result": {
+            "size": 1024,
+            "cylinder": 1,
+            "partSize": 1,
+            "partition": 1,
+            "entryCount": 1,
+            "status": 1,
+            "curPart": 1,
+            "mediaType": 0,
+            "bMounted": true,
+            "partSpace": [
+                1024
+            ],
+            "freeSpace": [
+                1024
+            ]
+        },
+        "error": {
+            "errorcode": -1,
+            "message": "Failed to get storage information!"
+        }
+    },
+    {
+        "method": "storage_format",
+        "param": {
+            "diskNum": 0
+        },
+        "result": {},
+        "error": {
+            "errorcode": -1,
+            "message": "Failed to format SDCard"
+        }
+    },
+    {
+        "method": "storage_error_ignore",
+        "param": {},
+        "result": {},
+        "error": {
+            "errorcode": -1
+        }
+    },
+    {
+        "method": "set_oss_folder",
+        "param": {
+            "folderName": "7days",
+            "fileTimeLen": 60
+        },
+        "result": {},
+        "error": {
+            "errorcode": 0
+        }
+    }
+]

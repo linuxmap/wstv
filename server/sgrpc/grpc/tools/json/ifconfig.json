@@ -1,0 +1,148 @@
+[
+    {
+        "method": "ifconfig_get_inet",
+        "comments": "The value of quality ranges from 0 to 100.",
+        "param": {},
+        "result": {
+            "iface": "eth,ppp,wifi",
+            "eth": {
+                "name": "eth0",
+                "bDHCP": true,
+                "addr": "192.168.7.160",
+                "mask": "255.255.255.0",
+                "gateway": "192.168.7.1",
+                "mac": "E0:62:90:33:58:C7",
+                "dns": "202.102.128.68"
+            },
+            "ppp": {
+                "name": "adsl",
+                "username": "qlc",
+                "passwd": "123456"
+            },
+            "wifi": {
+                "name": "hehe",
+                "quality": 100,
+                "keystat": -1,
+                "iestat": "wpa,wpa2,wep,plain",
+                "bDHCP": true,
+                "addr": "192.168.7.160",
+                "mask": "255.255.255.0",
+                "gateway": "192.168.7.1",
+                "mac": "E0:62:90:33:58:C7",
+                "dns": "202.102.128.68"
+            }
+        },
+        "error": {
+            "errorcode": "-1",
+            "message": "Failed to get network configuration!"
+        }
+    },
+    {
+        "method": "ifconfig_eth_set",
+        "param": {
+            "name": "eth0",
+            "bDHCP": true,
+            "addr": "192.168.7.160",
+            "mask": "255.255.255.0",
+            "gateway": "192.168.7.1",
+            "dns": "202.102.128.68"
+        },
+        "result": {},
+        "error": {
+            "errorcode": "-1",
+            "message": "Failed to set eth0 configuration!"
+        }
+    },
+    {
+        "method": "ifconfig_ppp_set",
+        "param": {
+            "name": "adsl",
+            "username": "qlc",
+            "passwd": "123456"
+        },
+        "result": {},
+        "error": {
+            "errorcode": "-1",
+            "message": "Failed to set pppoe!"
+        }
+    },
+    {
+        "method": "ifconfig_wifi_connect",
+        "param": {
+            "name": "hehe",
+            "passwd": "hehe12345"
+        },
+        "result": {},
+        "error": {
+            "errorcode": "-1",
+            "message": "Failed to connect to AP!"
+        }
+    },
+    {
+        "method": "ifconfig_wifi_list_ap",
+        "comments": "The value of quality ranges from 0 to 100.",
+        "param": {
+            "bResearch": true
+        },
+        "result": {
+            "apList": [
+                {
+                    "name": "hehe",
+                    "passwd": "hehe12345",
+                    "quality": 100,
+                    "keystat": -1,
+                    "iestat": "wpa,wpa2,wep,plain"
+                },
+                {
+                    "name": "jovision",
+                    "passwd": "jovision12345",
+                    "quality": 100,
+                    "keystat": -1,
+                    "iestat": "wpa,wpa2,wep,plain"
+                }
+            ]
+        },
+        "error": {
+            "errorcode": "-1",
+            "message": "Failed to list APs!"
+        }
+    },
+    {
+        "method": "ifconfig_server_set",
+        "param": {
+            "vmsServer": {
+                "ipaddr": "192.168.7.160",
+                "port": 10000
+            },
+            "rtmpServer": {
+                "bEnable": false,
+                "channel": 1,
+                "serverURL": "rtmp://192.168.100.10:1935/a381_1"
+            }
+        },
+        "result": {},
+        "error": {
+            "errorcode": "-1",
+            "message": "Failed to set server address!"
+        }
+    },
+    {
+        "method": "ifconfig_server_get",
+        "param": {},
+        "result": {
+            "vmsServer": {
+                "ipaddr": "192.168.7.160",
+                "port": 10000
+            },
+            "rtmpServer": {
+                "bEnable": false,
+                "channel": 1,
+                "serverURL": "rtmp://192.168.100.10:1935/a381_1"
+            }
+        },
+        "error": {
+            "errorcode": "-1",
+            "message": "Failed to get server address!"
+        }
+    }
+]

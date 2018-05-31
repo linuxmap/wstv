@@ -1,0 +1,92 @@
+[
+{
+  "method":  "get_record_list",
+  "comments":  "errorcode : \n 0 : success;\n -1 : illegal channelid;\n -2 : record not exists;",
+  "param":  {
+  "channelid":  0,
+  "starttime":  "20151112102512",
+  "endtime":"20151112194020"
+  },
+  "result":{
+	  "recordlist":
+				[
+				  {
+				   "date":"",
+				   "filename":"",
+				   "channelid":0
+				  }
+				]
+  },
+  "error":  {
+  "errorcode":  -2,
+  "message":  "record not exists"
+  }
+},
+{
+  "method":  "get_audio_status",
+  "comments":  "errorcode : \n 0 : success;\n -1 : illegal channelid;\n -2 : record not exists;",
+  "param":  {
+  "session":  ""
+  },
+  "result":  {
+  "playing":true
+  },
+  "error":  {
+  "errorcode":  0
+  }
+},
+{
+  "method":  "set_audio_status",
+  "comments":  "errorcode : \n 0 : success;\n -1 : illegal channelid;\n -2 : record not exists;",
+  "param":  {
+  "session":  "",
+  "play":true
+  },
+  "result":  {},
+  "error":  {
+  "errorcode":  0
+  }
+},
+{
+  "method":  "play_record",
+  "comments":  "errorcode : \n 0 : success;\n -1 : illegal channelid;\n -2 : record not exists;",
+  "param":  {
+  "session":  "",
+  "status":0,
+  "speed":0,
+  "frame":0
+  },
+  "result":  {},
+  "error":  {
+  "errorcode":  0
+  }
+}
+,
+{
+  "method":  "play_record_over",
+  "comments":  "errorcode : \n 0 : success;\n -1 : illegal channelid;\n -2 : record not exists;",
+  "param":  {},
+  "result":  {
+ 	"devid"  : "",
+	"session": "",
+	"speed"  : 0
+  },
+  "error":  {
+  "errorcode":  0
+  }
+},
+{
+  "method":  "get_record_info",
+  "comments":  "errorcode : \n 0 : success;\n -1 : illegal channelid;\n -2 : record not exists;",
+  "param":  {
+  "session":  ""
+  },
+  "result":  {
+  "totalframe":100,
+  "currframe":10
+  },
+  "error":  {
+  "errorcode":  0
+  }
+}
+]

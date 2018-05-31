@@ -1,0 +1,210 @@
+<!doctype html>
+<html>
+  <head>
+    <!-- use webkit mode for 360 -->
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <meta charset="utf-8" />
+    <script src="js/jq.js"></script>
+    <script src="js/jq.browser.js"></script>
+    <script src="js/jq.i18n.p.js"></script>
+    <script src="js/u.js"></script>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/index.js"></script>
+    <title data-i18n-l="jovision"></title>
+  </head>
+  <body>
+    <div id="login">
+      <form>
+        <div class="lang">
+          <select id="login-language">
+            <option value="zh_CN" selected = "selected">中文</option>
+            <option value="en_US">English</option>
+          </select>
+        </div>
+        <div class="title" data-i18n-l="sys-title"></div>
+        <div>
+          <label for="login-username" data-i18n-l="username"></label>
+          <input type="text" id="login-username" value="admin"/>
+        </div>
+        <div>
+          <label for="login-password" data-i18n-l="password"></label>
+          <input type="password" id="login-password" />
+        </div>
+        <div>
+          <input type="checkbox" id="login-rememberme" />
+          <label for="login-rememberme" data-i18n-l="rememberme"
+            class="rememberme"></label>
+        </div>
+        <div>
+          <button id="login-submit" data-i18n-l="submit"></button>
+        </div>
+      </form>
+    </div>
+    <div id="header">
+      <div class="inner">
+        <div class="menu-bar n80">
+          <span class="logo" data-i18n-l=""></span>
+          <span class="ie" data-i18n-l="playback" class="playback"></span>
+          <span class="ie" data-i18n-l="log"></span>
+          <span class="ie" data-i18n-l="device-conf"></span>
+          <span class="ie" data-i18n-l="client-conf"></span>
+          <span data-i18n-l="logout" class="right"></span>
+          <span data-i18n-l="version" class="right"></span>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <div class="inner n80">
+        <div id="stream-list">
+          <div class="title-bar"></div>
+          <div class="list"></div>
+        </div>
+        <div id="player" class="hide">
+          <div class="screen">
+            <object id="XPLAYER"
+              classid="clsid:6377DAC5-37F6-40BD-9F0D-78F78046D754"
+              height="100%" width="100%" codebase="x.cab#version=1,0,1,2">
+            </object>
+          </div>
+          <div class="panel">
+            <a class="hover safari" data-i18n-a="title" data-i18n-l="full-screen" href="#"><img src="/img/icon-single.png" /></a>
+            <a class="hover safari noie" data-i18n-a="title" data-i18n-l="multi-screen" href="#"><img src="/img/icon-multi.png" /></a>
+            <a class="hover" data-i18n-a="title" data-i18n-l="all-play" href="#"><img src="/img/icon-play-all.png" /></a>
+            <a class="hover" data-i18n-a="title" data-i18n-l="all-stop" href="#"><img src="/img/icon-stop-all.png" /></a>
+            <a class="hover ie" data-i18n-a="title" data-i18n-l="all-record" href="#"><img src="/img/icon-start-record-all.png" /></a>
+            <a class="hover ie" data-i18n-a="title" data-i18n-l="all-stop-record" href="#"><img src="/img/icon-stop-record-all.png" /></a>
+            <a class="hover ie" data-i18n-a="title" data-i18n-l="screenshot" href="#"><img src="/img/icon-screenshot.png" /></a>
+            <a class="ie sound" data-i18n-a="title" data-i18n-l="sound" href="#"><img src="/img/icon-sound.png" /></a>
+            <a class="ie talk" data-i18n-a="title" data-i18n-l="talk" href="#"><img src="/img/icon-talk.png" /></a>
+          </div>
+        </div>
+        <div id="ptz-panel" class="hover">
+          <div class="title-bar"></div>
+          <div class="direction">
+            <div class="r">
+              <div class="wn"><img class="noshow" src="/img/ptz-wn.png" /></div>
+              <div class="n"><img class="noshow" src="/img/ptz-n.png" /></div>
+              <div class="en"><img class="noshow" src="/img/ptz-en.png" /></div>
+            </div>
+            <div class="r">
+              <div class="w"><img class="noshow" src="/img/ptz-w.png" /></div>
+              <div class="c"><img class="noshow" src="/img/ptz-c.png" /></div>
+              <div class="e"><img class="noshow" src="/img/ptz-e.png" /></div>
+            </div>
+            <div class="r">
+              <div class="ws"><img class="noshow" src="/img/ptz-ws.png" /></div>
+              <div class="s"><img class="noshow" src="/img/ptz-s.png" /></div>
+              <div class="es"><img class="noshow" src="/img/ptz-es.png" /></div>
+            </div>
+          </div>
+          <div class="speed">
+            <label data-i18n-l="speed"></label><select>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5" selected>5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+          <div class="optics">
+            <div class="item">
+              <div class="all aperture">
+                <div class="a d"><img src="/img/icon-dec.png" /></div>
+                <div class="l" data-i18n-l="aperture"></div>
+                <div class="a i"><img src="/img/icon-inc.png" /></div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="all focus">
+                <div class="a d"><img src="/img/icon-dec.png" /></div>
+                <div class="l" data-i18n-l="focus"></div>
+                <div class="a i"><img src="/img/icon-inc.png" /></div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="all magnification">
+                <div class="a d"><img src="/img/icon-dec.png" /></div>
+                <div class="l" data-i18n-l="magnification"></div>
+                <div class="a i"><img src="/img/icon-inc.png" /></div>
+              </div>
+            </div>
+          </div>
+          <div class="title" data-i18n-l="preset"></div>
+          <div class="preset">
+            <select id="preset-list"></select>
+            <a class="action add" data-i18n-l="add" data-i18n-a="title" href="#"><img src="/img/icon-inc.png" /></a>
+            <a class="action del" data-i18n-l="remove" data-i18n-a="title" href="#"><img src="/img/icon-dec.png" /></a>
+            <a class="action run" data-i18n-l="apply" data-i18n-a="title" href="#"><img src="/img/icon-refresh.png" /></a>
+          </div>
+          <div class="title" data-i18n-l="patrol"></div>
+          <div class="patrol">
+            <select id="patrol-list" disabled><option value="0" selected>0</option></select>
+            <a class="action start" data-i18n-l="start" data-i18n-a="title" href="#"><img src="/img/icon-refresh.png" /></a>
+            <a class="action stop" data-i18n-l="stop" data-i18n-a="title" href="#"><img src="/img/icon-stop.png" /></a>
+            <a class="action edit" data-i18n-l="edit" data-i18n-a="title" href="#"><img src="/img/icon-inc.png" /></a>
+          </div>
+          <div class="addition-panel">
+            <div class="switch">
+              <img src="/img/switch-bg2.png" />
+              <span data-i18n-l="color-conf"></span>
+              <span data-i18n-l="other-conf"></span>
+            </div>
+            <div class="panel panel1">
+              <div class="item contrast">
+                <div class="title" data-i18n-l="contrast"></div>
+                <div class="slider">
+                  <div class="down"><img src="/img/icon-dec.png" /></div>
+                  <div class="slider-bar"><div class="cursor"></div></div>
+                  <div class="up"><img src="/img/icon-inc.png" /></div>
+                </div>
+              </div>
+              <div class="item brightness">
+                <div class="title" data-i18n-l="brightness"></div>
+                <div class="slider">
+                  <div class="down"><img src="/img/icon-dec.png" /></div>
+                  <div class="slider-bar"><div class="cursor"></div></div>
+                  <div class="up"><img src="/img/icon-inc.png" /></div>
+                </div>
+              </div>
+              <div class="item saturation">
+                <div class="title" data-i18n-l="saturation"></div>
+                <div class="slider">
+                  <div class="down"><img src="/img/icon-dec.png" /></div>
+                  <div class="slider-bar"><div class="cursor"></div></div>
+                  <div class="up"><img src="/img/icon-inc.png" /></div>
+                </div>
+              </div>
+              <div class="item sharpness">
+                <div class="title" data-i18n-l="sharpness"></div>
+                <div class="slider">
+                  <div class="down"><img src="/img/icon-dec.png" /></div>
+                  <div class="slider-bar"><div class="cursor"></div></div>
+                  <div class="up"><img src="/img/icon-inc.png" /></div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="button reset" data-i18n-l="reset"></div>
+              </div>
+            </div>
+            <div class="panel panel2 none">
+              <div class="item">
+                <div class="button reboot" data-i18n-l="reboot"></div>
+              </div>
+              <div class="item">
+                <div class="button change-ratio" data-i18n-l="ratio"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="footer" data-i18n-l="jovision"></div>
+  </body>
+</html>

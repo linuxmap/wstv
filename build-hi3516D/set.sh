@@ -1,0 +1,18 @@
+rm -rf `ls|grep -v "set.sh"`
+sleep 1
+cmake ..	-DCROSS_COMPILE=arm-hisiv300-linux- \
+			-DBOARD=hi3516D \
+			-DCONFIG_PATH=/etc/conf.d/jovision/ \
+			-DTINY_ONVIF_SUPPORT=ON \
+			-DZRTSP_SUPPORT=ON \
+			-DGB28181_SUPPORT=ON \
+			-DSD_RECORD_SUPPORT=ON \
+			-DNETPOSA_SUPPORT=OFF \
+			-DIVP_SUPPORT=ON \
+			-DIVP_VR_SUPPORT=OFF \
+			-DKSSDK_SUPPORT=OFF \
+			-DWIRELESS_4G_SUPPORT=OFF \
+			-DENABLE_EXSDK=ON \
+			-DIWISDOM_ALL=OFF \
+			-DDLSX_IPDOME=OFF
+

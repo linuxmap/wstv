@@ -1,0 +1,19 @@
+#!/bin/sh
+rm -rf `ls|grep -v "set.*.sh"`
+sleep 1
+cmake .. 	-DCROSS_COMPILE=arm-hisiv300-linux- \
+			-DBOARD=hi3518EV200 \
+			-DCONFIG_PATH=/etc/conf.d/jovision/ \
+			-DTINY_ONVIF_SUPPORT=ON \
+			-DZRTSP_SUPPORT=ON \
+			-DWEB_SUPPORT=ON \
+			-DSD_RECORD_SUPPORT=ON \
+			-DBIZ_CLIENT_SUPPORT=ON	\
+			-DSOUND_WAVE_DEC_SUPPORT=ON \
+			-DOPENSSL_DISABLE=ON \
+			-DGB28181_SUPPORT=OFF \
+			-DIVP_SUPPORT=OFF \
+			-DOBSS_CLOUDSTORAGE=ON \
+			-DFIRMUP_BY_MEDIAMEM=ON \
+			-DYST_SVR_SUPPORT=ON \
+			-DXW_MMVA_SUPPORT=ON \
