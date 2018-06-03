@@ -600,7 +600,6 @@ static void* _mbizclient_init_thread(void *p)
 	memset(&storage, 0, sizeof(STORAGE));
 	if (0 != mstorage_get_info(&storage))
 	{
-		//Printf("mstorage_get_info error\n");
 		info.sdcard = 0;
 	}
 	else

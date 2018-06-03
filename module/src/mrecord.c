@@ -238,7 +238,6 @@ static prerecord_head_t* _mrecord_pre_pull(int channelid)
 	pull = preinfo[channelid].first;
 	if (pull == NULL)
 	{
-		//Printf("pull NULL\n");
 		return NULL;
 	}
 	if (pull <= preinfo[channelid].last)
@@ -354,7 +353,6 @@ static int _mrecord_cloud_push(int channelid, unsigned char *buffer, int len, un
 	memcpy(cur->buffer, buffer, len);
 	cur->next = (prerecord_head_t *)(U8P_CAST(cur) + dataLen);
 	cloudinfo[channelid].last = cur;
-	//Printf("Push: %p, fr: %d, len: %d, [%p-%p]	\n", cur, frametype, len, cloudinfo[channelid].first, cloudinfo[channelid].last);
 	pthread_mutex_unlock(&cloudinfo[channelid].mutex);
 	pthread_cond_signal(&cloudinfo[channelid].dataReady);
 #endif
@@ -381,7 +379,6 @@ static prerecord_head_t* _mrecord_cloud_pull(int channelid)
 		cloudinfo[channelid].first = pull->next;
 	}
 
-	//Printf("Pop: %p, fr: %d, len: %d, [%p-%p]  \n", pull, pull->frametype, pull->len, cloudinfo[channelid].first, cloudinfo[channelid].last);
 #endif
 	return pull;
 }
@@ -629,7 +626,6 @@ static int _mrecord_fifo_push(int channelid, unsigned char *buffer, int len, uns
 	memcpy(cur->buffer, buffer, len);
 	cur->next = (prerecord_head_t *)(U8P_CAST(cur) + dataLen);
 	recorde_fifio_intfo[channelid].last = cur;
-	//Printf("Push: %p, fr: %d, len: %d, [%p-%p]	\n", cur, frametype, len, cloudinfo[channelid].first, cloudinfo[channelid].last);
 	pthread_mutex_unlock(&recorde_fifio_intfo[channelid].mutex);
 	pthread_cond_signal(&recorde_fifio_intfo[channelid].dataReady);
 #endif
@@ -656,7 +652,6 @@ static prerecord_head_t* _mrecord_fifo_pull(int channelid)
 		recorde_fifio_intfo[channelid].first = pull->next;
 	}
 
-	//Printf("Pop: %p, fr: %d, len: %d, [%p-%p]  \n", pull, pull->frametype, pull->len, cloudinfo[channelid].first, cloudinfo[channelid].last);
 #endif
 	return pull;
 }

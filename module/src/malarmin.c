@@ -59,8 +59,6 @@ int _malarmin_process(int tid, void *param)
 	else if((int)param != 0)
 		timesended = timenow;
 		
-	Printf("===================>>> AlarmIN-Type[%d]\n",(int)param);
-
 	if ((int)param != 0)
 	{
 		bInValidTime = malarm_check_validtime();
@@ -196,7 +194,6 @@ int _malarmin_process(int tid, void *param)
 		if (alarmincfg.bBuzzing)
 		{
 			//·äÃùÆ÷±¨¾¯Êä³ö140415
-			Printf("LK TEST BUZZING ALARMING\n");
 			malarm_buzzing_open();
 			alarmOutType |= ALARM_OUT_BUZZ;
 		}
@@ -222,7 +219,6 @@ int _malarmin_process(int tid, void *param)
 	}
 	else if ((int) param == 0)
 	{
-		Printf("stop alarm...\n");
 		if (alarmincfg.bStarting)
 		{
 			if(alarmOutType & ALARM_OUT_CLIENT)
@@ -377,7 +373,7 @@ int malarmin_start(int channel)
 	ret = jv_alarmin_set_param(0, &attr);
 	if (ret != 0)
 	{
-		Printf("jv_malarmin_set_attr failed: %d\n", ret);
+		printf("jv_malarmin_set_attr failed(%d)!\n", ret);
 		mlog_write("MAlarmIn Start: Failed");
 		return -1;
 	}
@@ -406,11 +402,9 @@ int malarmin_stop(int channel)
 	ret = jv_alarmin_stop(channel);
 	if (ret != 0)
 	{
-		Printf("jv_alarmin_stop failed: %d\n", ret);
 		mlog_write("MAlarmIn Stop: Failed");
 		return -1;
 	}
-	Printf("malarmin_stop over %d\n", channel);
 	return 0;
 }
 

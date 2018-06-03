@@ -176,7 +176,7 @@ int sp_stream_set_param(int channelid, SPStreamAttr_t *attr)
 #endif
 
 	int flag,tmpWidth,tmpHeight;
-	if((hwinfo.sensor == SENSOR_AR0130 && mattr.height > 960) || (hwinfo.sensor == SENSOR_BF3116 && mattr.height >= 960))
+	if((hwinfo.sensor == SENSOR_AR0130 && mattr.height > 960))
 	{
 		flag =1;
 		tmpWidth = mattr.width;

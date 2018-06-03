@@ -19,7 +19,6 @@
 #include "utl_timer.h"
 #include "JvServer.h"
 #include "onvif-main.h"
-#include "utl_net_lan.h"
 #include <mlog.h>
 #include <dlfcn.h>
 #include "mioctrl.h"

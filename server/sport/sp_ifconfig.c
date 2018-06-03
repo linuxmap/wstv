@@ -299,7 +299,6 @@ int sp_ifconfig_server_set(SPServer_t *serverInfo)
 #include <mipcinfo.h>
 #include <utl_ipscan.h>
 #include "sp_connect.h"
-#include <utl_net_lan.h>
 
 static BOOL __sp_ifconfig_b_ipselfadpt()
 {
@@ -307,7 +306,6 @@ static BOOL __sp_ifconfig_b_ipselfadpt()
 	{
 		struct sysinfo sinfo;
 	    sysinfo(&sinfo);
-//	    printf("uptime: %ld\n", sinfo.uptime);
 	    if (sinfo.uptime < 60)
 	    	return FALSE;
 	}

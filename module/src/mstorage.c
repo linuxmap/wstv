@@ -205,12 +205,7 @@ static S32 _mstorage_refresh()
 			stStorage.mounted = TRUE;
 			stStorage.nStatus = STG_IDLE;
 			GetPathInfo(MOUNT_PATH, &stStorage.nPartSpace[i], &stStorage.nFreeSpace[i]);
-			//不再进行剩余空间判断。录像开始时会自动处理
-	//				if(FALSE == IsDiskFull(MOUNT_PATH, 20))
-			{
-				Printf("nPart%d, TotalSpace:%d, FreeSpace:%d\n", i+1, stStorage.nPartSpace[i], stStorage.nFreeSpace[i]);
-	//			break;
-			}
+			Printf("nPart%d, TotalSpace:%d, FreeSpace:%d\n", i+1, stStorage.nPartSpace[i], stStorage.nFreeSpace[i]);
 		}
 		else
 		{
@@ -283,10 +278,6 @@ S32 mstorage_mount()
 	{
 		utl_system("umount -l "MOUNT_PATH);
 		break;
-//		if(umount(MOUNT_PATH) ==0)	//挂载前先卸载
-//			break;
-//		usleep(1);
-//		Printf("unmount err, retry, times:%d, reson: %s\n", j, strerror(errno));
 	}
 	stStorage.nStatus = STG_NOFORMAT;
 	_mstorage_refresh();
@@ -597,13 +588,7 @@ int mstorage_allocate_space(int size)
 		if(0 != AutoCleanup())
 		{
 			Printf("AutoCleanup failed, nTimes=%d...\n", nTimes);
-			//break;
 			return -1;
-		}
-		if(0 >= nTimes--)
-		{
-//			mlog_write("Disk have no space.");
-			//return -1;
 		}
 	}
 	return 0;

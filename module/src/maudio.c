@@ -565,7 +565,6 @@ void maudio_readfiletoao(char* FilePath)
 		len = read(fd,chBuf, 320);
 		if(len <= 0)
 		{			
-			Printf("file goes to end!! \n");
 			break;
 		}
 		

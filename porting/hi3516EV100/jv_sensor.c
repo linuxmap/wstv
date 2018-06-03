@@ -249,8 +249,6 @@ int jv_sensor_CheckDay_By_Sensor(HI_U8 lum,HI_U32 exposure,HI_U32 Night_To_Day_T
 #define FULL_FRAMERATE_RATIO  16
 #define LIGHT_AE_NODE_MAX 11
 
-static BOOL DAY_AutoLow = FALSE; //当客户不用红外灯，而用白光灯补光时，该值设为1
-
 static WDR_MODE_E jv_wdr_state =0;
 static int jv_wdr_switch_running=0;
 

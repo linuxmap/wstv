@@ -484,7 +484,6 @@ int mdetect_start(int channelid)
 	ret = jv_mdetect_set_attr(channelid, &attr);
 	if (ret != 0)
 	{
-		Printf("jv_mdetect_set_attr failed: %d\n",ret);
 		mlog_write("Mdetect Start: Failed");
 		return -1;
 	}
@@ -518,7 +517,6 @@ int mdetect_stop(int channelid)
 	ret = jv_mdetect_stop(channelid);
 	if (ret != 0)
 	{
-		Printf("jv_mdetect_del_all failed: %d\n",ret);
 		mlog_write("Mdetect Stop: Failed");
 		return -1;
 	}
@@ -634,16 +632,13 @@ int mdetect_flush(int channelid)
 	if (mdlist[channelid].bEnable)
 	{
 		Printf("mdetect_start.\n");
-		//mdetect_stop(channelid);
 #if  (defined PLATFORM_hi3518EV200) || (defined PLATFORM_hi3516EV100)			//16CV200智能分析与移动侦测不能同时开
 		mivp_stop(0);
 #endif
-		// mdetect_start(channelid);
 		jv_mdetect_set_sensitivity(channelid, mdlist[channelid].nSensitivity);
 	}
 	else
 	{
-		// mdetect_stop(channelid);
 #if  (defined PLATFORM_hi3518EV200) || (defined PLATFORM_hi3516EV100)		//16CV200移动侦测关闭后需重启智能分析
 		mivp_start(0);
 #endif

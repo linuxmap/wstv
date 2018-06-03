@@ -47,13 +47,13 @@ static BOOL _m_schedule(int tid,int second, void *param)
 	struct tm *tm_snap;
 	if (0 != access("/progs/rec/00/", F_OK))  //查看TF卡是否挂载成功
 	{
-		Printf("cannot access sd card\n");
+		printf("cannot access sd card\n");
 	}
 	else
 	{
 		if(0 != access("/progs/rec/00/snapshot/timelapse/", F_OK))
 		{
-			Printf("cannot access the dest path :/progs/rec/00/snapshot/timelapse/\n");
+			printf("cannot access the dest path :/progs/rec/00/snapshot/timelapse/\n");
 		}
 		else
 		{
@@ -259,7 +259,6 @@ U32 mail_test(char *szIsSucceed)
 	//添加发送邮件函数
 	szIsSucceed[0] = '\0';
 	char receiver[512] ={0};
-	//Printf("%s\n", alarmcfg.receiver0);
 	if( strcmp(alarmcfg.receiver0,"(null)")!=0 && strcmp(alarmcfg.receiver0," ")!=0 && strcmp(alarmcfg.receiver0,"")!=0 )
 	{
 		if(strlen(receiver) != 0)
@@ -425,7 +424,6 @@ BOOL malarm_check_validtime()
 	if(memcmp(alarmTime, alarmcfg.alarmTime, sizeof(alarmTime)) == 0)
 	{
 		// 未设置，默认全天
-		//Printf("No alarm time set, default whole day\n");
 		return TRUE;
 	}
 
@@ -442,8 +440,6 @@ BOOL malarm_check_validtime()
 		struct tm tmNow;
 		localtime_r(&tNow, &tmNow);
 		nowTime = tmNow.tm_hour*3600 + tmNow.tm_min*60 + tmNow.tm_sec;
-		//Printf("alarm time[%s-%s], cur time is %02d:%02d:%02d\n", alarmcfg.alarmTime[i].tStart, alarmcfg.alarmTime[i].tEnd, 
-		//	tmNow.tm_hour, tmNow.tm_min, tmNow.tm_sec);
 
 		if(isInTimeRange(nowTime, startAlarmTime, endAlarmTime))
 		{

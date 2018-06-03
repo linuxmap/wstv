@@ -279,7 +279,7 @@ int reg_spi_read(unsigned int addr)
 	ret = ioctl(fd, SPI_IOC_MESSAGE(1), mesg);    
 	if (ret  < 0)
 	{          
-		printf("SPI_IOC_MESSAGE error \n");          
+		printf("ioctl SPI_IOC_MESSAGE error \n");          
 		return -1;      
 	}    
 	return rx_buf[2];
@@ -322,7 +322,7 @@ int reg_i2c_write(unsigned int device_addr,unsigned int reg_addr,unsigned int re
 	ret = ioctl(fd, I2C_SLAVE_FORCE, device_addr);
     if (ret < 0)
     {
-        printf("CMD_SET_DEV error!\n");
+        printf("I2C_SLAVE_FORCE error!\n");
         return ret;
     }
 
@@ -342,7 +342,7 @@ int reg_i2c_write(unsigned int device_addr,unsigned int reg_addr,unsigned int re
 
     if (ret < 0)
     {
-        printf("CMD_SET_REG_WIDTH error!\n");
+        printf("ioctl I2C_16BIT_REG error!\n");
 		close(fd);
         return -1;
     }
@@ -360,7 +360,7 @@ int reg_i2c_write(unsigned int device_addr,unsigned int reg_addr,unsigned int re
 
     if (ret)
     {
-        printf("hi_i2c write faild!\n");
+        printf("ioctl I2C_16BIT_DATA error!\n");
 		close(fd);
         return -1;
     }
@@ -368,7 +368,7 @@ int reg_i2c_write(unsigned int device_addr,unsigned int reg_addr,unsigned int re
     ret = write(fd, buf, idx);
     if(ret < 0)
     {
-    	printf("I2C_WRITE error!\n");
+    	printf("write error!\n");
 		close(fd);
     	return -1;
     }
@@ -435,7 +435,7 @@ int reg_i2c_read(unsigned int device_addr,unsigned int reg_addr,unsigned int reg
 	ret = read(fd, recvbuf, reg_width);
 	if (ret < 0)
 	{
-		printf("CMD_I2C_READ error!\n");
+		printf("read error!\n");
 		close(fd);
 		return -1;
 	}
@@ -447,7 +447,7 @@ int reg_i2c_read(unsigned int device_addr,unsigned int reg_addr,unsigned int reg
 	else
 		data = recvbuf[0];
 
-	printf("0x%x 0x%x\n", reg_addr, data);
+	printf("reg_addr:0x%x data:0x%x\n", reg_addr, data);
 	
 	close(fd);
 	return data;
@@ -975,548 +975,525 @@ int isp_ioctl(int fd,int cmd,unsigned long value)
 
 	switch (cmd)
 	{
-
-
 #if 1
 		case ADJ_SCENE://场景选择
-		{
-
-			if(value == IN_DOOR)
 			{
-				
-			}
-			else if(value == OUT_DOOR)
-			{
-				
-			}
-            else if(value == NIGHT_MODE)
-            {
 
-                ISP_SATURATION_ATTR_S pstSatAttr;         //设置黑白
-                pstSatAttr.enOpType = OP_TYPE_MANUAL;
-                pstSatAttr.stManual.u8Saturation = 0;
-                HI_MPI_ISP_SetSaturationAttr(IspDev, &pstSatAttr);      
-            }
-            else if(value == DAY_MODE)
-            { 
-                ISP_SATURATION_ATTR_S pstSatAttr;
-                pstSatAttr.enOpType = OP_TYPE_MANUAL;
-                pstSatAttr.stManual.u8Saturation = 0x80;
-                HI_MPI_ISP_SetSaturationAttr(IspDev, &pstSatAttr);//恢复彩色模式
-                    
-            }
-            else if(CHECK_NIGHT== value)
-            {
-  				//entering night mode
-  				nightflag = HI_TRUE;
-				isp_ioctl(0,ADJ_BRIGHTNESS,user_set_luma);
-				if(sensorid == SENSOR_OV9750||sensorid == SENSOR_OV9750m)
+				if(value == IN_DOOR)
 				{
-					//isp_ioctl(0,ADJ_BRIGHTNESS,user_set_luma);
-					
-					ISP_GAMMA_ATTR_S pstGammaAttr;
-					pstGammaAttr.bEnable = HI_TRUE;
-					pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
-					memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
-					HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
+
 				}
-				if(sensorid == SENSOR_MN34227)
+				else if(value == OUT_DOOR)
 				{
-					//isp_ioctl(0,ADJ_BRIGHTNESS,user_set_luma);
-					
-					ISP_GAMMA_ATTR_S pstGammaAttr;
-					pstGammaAttr.bEnable = HI_TRUE;
-					pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
-					memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
-					HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
 
-					ISP_EXPOSURE_ATTR_S stExpAttr;
-					HI_MPI_ISP_GetExposureAttr(IspDev, &stExpAttr);
-					stExpAttr.stAuto.stSysGainRange.u32Max = 256*1024; 
-					stExpAttr.u8AERunInterval=1;
-					HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
 				}
-                if(sensorid == SENSOR_OV2710)
-				{	
-#if 0
-					ISP_GAMMA_ATTR_S pstGammaAttr;
-					pstGammaAttr.bEnable = HI_TRUE;
-					pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
-					memcpy(&pstGammaAttr.u16Table,&u16Gamma_2710_night,257 * 2);
-					HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
-
-                    ISP_SHADING_ATTR_S pstShadingAttr;
-                    HI_MPI_ISP_GetMeshShadingAttr(IspDev,&pstShadingAttr);
-                    pstShadingAttr.bEnable = HI_TRUE;
-                    pstShadingAttr.enOpType = 0;
-                    HI_MPI_ISP_SetMeshShadingAttr(IspDev,&pstShadingAttr);
-					
-                    ISP_SHARPEN_ATTR_S pstSharpenAttr;
-                    HI_U8 au8SharD[16]={125,116,110,100,100,100,96,65,18,200,250,250,250,250,250,250}; 
-                    HI_U8 au8SharUd[16]={128,122,116,116,108,108,102,80,80,250,250,250,250,250,250,250};
-                	HI_U8 au8Over[16]={78,78,74,74,70,70,70,68,68,68,0,0,0,0,0,0};
-                	HI_U8 au8Under[16]={100,100,96,96,90,90,86,75,75,0,0,0,0,0,0,0};
-                    HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
-                    pstSharpenAttr.bEnable = HI_TRUE;
-                    pstSharpenAttr.enOpType = OP_TYPE_AUTO;
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
-                    HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
-#else
-
-					ISP_GAMMA_ATTR_S pstGammaAttr;
-					pstGammaAttr.bEnable = HI_TRUE;
-					pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
-					memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
-					HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
-#endif
-                    
-				}
-				if(sensorid == SENSOR_SC2135)
-				{	
-					ISP_GAMMA_ATTR_S pstGammaAttr;
-					pstGammaAttr.bEnable = HI_TRUE;
-					pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
-					memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
-					HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
-                    
-				}
-                if(sensorid == SENSOR_AR0130)
-				{		
-					ISP_GAMMA_ATTR_S pstGammaAttr;
-					pstGammaAttr.bEnable = HI_TRUE;
-					pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
-					memcpy(&pstGammaAttr.u16Table,&u16Gamma_ar0130_night,257 * 2);
-					HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
-
-                    ISP_SHADING_ATTR_S pstShadingAttr;
-                    HI_MPI_ISP_GetMeshShadingAttr(IspDev,&pstShadingAttr);
-                    pstShadingAttr.bEnable = HI_TRUE;
-                    pstShadingAttr.enOpType = 0;
-                    HI_MPI_ISP_SetMeshShadingAttr(IspDev,&pstShadingAttr);
-
-                    ISP_SHARPEN_ATTR_S pstSharpenAttr;
-                    HI_U8 au8SharD[16]={130,120,112,103,100,100,96,80,70,200,250,250,250,250,250,250}; 
-                    HI_U8 au8SharUd[16]={128,122,116,116,108,108,102,80,80,250,250,250,250,250,250,250};
-                	HI_U8 au8Over[16]={78,78,74,74,70,70,70,70,70,70,70,70,70,68,68,68};
-                	HI_U8 au8Under[16]={100,100,96,96,90,90,80,80,80,80,80,80,75,75,75,75};
-                    HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
-                    pstSharpenAttr.bEnable = HI_TRUE;
-                    pstSharpenAttr.enOpType = OP_TYPE_AUTO;
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
-                    HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
-                    
-				}
-
-				if(sensorid == SENSOR_SC2045)
+				else if(value == NIGHT_MODE)
 				{
-					//isp_ioctl(0,ADJ_BRIGHTNESS,user_set_luma);
-					ISP_GAMMA_ATTR_S pstGammaAttr;
-					pstGammaAttr.bEnable = HI_TRUE;
-					pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
-					memcpy(&pstGammaAttr.u16Table,&V200_LINE_NIGHT_LV0_GAMMA,257 * 2);
-					HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
-					ISP_SHARPEN_ATTR_S pstSharpenAttr;
-                    HI_U8 au8SharD[16]={100, 95, 90, 85,  80,  75,  70,  60,    50,  250,  250,   250,   250,   250,    250,    250};
-                    HI_U8 au8SharUd[16]={85,  80,  80,  75,  70,  60,  50,  15,    15,  200,  250,   250,   250,   250,    250,    250};
-                	HI_U8 au8Over[16]={50,  50,  50,  50,  50,  50,  50,   50,  50,  0,   0,    0,   0,    0,    0,      0};
-                	HI_U8 au8Under[16]={80, 80, 80, 80, 90, 90,  90,  80, 60,  0,   0,    0,   0,    0,    0,     0};
-                    HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
-                    pstSharpenAttr.bEnable = HI_TRUE;
-                    pstSharpenAttr.enOpType = OP_TYPE_AUTO;
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
-                    HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
-					HI_U8 u8Strength_n[16] = {150,150,150,150,130,130,140,130,130,100,100,100,100,100,100,100};
-					HI_U8 u8fix_Strength_n[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-			        HI_U16 u16Threshold_n[16] = {1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1200,1200,1200,1200,1200,1200};
-			        ISP_NR_ATTR_S pstNRAttr;
-			        HI_MPI_ISP_GetNRAttr(0,&pstNRAttr);
-			        memcpy(&pstNRAttr.stAuto.au8VarStrength,u8Strength_n,16);
-			        memcpy(&pstNRAttr.stAuto.au8FixStrength,u8fix_Strength_n,16);
-					memcpy(&pstNRAttr.stAuto.au16Threshold,u16Threshold_n,16*2);
-			        HI_MPI_ISP_SetNRAttr(0,&pstNRAttr);
-					
+					ISP_SATURATION_ATTR_S pstSatAttr;         //设置黑白
+					pstSatAttr.enOpType = OP_TYPE_MANUAL;
+					pstSatAttr.stManual.u8Saturation = 0;
+					HI_MPI_ISP_SetSaturationAttr(IspDev, &pstSatAttr);      
 				}
-				else if(sensorid == SENSOR_OV9732)
-				{
-					//isp_ioctl(0,ADJ_BRIGHTNESS,user_set_luma);
-/*					
-					ISP_GAMMA_ATTR_S pstGammaAttr;
-					pstGammaAttr.bEnable = HI_TRUE;
-					pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
-					memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV1_GAMMA,257 * 2);*/
-					//ov9732_gamma = 4;
-					
-					ISP_GAMMA_ATTR_S pstGammaAttr;
-					pstGammaAttr.bEnable = HI_TRUE;
-					pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
-					memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
-					HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
-					
-					ISP_SHARPEN_ATTR_S pstSharpenAttr;
-                    HI_U8 au8SharD[16]={100,95,90,90,90,90,90,90,18,200,250,250,250,250,250,250}; 
-                    HI_U8 au8SharUd[16]={90,85,80,70,55,50,40,40,50,250,250,250,250,250,250,250};
-                	HI_U8 au8Over[16]={50,50,50,50,50,50,50,50,68,0,0,0,0,0,0,0};
-                	HI_U8 au8Under[16]={80,80,80,80,80,80,80,80,80,0,0,0,0,0,0,0};
-					HI_BOOL au8EnLowLumaShoot[16]={0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1};
-					HI_U8 au8TextureNoiseThd[16]={0,0,0,0,0,12,20,30,36,0,0,0,0,0,0,0};
-					HI_U8 au8EdgeNoiseThd[16]={0,0,0,0,0,8,12,16,20,0,0,0,0,0,0,0};
-					
-                    HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
-                    pstSharpenAttr.bEnable = HI_TRUE;
-                    pstSharpenAttr.enOpType = OP_TYPE_AUTO;
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
-					memcpy(&pstSharpenAttr.stAuto.abEnLowLumaShoot,&au8EnLowLumaShoot,16*sizeof(HI_BOOL));
-					memcpy(&pstSharpenAttr.stAuto.au8TextureNoiseThd,&au8TextureNoiseThd,16);
-					memcpy(&pstSharpenAttr.stAuto.au8EdgeNoiseThd,&au8EdgeNoiseThd,16);
-                    HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+				else if(value == DAY_MODE)
+				{ 
+					ISP_SATURATION_ATTR_S pstSatAttr;
+					pstSatAttr.enOpType = OP_TYPE_MANUAL;
+					pstSatAttr.stManual.u8Saturation = 0x80;
+					HI_MPI_ISP_SetSaturationAttr(IspDev, &pstSatAttr);//恢复彩色模式
+
 				}
-				if(sensorid == SENSOR_OV2735)
+				else if(CHECK_NIGHT== value)
 				{
-					ISP_GAMMA_ATTR_S pstGammaAttr;
-					pstGammaAttr.bEnable = HI_TRUE;
-					pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
-					memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
-					HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
-
-					isp_acm_set_ov2735(FALSE);
-					ISP_SHARPEN_ATTR_S pstSharpenAttr;
-                    HI_U8 au8SharD[16]={110, 112, 110, 122,  125,  115,  105,  95,    95,  60,  50,   50,   50,   50,    50,    50}; 
-                    HI_U8 au8SharUd[16]={92,  82,  65,  60,  50,  45,  35,  30,    25,  15,  15,   15,   15,   15,    15,    15};
-
-				    HI_U8 au8Over[16]={43,  58,	58,  58,  58,  58,	55,   45,  40,	40,   50,	 50,   50,	  50,	 50,	  50};/*overshootAmt*/
-				    HI_U8 au8Under[16]={90, 105, 105, 122, 125, 130, 125,  120, 80,  0,	0,	  0,   0,	 0,    0,	  0};/*undershootAmt*/
-
-			
-	               	HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
-	                pstSharpenAttr.bEnable = HI_TRUE;
-	                pstSharpenAttr.enOpType = OP_TYPE_AUTO;
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
-	                memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
-	                memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
-
-	                HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
-
-
-					ISP_EXPOSURE_ATTR_S stExpAttr;
-					HI_MPI_ISP_GetExposureAttr(IspDev, &stExpAttr);
-					stExpAttr.stAuto.stSysGainRange.u32Max = 55*1024;
-					stExpAttr.u8AERunInterval =1;
-					HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
-					if(HWTYPE_MATCH(HW_TYPE_V3))
-					{			
-
-	                   	HI_U16 dpc_slope[16] = {80,80,100,250,250,250,250,250,250,252,252,252,252,252,252,252};
-						ISP_DP_DYNAMIC_ATTR_S  pstDPDynamicAttr;
-						HI_MPI_ISP_GetDPDynamicAttr(0, &pstDPDynamicAttr);
-						pstDPDynamicAttr.bEnable=HI_TRUE;
-						pstDPDynamicAttr.enOpType=OP_TYPE_AUTO;
-						memcpy(pstDPDynamicAttr.stAuto.au16Slope,dpc_slope,16*2);
-						HI_MPI_ISP_SetDPDynamicAttr(0,&pstDPDynamicAttr);
+					//entering night mode
+					nightflag = HI_TRUE;
+					isp_ioctl(0,ADJ_BRIGHTNESS,user_set_luma);
+					if(sensorid == SENSOR_OV9750||sensorid == SENSOR_OV9750m)
+					{
+						//isp_ioctl(0,ADJ_BRIGHTNESS,user_set_luma);
+						ISP_GAMMA_ATTR_S pstGammaAttr;
+						pstGammaAttr.bEnable = HI_TRUE;
+						pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
+						memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
+						HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
 					}
-					
-					
-				}
-				if(sensorid == SENSOR_SC2235)
-				{
-					isp_ioctl(0,ADJ_CONTRAST,user_set_contrast);
-					ISP_SHARPEN_ATTR_S pstSharpenAttr;
-                    HI_U8 au8SharD[16]={130,130,130,130,130,120,115,105,100,100,100,100,100,100,100,100}; 
-                    HI_U8 au8SharUd[16]={118,115,113,110,110,80,68,55,50,50,50,50,50,50,50,50};
-                	HI_U8 au8Over[16]={68,72,80,80,80,70,63,55,50,50,50,50,50,50,50,50};
-                	HI_U8 au8Under[16]={122,122,120,120,125,120,112,105,100,100,100,100,100,100,100,100};
-					HI_BOOL au8EnLowLumaShoot[16]={0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1};
-					HI_U8 au8TextureNoiseThd[16]={8,8,8,12,22,25,28,30,25,25,25,25,25,25,25,25};
-					HI_U8 au8EdgeNoiseThd[16]={0,1,2,3,5,7,8,10,10,10,10,10,10,10,10,10};
-					
-                    HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
-                    pstSharpenAttr.bEnable = HI_TRUE;
-                    pstSharpenAttr.enOpType = OP_TYPE_AUTO;
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
-					memcpy(&pstSharpenAttr.stAuto.abEnLowLumaShoot,&au8EnLowLumaShoot,16*sizeof(HI_BOOL));
-					memcpy(&pstSharpenAttr.stAuto.au8TextureNoiseThd,&au8TextureNoiseThd,16);
-					memcpy(&pstSharpenAttr.stAuto.au8EdgeNoiseThd,&au8EdgeNoiseThd,16);
-                    HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
-					
-					isp_acm_set_sc2235(FALSE);
-					
-					ISP_EXPOSURE_ATTR_S stExpAttr;
-					HI_MPI_ISP_GetExposureAttr(IspDev, &stExpAttr);
-					stExpAttr.stAuto.stSysGainRange.u32Max = 96*1024;//118*1024;
-					stExpAttr.u8AERunInterval =1;
-					HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
+					if(sensorid == SENSOR_MN34227)
+					{
+						//isp_ioctl(0,ADJ_BRIGHTNESS,user_set_luma);
+						ISP_GAMMA_ATTR_S pstGammaAttr;
+						pstGammaAttr.bEnable = HI_TRUE;
+						pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
+						memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
+						HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
 
-					/*ISP_COLOR_TONE_ATTR_S  pstCTAttr;
-					HI_MPI_ISP_GetColorToneAttr(0, &pstCTAttr);
-					pstCTAttr.u16RedCastGain = 256;
-					pstCTAttr.u16GreenCastGain = 256;
-					pstCTAttr.u16BlueCastGain = 256;
-					HI_MPI_ISP_SetColorToneAttr(0, &pstCTAttr);*/
-				}
-				
-            }
-            else if(CHECK_DAY == value)
-            {
-            	//entering day mode
-            	nightflag = HI_FALSE;				
-				isp_ioctl(0,ADJ_BRIGHTNESS,user_set_luma);
-				isp_ioctl(0,ADJ_CONTRAST,user_set_contrast);
-				if(sensorid == SENSOR_OV9750||sensorid == SENSOR_OV9750m)
-				{
+						ISP_EXPOSURE_ATTR_S stExpAttr;
+						HI_MPI_ISP_GetExposureAttr(IspDev, &stExpAttr);
+						stExpAttr.stAuto.stSysGainRange.u32Max = 256*1024; 
+						stExpAttr.u8AERunInterval=1;
+						HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
+					}
+					if(sensorid == SENSOR_OV2710)
+					{	
+#if 0
+						ISP_GAMMA_ATTR_S pstGammaAttr;
+						pstGammaAttr.bEnable = HI_TRUE;
+						pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
+						memcpy(&pstGammaAttr.u16Table,&u16Gamma_2710_night,257 * 2);
+						HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
 
-				}
-				if(sensorid == SENSOR_MN34227)
-				{
+						ISP_SHADING_ATTR_S pstShadingAttr;
+						HI_MPI_ISP_GetMeshShadingAttr(IspDev,&pstShadingAttr);
+						pstShadingAttr.bEnable = HI_TRUE;
+						pstShadingAttr.enOpType = 0;
+						HI_MPI_ISP_SetMeshShadingAttr(IspDev,&pstShadingAttr);
 
-					ISP_EXPOSURE_ATTR_S stExpAttr;
-					HI_MPI_ISP_GetExposureAttr(IspDev, &stExpAttr);
-					stExpAttr.stAuto.stSysGainRange.u32Max = 256*1024; 
-					stExpAttr.u8AERunInterval=1;
-					HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
-				}
-				if(sensorid == SENSOR_OV2710)
-				{	
-#if 0	
-					ISP_GAMMA_ATTR_S pstGammaAttr;
-					pstGammaAttr.bEnable = HI_TRUE;
-					pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
-					memcpy(&pstGammaAttr.u16Table,&u16Gamma_2710_day,257 * 2);
-					HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
-
-                    ISP_SHADING_ATTR_S pstShadingAttr;
-                    HI_MPI_ISP_GetMeshShadingAttr(IspDev,&pstShadingAttr);
-                    pstShadingAttr.bEnable = HI_FALSE;
-                    pstShadingAttr.enOpType = 0;
-                    HI_MPI_ISP_SetMeshShadingAttr(IspDev,&pstShadingAttr);
-
-                    ISP_SHARPEN_ATTR_S pstSharpenAttr;
-                    HI_U8 au8SharD[16]={125,116,108,100,92,84,84,84,84,200,250,250,250,250,250,250}; 
-                    HI_U8 au8SharUd[16]={120,116,110,100,95,90,90,90,90,250,250,250,250,250,250,250};
-                	HI_U8 au8Over[16]={55,55,55,55,55,70,70,70,70,0,0,0,0,0,0,0};
-                	HI_U8 au8Under[16]={85,85,85,85,85,85,85,85,85,0,0,0,0,0,0,0};
-                    HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
-                    pstSharpenAttr.bEnable = HI_TRUE;
-                    pstSharpenAttr.enOpType = OP_TYPE_AUTO;
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
-                    HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
-#else 
-
-
+						ISP_SHARPEN_ATTR_S pstSharpenAttr;
+						HI_U8 au8SharD[16]={125,116,110,100,100,100,96,65,18,200,250,250,250,250,250,250}; 
+						HI_U8 au8SharUd[16]={128,122,116,116,108,108,102,80,80,250,250,250,250,250,250,250};
+						HI_U8 au8Over[16]={78,78,74,74,70,70,70,68,68,68,0,0,0,0,0,0};
+						HI_U8 au8Under[16]={100,100,96,96,90,90,86,75,75,0,0,0,0,0,0,0};
+						HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
+						pstSharpenAttr.bEnable = HI_TRUE;
+						pstSharpenAttr.enOpType = OP_TYPE_AUTO;
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
+						memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
+						HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+#else
+						ISP_GAMMA_ATTR_S pstGammaAttr;
+						pstGammaAttr.bEnable = HI_TRUE;
+						pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
+						memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
+						HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
 #endif
-				}
-                if(sensorid == SENSOR_AR0130)
-				{		
-					ISP_GAMMA_ATTR_S pstGammaAttr;
-					pstGammaAttr.bEnable = HI_TRUE;
-					pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
-					memcpy(&pstGammaAttr.u16Table,&u16Gamma_ar0130_day,257 * 2);
-					HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
+					}
+					if(sensorid == SENSOR_SC2135)
+					{	
+						ISP_GAMMA_ATTR_S pstGammaAttr;
+						pstGammaAttr.bEnable = HI_TRUE;
+						pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
+						memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
+						HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
+					}
+					if(sensorid == SENSOR_AR0130)
+					{		
+						ISP_GAMMA_ATTR_S pstGammaAttr;
+						pstGammaAttr.bEnable = HI_TRUE;
+						pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
+						memcpy(&pstGammaAttr.u16Table,&u16Gamma_ar0130_night,257 * 2);
+						HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
 
-                    ISP_SHADING_ATTR_S pstShadingAttr;
-                    HI_MPI_ISP_GetMeshShadingAttr(IspDev,&pstShadingAttr);
-                    pstShadingAttr.bEnable = HI_FALSE;
-                    pstShadingAttr.enOpType = 0;
-                    HI_MPI_ISP_SetMeshShadingAttr(IspDev,&pstShadingAttr);
+						ISP_SHADING_ATTR_S pstShadingAttr;
+						HI_MPI_ISP_GetMeshShadingAttr(IspDev,&pstShadingAttr);
+						pstShadingAttr.bEnable = HI_TRUE;
+						pstShadingAttr.enOpType = 0;
+						HI_MPI_ISP_SetMeshShadingAttr(IspDev,&pstShadingAttr);
 
-                    ISP_SHARPEN_ATTR_S pstSharpenAttr;
-                    HI_U8 au8SharD[16]={118,112,110,104,98,92,84,84,84,200,250,250,250,250,250,250}; 
-                    HI_U8 au8SharUd[16]={128,122,116,110,102,96,90,90,90,250,250,250,250,250,250,250};
-                	HI_U8 au8Over[16]={50,50,50,50,50,50,50,70,70,60,0,0,0,0,0,0};
-                	HI_U8 au8Under[16]={92,88,88,85,85,85,85,85,85,0,0,0,0,0,0,0};
-                    HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
-                    pstSharpenAttr.bEnable = HI_TRUE;
-                    pstSharpenAttr.enOpType = OP_TYPE_AUTO;
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
-                    HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+						ISP_SHARPEN_ATTR_S pstSharpenAttr;
+						HI_U8 au8SharD[16]={130,120,112,103,100,100,96,80,70,200,250,250,250,250,250,250}; 
+						HI_U8 au8SharUd[16]={128,122,116,116,108,108,102,80,80,250,250,250,250,250,250,250};
+						HI_U8 au8Over[16]={78,78,74,74,70,70,70,70,70,70,70,70,70,68,68,68};
+						HI_U8 au8Under[16]={100,100,96,96,90,90,80,80,80,80,80,80,75,75,75,75};
+						HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
+						pstSharpenAttr.bEnable = HI_TRUE;
+						pstSharpenAttr.enOpType = OP_TYPE_AUTO;
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
+						memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
+						HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+					}
+
+					if(sensorid == SENSOR_SC2045)
+					{
+						//isp_ioctl(0,ADJ_BRIGHTNESS,user_set_luma);
+						ISP_GAMMA_ATTR_S pstGammaAttr;
+						pstGammaAttr.bEnable = HI_TRUE;
+						pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
+						memcpy(&pstGammaAttr.u16Table,&V200_LINE_NIGHT_LV0_GAMMA,257 * 2);
+						HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
+						ISP_SHARPEN_ATTR_S pstSharpenAttr;
+						HI_U8 au8SharD[16]={100, 95, 90, 85,  80,  75,  70,  60,    50,  250,  250,   250,   250,   250,    250,    250};
+						HI_U8 au8SharUd[16]={85,  80,  80,  75,  70,  60,  50,  15,    15,  200,  250,   250,   250,   250,    250,    250};
+						HI_U8 au8Over[16]={50,  50,  50,  50,  50,  50,  50,   50,  50,  0,   0,    0,   0,    0,    0,      0};
+						HI_U8 au8Under[16]={80, 80, 80, 80, 90, 90,  90,  80, 60,  0,   0,    0,   0,    0,    0,     0};
+						HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
+						pstSharpenAttr.bEnable = HI_TRUE;
+						pstSharpenAttr.enOpType = OP_TYPE_AUTO;
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
+						memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
+						HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+						HI_U8 u8Strength_n[16] = {150,150,150,150,130,130,140,130,130,100,100,100,100,100,100,100};
+						HI_U8 u8fix_Strength_n[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+						HI_U16 u16Threshold_n[16] = {1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,1200,1200,1200,1200,1200,1200};
+						ISP_NR_ATTR_S pstNRAttr;
+						HI_MPI_ISP_GetNRAttr(0,&pstNRAttr);
+						memcpy(&pstNRAttr.stAuto.au8VarStrength,u8Strength_n,16);
+						memcpy(&pstNRAttr.stAuto.au8FixStrength,u8fix_Strength_n,16);
+						memcpy(&pstNRAttr.stAuto.au16Threshold,u16Threshold_n,16*2);
+						HI_MPI_ISP_SetNRAttr(0,&pstNRAttr);
+
+					}
+					else if(sensorid == SENSOR_OV9732)
+					{
+						//isp_ioctl(0,ADJ_BRIGHTNESS,user_set_luma);
+						/*					
+											ISP_GAMMA_ATTR_S pstGammaAttr;
+											pstGammaAttr.bEnable = HI_TRUE;
+											pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
+											memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV1_GAMMA,257 * 2);*/
+						//ov9732_gamma = 4;
+
+						ISP_GAMMA_ATTR_S pstGammaAttr;
+						pstGammaAttr.bEnable = HI_TRUE;
+						pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
+						memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
+						HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
+
+						ISP_SHARPEN_ATTR_S pstSharpenAttr;
+						HI_U8 au8SharD[16]={100,95,90,90,90,90,90,90,18,200,250,250,250,250,250,250}; 
+						HI_U8 au8SharUd[16]={90,85,80,70,55,50,40,40,50,250,250,250,250,250,250,250};
+						HI_U8 au8Over[16]={50,50,50,50,50,50,50,50,68,0,0,0,0,0,0,0};
+						HI_U8 au8Under[16]={80,80,80,80,80,80,80,80,80,0,0,0,0,0,0,0};
+						HI_BOOL au8EnLowLumaShoot[16]={0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1};
+						HI_U8 au8TextureNoiseThd[16]={0,0,0,0,0,12,20,30,36,0,0,0,0,0,0,0};
+						HI_U8 au8EdgeNoiseThd[16]={0,0,0,0,0,8,12,16,20,0,0,0,0,0,0,0};
+
+						HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
+						pstSharpenAttr.bEnable = HI_TRUE;
+						pstSharpenAttr.enOpType = OP_TYPE_AUTO;
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
+						memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
+						memcpy(&pstSharpenAttr.stAuto.abEnLowLumaShoot,&au8EnLowLumaShoot,16*sizeof(HI_BOOL));
+						memcpy(&pstSharpenAttr.stAuto.au8TextureNoiseThd,&au8TextureNoiseThd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8EdgeNoiseThd,&au8EdgeNoiseThd,16);
+						HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+					}
+					if(sensorid == SENSOR_OV2735)
+					{
+						ISP_GAMMA_ATTR_S pstGammaAttr;
+						pstGammaAttr.bEnable = HI_TRUE;
+						pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
+						memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
+						HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
+
+						isp_acm_set_ov2735(FALSE);
+						ISP_SHARPEN_ATTR_S pstSharpenAttr;
+						HI_U8 au8SharD[16]={110, 112, 110, 122,  125,  115,  105,  95,    95,  60,  50,   50,   50,   50,    50,    50}; 
+						HI_U8 au8SharUd[16]={92,  82,  65,  60,  50,  45,  35,  30,    25,  15,  15,   15,   15,   15,    15,    15};
+						HI_U8 au8Over[16]={43,  58,	58,  58,  58,  58,	55,   45,  40,	40,   50,	 50,   50,	  50,	 50,	  50};/*overshootAmt*/
+						HI_U8 au8Under[16]={90, 105, 105, 122, 125, 130, 125,  120, 80,  0,	0,	  0,   0,	 0,    0,	  0};/*undershootAmt*/
+
+						HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
+						pstSharpenAttr.bEnable = HI_TRUE;
+						pstSharpenAttr.enOpType = OP_TYPE_AUTO;
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
+						memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
+
+						HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+
+						ISP_EXPOSURE_ATTR_S stExpAttr;
+						HI_MPI_ISP_GetExposureAttr(IspDev, &stExpAttr);
+						stExpAttr.stAuto.stSysGainRange.u32Max = 55*1024;
+						stExpAttr.u8AERunInterval =1;
+						HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
+						if(HWTYPE_MATCH(HW_TYPE_V3))
+						{			
+							HI_U16 dpc_slope[16] = {80,80,100,250,250,250,250,250,250,252,252,252,252,252,252,252};
+							ISP_DP_DYNAMIC_ATTR_S  pstDPDynamicAttr;
+							HI_MPI_ISP_GetDPDynamicAttr(0, &pstDPDynamicAttr);
+							pstDPDynamicAttr.bEnable=HI_TRUE;
+							pstDPDynamicAttr.enOpType=OP_TYPE_AUTO;
+							memcpy(pstDPDynamicAttr.stAuto.au16Slope,dpc_slope,16*2);
+							HI_MPI_ISP_SetDPDynamicAttr(0,&pstDPDynamicAttr);
+						}
+					}
+					if(sensorid == SENSOR_SC2235)
+					{
+						isp_ioctl(0,ADJ_CONTRAST,user_set_contrast);
+						ISP_SHARPEN_ATTR_S pstSharpenAttr;
+						HI_U8 au8SharD[16]={130,130,130,130,130,120,115,105,100,100,100,100,100,100,100,100}; 
+						HI_U8 au8SharUd[16]={118,115,113,110,110,80,68,55,50,50,50,50,50,50,50,50};
+						HI_U8 au8Over[16]={68,72,80,80,80,70,63,55,50,50,50,50,50,50,50,50};
+						HI_U8 au8Under[16]={122,122,120,120,125,120,112,105,100,100,100,100,100,100,100,100};
+						HI_BOOL au8EnLowLumaShoot[16]={0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1};
+						HI_U8 au8TextureNoiseThd[16]={8,8,8,12,22,25,28,30,25,25,25,25,25,25,25,25};
+						HI_U8 au8EdgeNoiseThd[16]={0,1,2,3,5,7,8,10,10,10,10,10,10,10,10,10};
+
+						HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
+						pstSharpenAttr.bEnable = HI_TRUE;
+						pstSharpenAttr.enOpType = OP_TYPE_AUTO;
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
+						memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
+						memcpy(&pstSharpenAttr.stAuto.abEnLowLumaShoot,&au8EnLowLumaShoot,16*sizeof(HI_BOOL));
+						memcpy(&pstSharpenAttr.stAuto.au8TextureNoiseThd,&au8TextureNoiseThd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8EdgeNoiseThd,&au8EdgeNoiseThd,16);
+						HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+
+						isp_acm_set_sc2235(FALSE);
+
+						ISP_EXPOSURE_ATTR_S stExpAttr;
+						HI_MPI_ISP_GetExposureAttr(IspDev, &stExpAttr);
+						stExpAttr.stAuto.stSysGainRange.u32Max = 96*1024;//118*1024;
+						stExpAttr.u8AERunInterval =1;
+						HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
+
+						/*ISP_COLOR_TONE_ATTR_S  pstCTAttr;
+						  HI_MPI_ISP_GetColorToneAttr(0, &pstCTAttr);
+						  pstCTAttr.u16RedCastGain = 256;
+						  pstCTAttr.u16GreenCastGain = 256;
+						  pstCTAttr.u16BlueCastGain = 256;
+						  HI_MPI_ISP_SetColorToneAttr(0, &pstCTAttr);*/
+					}
+
 				}
-				if(sensorid == SENSOR_SC2045)
+				else if(CHECK_DAY == value)
 				{
+					//entering day mode
+					nightflag = HI_FALSE;				
+					isp_ioctl(0,ADJ_BRIGHTNESS,user_set_luma);
+					isp_ioctl(0,ADJ_CONTRAST,user_set_contrast);
+					if(sensorid == SENSOR_OV9750||sensorid == SENSOR_OV9750m)
+					{
+
+					}
+					if(sensorid == SENSOR_MN34227)
+					{
+						ISP_EXPOSURE_ATTR_S stExpAttr;
+						HI_MPI_ISP_GetExposureAttr(IspDev, &stExpAttr);
+						stExpAttr.stAuto.stSysGainRange.u32Max = 256*1024; 
+						stExpAttr.u8AERunInterval=1;
+						HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
+					}
+					if(sensorid == SENSOR_OV2710)
+					{	
+#if 0	
+						ISP_GAMMA_ATTR_S pstGammaAttr;
+						pstGammaAttr.bEnable = HI_TRUE;
+						pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
+						memcpy(&pstGammaAttr.u16Table,&u16Gamma_2710_day,257 * 2);
+						HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
+
+						ISP_SHADING_ATTR_S pstShadingAttr;
+						HI_MPI_ISP_GetMeshShadingAttr(IspDev,&pstShadingAttr);
+						pstShadingAttr.bEnable = HI_FALSE;
+						pstShadingAttr.enOpType = 0;
+						HI_MPI_ISP_SetMeshShadingAttr(IspDev,&pstShadingAttr);
+
+						ISP_SHARPEN_ATTR_S pstSharpenAttr;
+						HI_U8 au8SharD[16]={125,116,108,100,92,84,84,84,84,200,250,250,250,250,250,250}; 
+						HI_U8 au8SharUd[16]={120,116,110,100,95,90,90,90,90,250,250,250,250,250,250,250};
+						HI_U8 au8Over[16]={55,55,55,55,55,70,70,70,70,0,0,0,0,0,0,0};
+						HI_U8 au8Under[16]={85,85,85,85,85,85,85,85,85,0,0,0,0,0,0,0};
+						HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
+						pstSharpenAttr.bEnable = HI_TRUE;
+						pstSharpenAttr.enOpType = OP_TYPE_AUTO;
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
+						memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
+						HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+#else 
+#endif
+					}
+					if(sensorid == SENSOR_AR0130)
+					{		
+						ISP_GAMMA_ATTR_S pstGammaAttr;
+						pstGammaAttr.bEnable = HI_TRUE;
+						pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
+						memcpy(&pstGammaAttr.u16Table,&u16Gamma_ar0130_day,257 * 2);
+						HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
+
+						ISP_SHADING_ATTR_S pstShadingAttr;
+						HI_MPI_ISP_GetMeshShadingAttr(IspDev,&pstShadingAttr);
+						pstShadingAttr.bEnable = HI_FALSE;
+						pstShadingAttr.enOpType = 0;
+						HI_MPI_ISP_SetMeshShadingAttr(IspDev,&pstShadingAttr);
+
+						ISP_SHARPEN_ATTR_S pstSharpenAttr;
+						HI_U8 au8SharD[16]={118,112,110,104,98,92,84,84,84,200,250,250,250,250,250,250}; 
+						HI_U8 au8SharUd[16]={128,122,116,110,102,96,90,90,90,250,250,250,250,250,250,250};
+						HI_U8 au8Over[16]={50,50,50,50,50,50,50,70,70,60,0,0,0,0,0,0};
+						HI_U8 au8Under[16]={92,88,88,85,85,85,85,85,85,0,0,0,0,0,0,0};
+						HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
+						pstSharpenAttr.bEnable = HI_TRUE;
+						pstSharpenAttr.enOpType = OP_TYPE_AUTO;
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
+						memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
+						HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+					}
+					if(sensorid == SENSOR_SC2045)
+					{
 						ISP_GAMMA_ATTR_S pstGammaAttr;
 						pstGammaAttr.bEnable = HI_TRUE;
 						pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
 						memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV0_GAMMA,257 * 2);
 						HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);
 
-	                    ISP_SHADING_ATTR_S pstShadingAttr;
-	                    HI_MPI_ISP_GetMeshShadingAttr(IspDev,&pstShadingAttr);
-	                    pstShadingAttr.bEnable = HI_FALSE;
-	                    pstShadingAttr.enOpType = 0;
-	                    HI_MPI_ISP_SetMeshShadingAttr(IspDev,&pstShadingAttr);
+						ISP_SHADING_ATTR_S pstShadingAttr;
+						HI_MPI_ISP_GetMeshShadingAttr(IspDev,&pstShadingAttr);
+						pstShadingAttr.bEnable = HI_FALSE;
+						pstShadingAttr.enOpType = 0;
+						HI_MPI_ISP_SetMeshShadingAttr(IspDev,&pstShadingAttr);
 
-	                    ISP_SHARPEN_ATTR_S pstSharpenAttr;
-	                    HI_U8 au8SharD[16]={130, 120, 105, 95,  80,  75,  75,  70,    50,  250,  250,   250,   250,   250,    250,    250};
-	                    HI_U8 au8SharUd[16]={75,  70,  70,  70,  45,  30,  50,  15,    15,  200,  250,   250,   250,   250,    250,    250};
-	                	HI_U8 au8Over[16]={50,  50,  50,  50,  50,  50,  50,   50,  50,  0,   0,    0,   0,    0,    0,      0};
-	                	HI_U8 au8Under[16]={80, 80, 80, 80, 90, 90,  90,  80, 60,  0,   0,    0,   0,    0,    0,     0};
-						
-	                    HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
-	                    pstSharpenAttr.bEnable = HI_TRUE;
-	                    pstSharpenAttr.enOpType = OP_TYPE_AUTO;
-	                    memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
-	                    memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
-	                    memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
-	                    memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
-	                    HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+						ISP_SHARPEN_ATTR_S pstSharpenAttr;
+						HI_U8 au8SharD[16]={130, 120, 105, 95,  80,  75,  75,  70,    50,  250,  250,   250,   250,   250,    250,    250};
+						HI_U8 au8SharUd[16]={75,  70,  70,  70,  45,  30,  50,  15,    15,  200,  250,   250,   250,   250,    250,    250};
+						HI_U8 au8Over[16]={50,  50,  50,  50,  50,  50,  50,   50,  50,  0,   0,    0,   0,    0,    0,      0};
+						HI_U8 au8Under[16]={80, 80, 80, 80, 90, 90,  90,  80, 60,  0,   0,    0,   0,    0,    0,     0};
+
+						HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
+						pstSharpenAttr.bEnable = HI_TRUE;
+						pstSharpenAttr.enOpType = OP_TYPE_AUTO;
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
+						memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
+						HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
 
 						HI_U8 u8Strength[16] = {120,130,140,150,160,170,170,130,130,100,100,100,100,100,100,100};
 						HI_U8 u8fix_Strength[16] = {0,0,0,40,40,40,40,40,130,100,100,100,100,100,100,100};
-				        HI_U16 u16Threshold[16] = {1500,1500,1500,1500,1500,1600,1750,1500,1500,1500,1200,1200,1200,1200,1200,1200};
-				        ISP_NR_ATTR_S pstNRAttr;
-				        HI_MPI_ISP_GetNRAttr(0,&pstNRAttr);
-				        memcpy(&pstNRAttr.stAuto.au8VarStrength,u8Strength,16);
-				        memcpy(&pstNRAttr.stAuto.au8FixStrength,u8fix_Strength,16);
+						HI_U16 u16Threshold[16] = {1500,1500,1500,1500,1500,1600,1750,1500,1500,1500,1200,1200,1200,1200,1200,1200};
+						ISP_NR_ATTR_S pstNRAttr;
+						HI_MPI_ISP_GetNRAttr(0,&pstNRAttr);
+						memcpy(&pstNRAttr.stAuto.au8VarStrength,u8Strength,16);
+						memcpy(&pstNRAttr.stAuto.au8FixStrength,u8fix_Strength,16);
 						memcpy(&pstNRAttr.stAuto.au16Threshold,u16Threshold,16*2);
-				        HI_MPI_ISP_SetNRAttr(0,&pstNRAttr);
-		
-				}
-				else if(sensorid == SENSOR_OV9732)
-				{
-					ISP_SHARPEN_ATTR_S pstSharpenAttr;
-					HI_U8 au8SharD[16]={90,90,80,80,80,80,80,80,18,200,250,250,250,250,250,250}; 
-                    HI_U8 au8SharUd[16]={80,75,70,65,60,55,50,50,50,250,250,250,250,250,250,250};
-                	HI_U8 au8Over[16]={45,45,45,45,45,50,50,50,68,0,0,0,0,0,0,0};
-                	HI_U8 au8Under[16]={80,80,80,80,80,80,80,80,70,0,0,0,0,0,0,0};
-					HI_BOOL au8EnLowLumaShoot[16]={0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1};
-					HI_U8 au8TextureNoiseThd[16]={0,0,0,0,0,12,20,30,36,0,0,0,0,0,0,0};
-					HI_U8 au8EdgeNoiseThd[16]={0,0,0,0,0,8,12,16,20,0,0,0,0,0,0,0};
-					
-                    HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
-                    pstSharpenAttr.bEnable = HI_TRUE;
-                    pstSharpenAttr.enOpType = OP_TYPE_AUTO;
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
-					memcpy(&pstSharpenAttr.stAuto.abEnLowLumaShoot,&au8EnLowLumaShoot,16*sizeof(HI_BOOL));
-					memcpy(&pstSharpenAttr.stAuto.au8TextureNoiseThd,&au8TextureNoiseThd,16);
-					memcpy(&pstSharpenAttr.stAuto.au8EdgeNoiseThd,&au8EdgeNoiseThd,16);
-                    HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
-				}
-				if(sensorid ==SENSOR_OV2735)
-				{
-					isp_acm_set_ov2735(TRUE);
-
-					ISP_SHARPEN_ATTR_S pstSharpenAttr;
-                    HI_U8 au8SharD[16]={110, 112, 110, 122,  125,  115,  105,  95,    95,  60,  50,   50,   50,   50,    50,    50}; 
-                    HI_U8 au8SharUd[16]={92,  82,  65,  60,  50,  45,  35,  30,    25,  15,  15,   15,   15,   15,    15,    15};
-
-	               // HI_U8 au8Over[16]={48,  48,  48,  48,  50,  50,  55,   55,  40,  40,   50,    50,   50,    50,    50,      50};/*overshootAmt*/
-	                //HI_U8 au8Under[16]={105, 95, 95, 95, 115, 115, 130,  120, 70,  0,   0,    0,   0,    0,    0,     0};/*undershootAmt*/
-				    HI_U8 au8Over[16]={43,  48,	48,  52,  53,  53,	46,   45,  40,	40,   50,	 50,   50,	  50,	 50,	  50};/*overshootAmt*/
-				    HI_U8 au8Under[16]={90, 95, 95, 112, 115, 120, 115,  110, 70,  0,	0,	  0,   0,	 0,    0,	  0};/*undershootAmt*/
-	               	HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
-	                pstSharpenAttr.bEnable = HI_TRUE;
-	                pstSharpenAttr.enOpType = OP_TYPE_AUTO;
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
-	                memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
-	                memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
-
-	                HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
-					
-					ISP_EXPOSURE_ATTR_S stExpAttr;
-					HI_MPI_ISP_GetExposureAttr(IspDev, &stExpAttr);
-					stExpAttr.stAuto.stSysGainRange.u32Max = 62*1024;//118*1024;
-					stExpAttr.u8AERunInterval =1;
-					HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
-
-					if(HWTYPE_MATCH(HW_TYPE_V3))
-					{			
-
-	                   	HI_U16 dpc_slope[16] = {80,80,100,200,210,238,248,248,248,252,252,252,252,252,252,252};
-						ISP_DP_DYNAMIC_ATTR_S  pstDPDynamicAttr;
-						HI_MPI_ISP_GetDPDynamicAttr(0, &pstDPDynamicAttr);
-						pstDPDynamicAttr.bEnable=HI_TRUE;
-						pstDPDynamicAttr.enOpType=OP_TYPE_AUTO;
-						memcpy(pstDPDynamicAttr.stAuto.au16Slope,dpc_slope,16*2);
-						HI_MPI_ISP_SetDPDynamicAttr(0,&pstDPDynamicAttr);
+						HI_MPI_ISP_SetNRAttr(0,&pstNRAttr);
 					}
+					else if(sensorid == SENSOR_OV9732)
+					{
+						ISP_SHARPEN_ATTR_S pstSharpenAttr;
+						HI_U8 au8SharD[16]={90,90,80,80,80,80,80,80,18,200,250,250,250,250,250,250}; 
+						HI_U8 au8SharUd[16]={80,75,70,65,60,55,50,50,50,250,250,250,250,250,250,250};
+						HI_U8 au8Over[16]={45,45,45,45,45,50,50,50,68,0,0,0,0,0,0,0};
+						HI_U8 au8Under[16]={80,80,80,80,80,80,80,80,70,0,0,0,0,0,0,0};
+						HI_BOOL au8EnLowLumaShoot[16]={0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1};
+						HI_U8 au8TextureNoiseThd[16]={0,0,0,0,0,12,20,30,36,0,0,0,0,0,0,0};
+						HI_U8 au8EdgeNoiseThd[16]={0,0,0,0,0,8,12,16,20,0,0,0,0,0,0,0};
 
+						HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
+						pstSharpenAttr.bEnable = HI_TRUE;
+						pstSharpenAttr.enOpType = OP_TYPE_AUTO;
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
+						memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
+						memcpy(&pstSharpenAttr.stAuto.abEnLowLumaShoot,&au8EnLowLumaShoot,16*sizeof(HI_BOOL));
+						memcpy(&pstSharpenAttr.stAuto.au8TextureNoiseThd,&au8TextureNoiseThd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8EdgeNoiseThd,&au8EdgeNoiseThd,16);
+						HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+					}
+					if(sensorid ==SENSOR_OV2735)
+					{
+						isp_acm_set_ov2735(TRUE);
+
+						ISP_SHARPEN_ATTR_S pstSharpenAttr;
+						HI_U8 au8SharD[16]={110, 112, 110, 122,  125,  115,  105,  95,    95,  60,  50,   50,   50,   50,    50,    50}; 
+						HI_U8 au8SharUd[16]={92,  82,  65,  60,  50,  45,  35,  30,    25,  15,  15,   15,   15,   15,    15,    15};
+						// HI_U8 au8Over[16]={48,  48,  48,  48,  50,  50,  55,   55,  40,  40,   50,    50,   50,    50,    50,      50};/*overshootAmt*/
+						//HI_U8 au8Under[16]={105, 95, 95, 95, 115, 115, 130,  120, 70,  0,   0,    0,   0,    0,    0,     0};/*undershootAmt*/
+						HI_U8 au8Over[16]={43,  48,	48,  52,  53,  53,	46,   45,  40,	40,   50,	 50,   50,	  50,	 50,	  50};/*overshootAmt*/
+						HI_U8 au8Under[16]={90, 95, 95, 112, 115, 120, 115,  110, 70,  0,	0,	  0,   0,	 0,    0,	  0};/*undershootAmt*/
+						HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
+						pstSharpenAttr.bEnable = HI_TRUE;
+						pstSharpenAttr.enOpType = OP_TYPE_AUTO;
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
+						memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
+
+						HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+
+						ISP_EXPOSURE_ATTR_S stExpAttr;
+						HI_MPI_ISP_GetExposureAttr(IspDev, &stExpAttr);
+						stExpAttr.stAuto.stSysGainRange.u32Max = 62*1024;//118*1024;
+						stExpAttr.u8AERunInterval =1;
+						HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
+
+						if(HWTYPE_MATCH(HW_TYPE_V3))
+						{			
+							HI_U16 dpc_slope[16] = {80,80,100,200,210,238,248,248,248,252,252,252,252,252,252,252};
+							ISP_DP_DYNAMIC_ATTR_S  pstDPDynamicAttr;
+							HI_MPI_ISP_GetDPDynamicAttr(0, &pstDPDynamicAttr);
+							pstDPDynamicAttr.bEnable=HI_TRUE;
+							pstDPDynamicAttr.enOpType=OP_TYPE_AUTO;
+							memcpy(pstDPDynamicAttr.stAuto.au16Slope,dpc_slope,16*2);
+							HI_MPI_ISP_SetDPDynamicAttr(0,&pstDPDynamicAttr);
+						}
+
+					}
+					if(sensorid == SENSOR_SC2235)
+					{
+						ISP_SHARPEN_ATTR_S pstSharpenAttr;
+						HI_U8 au8SharD[16]={140,130,130,140,140,130,120,110,100,100,100,100,100,100,100,100}; 
+						HI_U8 au8SharUd[16]={115,115,115,115,105,95,88,78,50,50,50,50,50,50,50,50};
+						HI_U8 au8Over[16]={45,50,50,50,50,50,48,48,50,50,50,50,50,50,50,50};
+						HI_U8 au8Under[16]={95,100,105,115,120,115,110,105,100,100,100,100,100,100,100,100};
+						HI_BOOL au8EnLowLumaShoot[16]={0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1};
+						HI_U8 au8TextureNoiseThd[16]={8,9,15,20,25,28,30,32,25,25,25,25,25,25,25,25};
+						HI_U8 au8EdgeNoiseThd[16]={0,0,0,2,5,7,8,10,10,10,10,10,10,10,10,10};
+
+						HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
+						pstSharpenAttr.bEnable = HI_TRUE;
+						pstSharpenAttr.enOpType = OP_TYPE_AUTO;
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
+						memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
+						memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
+						memcpy(&pstSharpenAttr.stAuto.abEnLowLumaShoot,&au8EnLowLumaShoot,16*sizeof(HI_BOOL));
+						memcpy(&pstSharpenAttr.stAuto.au8TextureNoiseThd,&au8TextureNoiseThd,16);
+						memcpy(&pstSharpenAttr.stAuto.au8EdgeNoiseThd,&au8EdgeNoiseThd,16);
+						HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
+						isp_acm_set_sc2235(TRUE);
+						ISP_EXPOSURE_ATTR_S stExpAttr;
+						HI_MPI_ISP_GetExposureAttr(IspDev, &stExpAttr);
+						stExpAttr.stAuto.stSysGainRange.u32Max = 128*1024;//118*1024;
+						stExpAttr.u8AERunInterval =1;
+						HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
+
+						/*ISP_COLOR_TONE_ATTR_S  pstCTAttr;
+						  HI_MPI_ISP_GetColorToneAttr(0, &pstCTAttr);
+						  pstCTAttr.u16RedCastGain = 256;
+						  pstCTAttr.u16GreenCastGain = 262;
+						  pstCTAttr.u16BlueCastGain = 259;
+						  HI_MPI_ISP_SetColorToneAttr(0, &pstCTAttr);*/
+					}
 				}
-				if(sensorid == SENSOR_SC2235)
+				else if(DEFAULT == value)
 				{
-					ISP_SHARPEN_ATTR_S pstSharpenAttr;
-                    HI_U8 au8SharD[16]={140,130,130,140,140,130,120,110,100,100,100,100,100,100,100,100}; 
-                    HI_U8 au8SharUd[16]={115,115,115,115,105,95,88,78,50,50,50,50,50,50,50,50};
-                	HI_U8 au8Over[16]={45,50,50,50,50,50,48,48,50,50,50,50,50,50,50,50};
-                	HI_U8 au8Under[16]={95,100,105,115,120,115,110,105,100,100,100,100,100,100,100,100};
-					HI_BOOL au8EnLowLumaShoot[16]={0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1};
-					HI_U8 au8TextureNoiseThd[16]={8,9,15,20,25,28,30,32,25,25,25,25,25,25,25,25};
-					HI_U8 au8EdgeNoiseThd[16]={0,0,0,2,5,7,8,10,10,10,10,10,10,10,10,10};
-					
-                    HI_MPI_ISP_GetSharpenAttr(0,&pstSharpenAttr);
-                    pstSharpenAttr.bEnable = HI_TRUE;
-                    pstSharpenAttr.enOpType = OP_TYPE_AUTO;
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenD,&au8SharD,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8SharpenUd,&au8SharUd,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8OverShoot,&au8Over,16);
-                    memcpy(&pstSharpenAttr.stAuto.au8UnderShoot,&au8Under,16);
-					memcpy(&pstSharpenAttr.stAuto.abEnLowLumaShoot,&au8EnLowLumaShoot,16*sizeof(HI_BOOL));
-					memcpy(&pstSharpenAttr.stAuto.au8TextureNoiseThd,&au8TextureNoiseThd,16);
-					memcpy(&pstSharpenAttr.stAuto.au8EdgeNoiseThd,&au8EdgeNoiseThd,16);
-                    HI_MPI_ISP_SetSharpenAttr(0,&pstSharpenAttr);
-					isp_acm_set_sc2235(TRUE);
-					ISP_EXPOSURE_ATTR_S stExpAttr;
-					HI_MPI_ISP_GetExposureAttr(IspDev, &stExpAttr);
-					stExpAttr.stAuto.stSysGainRange.u32Max = 128*1024;//118*1024;
-					stExpAttr.u8AERunInterval =1;
-					HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
 
-					/*ISP_COLOR_TONE_ATTR_S  pstCTAttr;
-					HI_MPI_ISP_GetColorToneAttr(0, &pstCTAttr);
-					pstCTAttr.u16RedCastGain = 256;
-					pstCTAttr.u16GreenCastGain = 262;
-					pstCTAttr.u16BlueCastGain = 259;
-					HI_MPI_ISP_SetColorToneAttr(0, &pstCTAttr);*/
 				}
-            }
-			
-            else if(DEFAULT == value)
-            {
- 
-            }
-            else if(MODE1== value)
-            {
+				else if(MODE1== value)
+				{
 
-            }
-			break;
-		}
-        case ADJ_BRIGHTNESS://设置亮度
-             {
-
-                if(value <0||value > 255)
-                    return -1;
+				}
+				break;
+			}
+		case ADJ_BRIGHTNESS://设置亮度
+			{
+				if(value <0||value > 255)
+					return -1;
 				user_set_luma  = value;
 				ISP_EXPOSURE_ATTR_S stExpAttr;
 				HI_MPI_ISP_GetExposureAttr(IspDev, &stExpAttr);
-				
+
 				signed int value_cal =64;
 				if(nightflag)		
 					value_cal = user_set_luma -LINE_NIGHT_LUM;
 				else
 					value_cal = user_set_luma -LINE_DAY_LUM;
-             
+
 				if(sensorid == SENSOR_OV2710)
 				{
 					if(nightflag)		
@@ -1524,7 +1501,7 @@ int isp_ioctl(int fd,int cmd,unsigned long value)
 					else
 						value_cal = user_set_luma -LINE_HOME_DAY_LUM;
 				}
-                if(sensorid == SENSOR_AR0130)
+				if(sensorid == SENSOR_AR0130)
 				{
 					if(nightflag)		
 						value_cal = user_set_luma -68;
@@ -1549,14 +1526,14 @@ int isp_ioctl(int fd,int cmd,unsigned long value)
 					value_cal =0;
 				stExpAttr.stAuto.u8Compensation = value_cal;
 				HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
-                break;
-             }
-        case ADJ_SATURATION://设置饱和度
-             {
-			 	signed int auSat[16];
+				break;
+			}
+		case ADJ_SATURATION://设置饱和度
+			{
+				signed int auSat[16];
 				signed int tmpSat;
-                if(value >255 || value <0)
-                    return -1;
+				if(value >255 || value <0)
+					return -1;
 
 				ISP_SATURATION_ATTR_S pstSatAttr;
 				HI_MPI_ISP_GetSaturationAttr(IspDev, &pstSatAttr);
@@ -1565,247 +1542,235 @@ int isp_ioctl(int fd,int cmd,unsigned long value)
 
 				if(sensorid == SENSOR_OV9750||sensorid == SENSOR_OV9750m)
 				{
-					 tmpSat =  value;
-					 auSat[0] = tmpSat-0;       //128
-					 auSat[1] = tmpSat-0;       //128
-					 auSat[2] = tmpSat-0;     //128
-					 auSat[3] = tmpSat-0;    //128
-					 auSat[4] = tmpSat-20;    //108
-					 auSat[5] = tmpSat-38;    //90
-					 auSat[6] = tmpSat-48;    //88 
-					 auSat[7] = tmpSat-58;    //78
-					 auSat[8] = tmpSat-58;    //68
-					 auSat[9] = tmpSat-58;    //68 
-					 auSat[10] = tmpSat-58;    //68
-					 auSat[11] = tmpSat-58;    //68
-					 auSat[12] = tmpSat-58;    //68
-					 auSat[13] = tmpSat-58;    //68
-					 auSat[14] = tmpSat-58;    //68
-					 auSat[15] = tmpSat-58;    //68	   
-
+					tmpSat =  value;
+					auSat[0] = tmpSat-0;       //128
+					auSat[1] = tmpSat-0;       //128
+					auSat[2] = tmpSat-0;     //128
+					auSat[3] = tmpSat-0;    //128
+					auSat[4] = tmpSat-20;    //108
+					auSat[5] = tmpSat-38;    //90
+					auSat[6] = tmpSat-48;    //88 
+					auSat[7] = tmpSat-58;    //78
+					auSat[8] = tmpSat-58;    //68
+					auSat[9] = tmpSat-58;    //68 
+					auSat[10] = tmpSat-58;    //68
+					auSat[11] = tmpSat-58;    //68
+					auSat[12] = tmpSat-58;    //68
+					auSat[13] = tmpSat-58;    //68
+					auSat[14] = tmpSat-58;    //68
+					auSat[15] = tmpSat-58;    //68	   
 				}
-	   			else if(sensorid == SENSOR_OV9732)
-	   			{
-					 tmpSat =value;					
-					 auSat[0] = tmpSat;       
-					 auSat[1] = tmpSat;      
-					 auSat[2] = tmpSat-8;      
-					 auSat[3] = tmpSat-16;       
-					 auSat[4] = tmpSat-38;    
-					 auSat[5] = tmpSat-53;    
-					 auSat[6] = tmpSat-68;     
-					 auSat[7] = tmpSat-78;
-					 auSat[8] = tmpSat-78; 
-					 auSat[9] = tmpSat-78; 
-					 auSat[10] = tmpSat-78; 
-					 auSat[11] = tmpSat-78; 
-					 auSat[12] = tmpSat-78; 
-					 auSat[13] = tmpSat-78; 
-					 auSat[14] = tmpSat-78; 
-					 auSat[15] = tmpSat-78; 
+				else if(sensorid == SENSOR_OV9732)
+				{
+					tmpSat =value;					
+					auSat[0] = tmpSat;       
+					auSat[1] = tmpSat;      
+					auSat[2] = tmpSat-8;      
+					auSat[3] = tmpSat-16;       
+					auSat[4] = tmpSat-38;    
+					auSat[5] = tmpSat-53;    
+					auSat[6] = tmpSat-68;     
+					auSat[7] = tmpSat-78;
+					auSat[8] = tmpSat-78; 
+					auSat[9] = tmpSat-78; 
+					auSat[10] = tmpSat-78; 
+					auSat[11] = tmpSat-78; 
+					auSat[12] = tmpSat-78; 
+					auSat[13] = tmpSat-78; 
+					auSat[14] = tmpSat-78; 
+					auSat[15] = tmpSat-78; 
 				}
 				else if(sensorid == SENSOR_MN34227)
 				{
-					 tmpSat =  value;
-					 auSat[0] = tmpSat;       //128
-					 auSat[1] = tmpSat;       //128
-					 auSat[2] = tmpSat;       //128
-					 auSat[3] = tmpSat-10;    //118
-					 
-					 auSat[4] = tmpSat-28;    //100
-					 auSat[5] = tmpSat-43;    //85
-					 auSat[6] = tmpSat-48;    //80
-					 auSat[7] = tmpSat-48;    //80
-					 auSat[8] = tmpSat-50;    //78
-					 auSat[9] = tmpSat-55;    //73 
-					 auSat[10] = tmpSat-60;    //68
-					 auSat[11] = tmpSat-60;    //68
-					 auSat[12] = tmpSat-60;    //68
-					 auSat[13] = tmpSat-60;    //68
-					 auSat[14] = tmpSat-60;    //68
-					 auSat[15] = tmpSat-60;    //68	   
-                 }
-#if 0
-	            if(sensorid == SENSOR_OV2710)
-				{
-					 tmpSat =  value;
-					 auSat[0] = tmpSat;       //128
-					 auSat[1] = tmpSat-5;     //128
-					 auSat[2] = tmpSat-10;     //128
-					 auSat[3] = tmpSat-18;    //128
-					 auSat[4] = tmpSat-38;    //108
-					 auSat[5] = tmpSat-70;    //90
-					 auSat[6] = tmpSat-88;    //88 
-					 auSat[7] = tmpSat-88;    //78
-					 auSat[8] = tmpSat-88;    //68
-					 auSat[9] = tmpSat-88;    //68 
-					 auSat[10] = tmpSat-58;    //68
-					 auSat[11] = tmpSat-58;    //68
-					 auSat[12] = tmpSat-58;    //68
-					 auSat[13] = tmpSat-58;    //68
-					 auSat[14] = tmpSat-58;    //68
-					 auSat[15] = tmpSat-58;    //68	   
+					tmpSat =  value;
+					auSat[0] = tmpSat;       //128
+					auSat[1] = tmpSat;       //128
+					auSat[2] = tmpSat;       //128
+					auSat[3] = tmpSat-10;    //118
 
+					auSat[4] = tmpSat-28;    //100
+					auSat[5] = tmpSat-43;    //85
+					auSat[6] = tmpSat-48;    //80
+					auSat[7] = tmpSat-48;    //80
+					auSat[8] = tmpSat-50;    //78
+					auSat[9] = tmpSat-55;    //73 
+					auSat[10] = tmpSat-60;    //68
+					auSat[11] = tmpSat-60;    //68
+					auSat[12] = tmpSat-60;    //68
+					auSat[13] = tmpSat-60;    //68
+					auSat[14] = tmpSat-60;    //68
+					auSat[15] = tmpSat-60;    //68	   
+				}
+#if 0
+				if(sensorid == SENSOR_OV2710)
+				{
+					tmpSat =  value;
+					auSat[0] = tmpSat;       //128
+					auSat[1] = tmpSat-5;     //128
+					auSat[2] = tmpSat-10;     //128
+					auSat[3] = tmpSat-18;    //128
+					auSat[4] = tmpSat-38;    //108
+					auSat[5] = tmpSat-70;    //90
+					auSat[6] = tmpSat-88;    //88 
+					auSat[7] = tmpSat-88;    //78
+					auSat[8] = tmpSat-88;    //68
+					auSat[9] = tmpSat-88;    //68 
+					auSat[10] = tmpSat-58;    //68
+					auSat[11] = tmpSat-58;    //68
+					auSat[12] = tmpSat-58;    //68
+					auSat[13] = tmpSat-58;    //68
+					auSat[14] = tmpSat-58;    //68
+					auSat[15] = tmpSat-58;    //68	   
 				}
 #else
 				if(sensorid == SENSOR_OV2710)
 				{
-					 tmpSat =  value;
-					 auSat[0] = tmpSat;       //118
-					 auSat[1] = tmpSat;       //118
-					 auSat[2] = tmpSat;       //103
-					 auSat[3] = tmpSat-10;    //50
-					 
-					 auSat[4] = tmpSat-24;    //40
-					 auSat[5] = tmpSat-42;    //30
-					 auSat[6] = tmpSat-56;    //28
-					 auSat[7] = tmpSat-80;    //10
-					 auSat[8] = tmpSat-80;    //68
-					 auSat[9] = tmpSat-80;    //68 
-					 auSat[10] = tmpSat-80;    //68
-					 auSat[11] = tmpSat-80;    //68
-					 auSat[12] = tmpSat-80;    //68
-					 auSat[13] = tmpSat-80;    //68
-					 auSat[14] = tmpSat-80;    //68
-					 auSat[15] = tmpSat-80;    //68	   
+					tmpSat =  value;
+					auSat[0] = tmpSat;       //118
+					auSat[1] = tmpSat;       //118
+					auSat[2] = tmpSat;       //103
+					auSat[3] = tmpSat-10;    //50
 
+					auSat[4] = tmpSat-24;    //40
+					auSat[5] = tmpSat-42;    //30
+					auSat[6] = tmpSat-56;    //28
+					auSat[7] = tmpSat-80;    //10
+					auSat[8] = tmpSat-80;    //68
+					auSat[9] = tmpSat-80;    //68 
+					auSat[10] = tmpSat-80;    //68
+					auSat[11] = tmpSat-80;    //68
+					auSat[12] = tmpSat-80;    //68
+					auSat[13] = tmpSat-80;    //68
+					auSat[14] = tmpSat-80;    //68
+					auSat[15] = tmpSat-80;    //68	   
 				}
-
-
 #endif
 				if(sensorid == SENSOR_SC2135)
 				{
-					 tmpSat =  value;
-					 auSat[0] = tmpSat;       //118
-					 auSat[1] = tmpSat;       //118
-					 auSat[2] = tmpSat;       //103
-					 auSat[3] = tmpSat-10;    //50
-					 
-					 auSat[4] = tmpSat-24;    //40
-					 auSat[5] = tmpSat-42;    //30
-					 auSat[6] = tmpSat-56;    //28
-					 auSat[7] = tmpSat-80;    //10
-					 auSat[8] = tmpSat-80;    //68
-					 auSat[9] = tmpSat-80;    //68 
-					 auSat[10] = tmpSat-80;    //68
-					 auSat[11] = tmpSat-80;    //68
-					 auSat[12] = tmpSat-80;    //68
-					 auSat[13] = tmpSat-80;    //68
-					 auSat[14] = tmpSat-80;    //68
-					 auSat[15] = tmpSat-80;    //68	   
+					tmpSat =  value;
+					auSat[0] = tmpSat;       //118
+					auSat[1] = tmpSat;       //118
+					auSat[2] = tmpSat;       //103
+					auSat[3] = tmpSat-10;    //50
 
+					auSat[4] = tmpSat-24;    //40
+					auSat[5] = tmpSat-42;    //30
+					auSat[6] = tmpSat-56;    //28
+					auSat[7] = tmpSat-80;    //10
+					auSat[8] = tmpSat-80;    //68
+					auSat[9] = tmpSat-80;    //68 
+					auSat[10] = tmpSat-80;    //68
+					auSat[11] = tmpSat-80;    //68
+					auSat[12] = tmpSat-80;    //68
+					auSat[13] = tmpSat-80;    //68
+					auSat[14] = tmpSat-80;    //68
+					auSat[15] = tmpSat-80;    //68	   
 				}
-                if(sensorid == SENSOR_AR0130)
+				if(sensorid == SENSOR_AR0130)
 				{
-					 tmpSat =  value;
-					 auSat[0] = tmpSat+0;       //128
-					 auSat[1] = tmpSat+0;       //128
-					 auSat[2] = tmpSat-5;     //128
-					 auSat[3] = tmpSat-10;    //128
-					 auSat[4] = tmpSat-30;    //108
-					 auSat[5] = tmpSat-48;    //90
-					 auSat[6] = tmpSat-58;    //88 
-					 auSat[7] = tmpSat-58;    //78
-					 auSat[8] = tmpSat-58;    //68
-					 auSat[9] = tmpSat-58;    //68 
-					 auSat[10] = tmpSat-58;    //68
-					 auSat[11] = tmpSat-58;    //68
-					 auSat[12] = tmpSat-58;    //68
-					 auSat[13] = tmpSat-58;    //68
-					 auSat[14] = tmpSat-58;    //68
-					 auSat[15] = tmpSat-58;    //68	   
-
+					tmpSat =  value;
+					auSat[0] = tmpSat+0;       //128
+					auSat[1] = tmpSat+0;       //128
+					auSat[2] = tmpSat-5;     //128
+					auSat[3] = tmpSat-10;    //128
+					auSat[4] = tmpSat-30;    //108
+					auSat[5] = tmpSat-48;    //90
+					auSat[6] = tmpSat-58;    //88 
+					auSat[7] = tmpSat-58;    //78
+					auSat[8] = tmpSat-58;    //68
+					auSat[9] = tmpSat-58;    //68 
+					auSat[10] = tmpSat-58;    //68
+					auSat[11] = tmpSat-58;    //68
+					auSat[12] = tmpSat-58;    //68
+					auSat[13] = tmpSat-58;    //68
+					auSat[14] = tmpSat-58;    //68
+					auSat[15] = tmpSat-58;    //68	   
 				}
 				if(sensorid == SENSOR_SC2045)
 				{
-					 tmpSat =  value;
-					 auSat[0] = tmpSat;       
-					 auSat[1] = tmpSat;      
-					 auSat[2] = tmpSat-8;      
-					 auSat[3] = tmpSat-20;   
-					 
-					 auSat[4] = tmpSat-38;   
-					 auSat[5] = tmpSat-53;   
-					 auSat[6] = tmpSat-64;   
-					 auSat[7] = tmpSat-80;   
-					 auSat[8] = tmpSat-80;    //68
-					 auSat[9] = tmpSat-80;    //68 
-					 auSat[10] = tmpSat-80;    //68
-					 auSat[11] = tmpSat-80;    //68
-					 auSat[12] = tmpSat-80;    //68
-					 auSat[13] = tmpSat-80;    //68
-					 auSat[14] = tmpSat-80;    //68
-					 auSat[15] = tmpSat-80;    //68	   
+					tmpSat =  value;
+					auSat[0] = tmpSat;       
+					auSat[1] = tmpSat;      
+					auSat[2] = tmpSat-8;      
+					auSat[3] = tmpSat-20;   
 
+					auSat[4] = tmpSat-38;   
+					auSat[5] = tmpSat-53;   
+					auSat[6] = tmpSat-64;   
+					auSat[7] = tmpSat-80;   
+					auSat[8] = tmpSat-80;    //68
+					auSat[9] = tmpSat-80;    //68 
+					auSat[10] = tmpSat-80;    //68
+					auSat[11] = tmpSat-80;    //68
+					auSat[12] = tmpSat-80;    //68
+					auSat[13] = tmpSat-80;    //68
+					auSat[14] = tmpSat-80;    //68
+					auSat[15] = tmpSat-80;    //68	   
 				}
 				if(sensorid == SENSOR_OV2735)
 				{
-					 tmpSat =  value;
-					 auSat[0] = tmpSat;       //128
-					 auSat[1] = tmpSat;       //128
-					 auSat[2] = tmpSat;       //128
-					 auSat[3] = tmpSat-10;    //118
-					 
-					 auSat[4] = tmpSat-28;    //100
-					 auSat[5] = tmpSat-42;    //86
-					 auSat[6] = tmpSat-63;    //65
-					 auSat[7] = tmpSat-65;    //64
-					 auSat[8] = tmpSat-70;    //58
-					 auSat[9] = tmpSat-80;    //68 
-					 auSat[10] = tmpSat-80;    //68
-					 auSat[11] = tmpSat-80;    //68
-					 auSat[12] = tmpSat-80;    //68
-					 auSat[13] = tmpSat-80;    //68
-					 auSat[14] = tmpSat-80;    //68
-					 auSat[15] = tmpSat-80;    //68	   
+					tmpSat =  value;
+					auSat[0] = tmpSat;       //128
+					auSat[1] = tmpSat;       //128
+					auSat[2] = tmpSat;       //128
+					auSat[3] = tmpSat-10;    //118
 
+					auSat[4] = tmpSat-28;    //100
+					auSat[5] = tmpSat-42;    //86
+					auSat[6] = tmpSat-63;    //65
+					auSat[7] = tmpSat-65;    //64
+					auSat[8] = tmpSat-70;    //58
+					auSat[9] = tmpSat-80;    //68 
+					auSat[10] = tmpSat-80;    //68
+					auSat[11] = tmpSat-80;    //68
+					auSat[12] = tmpSat-80;    //68
+					auSat[13] = tmpSat-80;    //68
+					auSat[14] = tmpSat-80;    //68
+					auSat[15] = tmpSat-80;    //68	   
 				}
 				if(sensorid == SENSOR_SC2235)
 				{
-					 tmpSat =  value;
-					 auSat[0] = tmpSat+5;       //128
-					 auSat[1] = tmpSat+5;       //128
-					 auSat[2] = tmpSat+5;       //128
-					 auSat[3] = tmpSat-10+5;    //118
-					 
-					 auSat[4] = tmpSat-28+5;    //100
-					 auSat[5] = tmpSat-42+5;    //86
-					 auSat[6] = tmpSat-63+5;    //65
-					 auSat[7] = tmpSat-65+5;    //64
-					 auSat[8] = tmpSat-70+5;    //58
-					 auSat[9] = tmpSat-80+5;    //68 
-					 auSat[10] = tmpSat-80;    //68
-					 auSat[11] = tmpSat-80;    //68
-					 auSat[12] = tmpSat-80;    //68
-					 auSat[13] = tmpSat-80;    //68
-					 auSat[14] = tmpSat-80;    //68
-					 auSat[15] = tmpSat-80;    //68	   
+					tmpSat =  value;
+					auSat[0] = tmpSat+5;       //128
+					auSat[1] = tmpSat+5;       //128
+					auSat[2] = tmpSat+5;       //128
+					auSat[3] = tmpSat-10+5;    //118
 
+					auSat[4] = tmpSat-28+5;    //100
+					auSat[5] = tmpSat-42+5;    //86
+					auSat[6] = tmpSat-63+5;    //65
+					auSat[7] = tmpSat-65+5;    //64
+					auSat[8] = tmpSat-70+5;    //58
+					auSat[9] = tmpSat-80+5;    //68 
+					auSat[10] = tmpSat-80;    //68
+					auSat[11] = tmpSat-80;    //68
+					auSat[12] = tmpSat-80;    //68
+					auSat[13] = tmpSat-80;    //68
+					auSat[14] = tmpSat-80;    //68
+					auSat[15] = tmpSat-80;    //68	   
 				}
-				 int i;
-				 for(i=0;i<16;i++)
-				 {
-						if( auSat[i]>255)
-							auSat[i]=255;
-						if( auSat[i]<0)
-							auSat[i]=0;	
-						pstSatAttr.stAuto.au8Sat[i] = (HI_U8)auSat[i];
-				 }
-				
+				int i;
+				for(i=0;i<16;i++)
+				{
+					if( auSat[i]>255)
+						auSat[i]=255;
+					if( auSat[i]<0)
+						auSat[i]=0;	
+					pstSatAttr.stAuto.au8Sat[i] = (HI_U8)auSat[i];
+				}
+
 				HI_MPI_ISP_SetSaturationAttr(IspDev, &pstSatAttr);
-                break;
-             }
-        case ADJ_CONTRAST://设置对比度
-             {
-          
-                if(value >255 || value <0)
-                    return -1;
+				break;
+			}
+		case ADJ_CONTRAST://设置对比度
+			{
+				if(value >255 || value <0)
+					return -1;
 				user_set_contrast =value;
 				if(nightflag)	
 				{
-
 					if(sensorid == SENSOR_SC2235)
-						printf("sensor night gamma set\n");
+						printf("set sensor night gamma.\n");
 					else
 						return 0;
 				}
@@ -1814,572 +1779,406 @@ int isp_ioctl(int fd,int cmd,unsigned long value)
 				pstGammaAttr.enCurveType = ISP_GAMMA_CURVE_USER_DEFINE;
 				if(sensorid == SENSOR_OV9750||sensorid == SENSOR_OV9750m)
 				{
-					
 					{
 						if(value > 200)
-				  		 {
+						{
 							user_select_gamma =3;
-					  		 memcpy(&pstGammaAttr.u16Table,&V200_LINE_NIGHT_LV0_GAMMA,257 * 2);
-				   		}
-				   		else if(value < 70)
-				   		{
-					   		memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV1_GAMMA,257 * 2);
+							memcpy(&pstGammaAttr.u16Table,&V200_LINE_NIGHT_LV0_GAMMA,257 * 2);
+						}
+						else if(value < 70)
+						{
+							memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV1_GAMMA,257 * 2);
 							user_select_gamma =1;
-				   		}
-				   		else
-				   		{
-					   		memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV0_GAMMA,257 * 2);
-					   		user_select_gamma =2;
-				   		}
+						}
+						else
+						{
+							memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV0_GAMMA,257 * 2);
+							user_select_gamma =2;
+						}
 					}
 
 				}
 				else if(sensorid == SENSOR_OV9732)
 				{	
 					if(value > 200)
-			  		{
+					{
 						user_select_gamma =3;
 						//ov9732_gamma = 3;
-				  		memcpy(&pstGammaAttr.u16Table,&V200_LINE_NIGHT_LV0_GAMMA,257 * 2);
-			   		}
-				   	else if(value < 70)
-			   		{
-				   		memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV2_GMMMA,257 * 2);
+						memcpy(&pstGammaAttr.u16Table,&V200_LINE_NIGHT_LV0_GAMMA,257 * 2);
+					}
+					else if(value < 70)
+					{
+						memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV2_GMMMA,257 * 2);
 						//ov9732_gamma = 1;
 						user_select_gamma =1;
-			   		}
-				   	else
-			   		{
-				   		memcpy(&pstGammaAttr.u16Table,&OV4689_LINE_GAMMA,257 * 2);
+					}
+					else
+					{
+						memcpy(&pstGammaAttr.u16Table,&OV4689_LINE_GAMMA,257 * 2);
 						//ov9732_gamma = 2;
-				   		user_select_gamma =2;
-			   		}
+						user_select_gamma =2;
+					}
 				}
 #if 0
 				if(sensorid == SENSOR_OV2710)
 				{
-					
 					{
 						if(value > 200)
-				  		 {
+						{
 							user_select_gamma =3;
-					  		 memcpy(&pstGammaAttr.u16Table,&V200_LINE_NIGHT_LV0_GAMMA,257 * 2);
-				   		}
-				   		else if(value < 70)
-				   		{
-					   		memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV1_GAMMA,257 * 2);
+							memcpy(&pstGammaAttr.u16Table,&V200_LINE_NIGHT_LV0_GAMMA,257 * 2);
+						}
+						else if(value < 70)
+						{
+							memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV1_GAMMA,257 * 2);
 							user_select_gamma =1;
-				   		}
-				   		else
-				   		{
-					   		memcpy(&pstGammaAttr.u16Table,&u16Gamma_2710_day,257 * 2);
-					   		user_select_gamma =2;
-				   		}
+						}
+						else
+						{
+							memcpy(&pstGammaAttr.u16Table,&u16Gamma_2710_day,257 * 2);
+							user_select_gamma =2;
+						}
 					}
-
 				}				
 #else
 				if(sensorid == SENSOR_OV2710||sensorid == SENSOR_OV2735||sensorid == SENSOR_MN34227)
 				{
-					
-					
 					if(value > 200)
-				  	{
+					{
 						user_select_gamma =3;
-					  	memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV1_GAMMA,257 * 2);
-				   	}
-				   	else if(value < 70)
-				   	{
-					   	memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV2_GMMMA,257 * 2);
+						memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV1_GAMMA,257 * 2);
+					}
+					else if(value < 70)
+					{
+						memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV2_GMMMA,257 * 2);
 						user_select_gamma =1;
-				   	}
-				   	else
-				   	{
-					   	memcpy(&pstGammaAttr.u16Table,&v200_day_gammaM,257 * 2);
-					   	user_select_gamma =2;
-				   	}
-					
-
+					}
+					else
+					{
+						memcpy(&pstGammaAttr.u16Table,&v200_day_gammaM,257 * 2);
+						user_select_gamma =2;
+					}
 				}
-				
 #endif
 				if(sensorid == SENSOR_SC2135)
 				{
-					
-					
 					if(value > 200)
-				  	{
+					{
 						user_select_gamma =3;
-					  	memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV0_GAMMA,257 * 2);
-				   	}
-				   	else if(value < 70)
-				   	{
-					   	memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV2_GMMMA,257 * 2);
+						memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV0_GAMMA,257 * 2);
+					}
+					else if(value < 70)
+					{
+						memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV2_GMMMA,257 * 2);
 						user_select_gamma =1;
-				   	}
-				   	else
-				   	{
-					   	memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV0_GAMMA,257 * 2);
-					   	user_select_gamma =2;
-				   	}
-					
-
+					}
+					else
+					{
+						memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV0_GAMMA,257 * 2);
+						user_select_gamma =2;
+					}
 				}
-                if(sensorid == SENSOR_AR0130)
+				if(sensorid == SENSOR_AR0130)
 				{
-					
 					{
 						if(value > 200)
-				  		 {
+						{
 							user_select_gamma =3;
-					  		 memcpy(&pstGammaAttr.u16Table,&V200_LINE_NIGHT_LV0_GAMMA,257 * 2);
-				   		}
-				   		else if(value < 70)
-				   		{
-					   		memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV1_GAMMA,257 * 2);
+							memcpy(&pstGammaAttr.u16Table,&V200_LINE_NIGHT_LV0_GAMMA,257 * 2);
+						}
+						else if(value < 70)
+						{
+							memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV1_GAMMA,257 * 2);
 							user_select_gamma =1;
-				   		}
-				   		else
-				   		{
-					   		memcpy(&pstGammaAttr.u16Table,&u16Gamma_ar0130_day,257 * 2);
-					   		user_select_gamma =2;
-				   		}
+						}
+						else
+						{
+							memcpy(&pstGammaAttr.u16Table,&u16Gamma_ar0130_day,257 * 2);
+							user_select_gamma =2;
+						}
 					}
-
 				}
 				if(sensorid == SENSOR_SC2045)
 				{				
 					{
 						if(value > 200)
-				  		 {
+						{
 							user_select_gamma =3;
-					  		 memcpy(&pstGammaAttr.u16Table,&V200_LINE_NIGHT_LV0_GAMMA,257 * 2);
-				   		}
-				   		else if(value < 70)
-				   		{
-					   		memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV2_GMMMA,257 * 2);
+							memcpy(&pstGammaAttr.u16Table,&V200_LINE_NIGHT_LV0_GAMMA,257 * 2);
+						}
+						else if(value < 70)
+						{
+							memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV2_GMMMA,257 * 2);
 							user_select_gamma =1;
-				   		}
-				   		else
-				   		{
-					   		memcpy(&pstGammaAttr.u16Table,&OV4689_LINE_GAMMA,257 * 2);
-					   		user_select_gamma =2;
-				   		}
+						}
+						else
+						{
+							memcpy(&pstGammaAttr.u16Table,&OV4689_LINE_GAMMA,257 * 2);
+							user_select_gamma =2;
+						}
 					}
-
 				}
 				if(sensorid == SENSOR_SC2235)
 				{
 					if(nightflag)
 					{
 						if(value > 200)
-					  	{
+						{
 							user_select_gamma =3;
-						  	memcpy(&pstGammaAttr.u16Table,&v200_night_gammaH,257 * 2);
-					   	}
-					   	else if(value < 70)
-					   	{
-						   	memcpy(&pstGammaAttr.u16Table,&v200_day_gammaM,257 * 2);
+							memcpy(&pstGammaAttr.u16Table,&v200_night_gammaH,257 * 2);
+						}
+						else if(value < 70)
+						{
+							memcpy(&pstGammaAttr.u16Table,&v200_day_gammaM,257 * 2);
 							user_select_gamma =1;
-					   	}
-					   	else
-					   	{
-						   	memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
-						   	user_select_gamma =2;
-					   	}
+						}
+						else
+						{
+							memcpy(&pstGammaAttr.u16Table,&v200_night_gammaM,257 * 2);
+							user_select_gamma =2;
+						}
 					}
 					else
 					{
 						if(value > 200)
-					  	{
-							user_select_gamma =3;
-						  	memcpy(&pstGammaAttr.u16Table,&v200_day_gammaH,257 * 2);
-					   	}
-					   	else if(value < 70)
-					   	{
-						   	memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV2_GMMMA,257 * 2);
-							user_select_gamma =1;
-					   	}
-					   	else
-					   	{
-						   	memcpy(&pstGammaAttr.u16Table,&v200_day_gammaM,257 * 2);
-						   	user_select_gamma =2;
-					   	}
-					}
-					
-
-				}
-				HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);								
-                break;
-             }
-         case  ADJ_COLOURMODE:
-             {
-			 	ISP_SATURATION_ATTR_S pstSatAttr;
-			 	HI_MPI_ISP_GetSaturationAttr(IspDev, &pstSatAttr);
-                if(value == 1)//彩色模式
-                {
-                    
-                    pstSatAttr.enOpType = OP_TYPE_AUTO;
-                    HI_MPI_ISP_SetSaturationAttr(IspDev, &pstSatAttr);
-                }
-                else           //黑白色
-                {
-                   
-                    pstSatAttr.enOpType = OP_TYPE_MANUAL;
-                    pstSatAttr.stManual.u8Saturation = 0x0;
-                    HI_MPI_ISP_SetSaturationAttr(IspDev, &pstSatAttr);
-                }
-                break;
-             }
-         case ADJ_SHARPNESS:
-             {
-			 	 signed int uu_value=400; 
-				 if(sensorid == SENSOR_OV9750||sensorid == SENSOR_OV9750m||sensorid == SENSOR_OV9732||sensorid == SENSOR_OV2710||sensorid == SENSOR_SC2045||sensorid == SENSOR_SC2135||sensorid == SENSOR_OV2735 || sensorid == SENSOR_SC2235)//不允许设置 
-				 {
-					uu_value = -1;
-				 }
-
-				 if(uu_value>=0)
-				 {
-				 	if(uu_value > 1023)
-						uu_value = 1023;
-					
-				 	ISP_DEMOSAIC_ATTR_S pstDemosaicAttr;
-				 
-				 	HI_MPI_ISP_GetDemosaicAttr(IspDev, &pstDemosaicAttr);
-				 	pstDemosaicAttr.u16UuSlope=uu_value;
-					//printf("uuslope is :  %d \n",pstDemosaicAttr.u16UuSlope);
-				 	HI_MPI_ISP_SetDemosaicAttr(IspDev, &pstDemosaicAttr);
-				 }
-                 break;
-             }
-        case SFHDR_SW:
-             {
-					//printf("SFHDR_SW setting \n");
-                    break;
-             }
-        case MIRROR_TURN:
-                {
-                    if(value==0)
-                        VI_Mirror_Flip(HI_FALSE,HI_FALSE);
-                    if(value==1)
-                        VI_Mirror_Flip(HI_TRUE,HI_FALSE);
-                    if(value==2)
-                        VI_Mirror_Flip(HI_FALSE,HI_TRUE);
-                    if(value==3)
-                        VI_Mirror_Flip(HI_TRUE,HI_TRUE);
-                    break;
-                }
-        case PFI_SW:
-                {
-                    if(value==PFI_ON)
-                        {/*
-                            ISP_IMAGE_ATTR_S pstImageAttr;
-                            HI_MPI_ISP_GetImageAttr(IspDev, &pstImageAttr);
-                            pstImageAttr.u16FrameRate =25;
-                            HI_MPI_ISP_SetImageAttr(IspDev, &pstImageAttr);*/
-                        }
-                    if(value == PFI_OFF)
-                        {/*
-                            ISP_IMAGE_ATTR_S pstImageAttr;
-                            HI_MPI_ISP_GetImageAttr(IspDev, &pstImageAttr);
-                            pstImageAttr.u16FrameRate =30;
-                            HI_MPI_ISP_SetImageAttr(IspDev, &pstImageAttr);*/
-                        }
-                    break;
-                }
-               case LOW_FRAME:
-                {
-                    //printf("HI_MPI_ISP_SetSlowFrameRate %d\n",value);
-                    //HI_MPI_ISP_SetSlowFrameRate(value);
-                    break;
-                }
-        case WDR_SW:
-                {
-					if (sensorid == SENSOR_OV4689)
-					{
-						
-						if(value==0) //关闭wdr
 						{
-							sensor_wdr_flag =0;
-							jv_sensor_wdr_switch(0);
-								
+							user_select_gamma =3;
+							memcpy(&pstGammaAttr.u16Table,&v200_day_gammaH,257 * 2);
+						}
+						else if(value < 70)
+						{
+							memcpy(&pstGammaAttr.u16Table,&V200_LINE_DAY_LV2_GMMMA,257 * 2);
+							user_select_gamma =1;
 						}
 						else
 						{
-							sensor_wdr_flag =1;
-							jv_sensor_wdr_switch(1);
-
+							memcpy(&pstGammaAttr.u16Table,&v200_day_gammaM,257 * 2);
+							user_select_gamma =2;
 						}
-						
+					}
+				}
+				HI_MPI_ISP_SetGammaAttr(IspDev,&pstGammaAttr);								
+				break;
+			}
+		case  ADJ_COLOURMODE:
+			{
+				ISP_SATURATION_ATTR_S pstSatAttr;
+				HI_MPI_ISP_GetSaturationAttr(IspDev, &pstSatAttr);
+				if(value == 1)//彩色模式
+				{
+					pstSatAttr.enOpType = OP_TYPE_AUTO;
+					HI_MPI_ISP_SetSaturationAttr(IspDev, &pstSatAttr);
+				}
+				else           //黑白色
+				{
+					pstSatAttr.enOpType = OP_TYPE_MANUAL;
+					pstSatAttr.stManual.u8Saturation = 0x0;
+					HI_MPI_ISP_SetSaturationAttr(IspDev, &pstSatAttr);
+				}
+				break;
+			}
+		case ADJ_SHARPNESS:
+			{
+				signed int uu_value=400; 
+				if(sensorid == SENSOR_OV9750||sensorid == SENSOR_OV9750m||sensorid == SENSOR_OV9732||sensorid == SENSOR_OV2710||sensorid == SENSOR_SC2045||sensorid == SENSOR_SC2135||sensorid == SENSOR_OV2735 || sensorid == SENSOR_SC2235)//不允许设置 
+				{
+					uu_value = -1;
+				}
+
+				if(uu_value>=0)
+				{
+					if(uu_value > 1023)
+						uu_value = 1023;
+
+					ISP_DEMOSAIC_ATTR_S pstDemosaicAttr;
+
+					HI_MPI_ISP_GetDemosaicAttr(IspDev, &pstDemosaicAttr);
+					pstDemosaicAttr.u16UuSlope=uu_value;
+					HI_MPI_ISP_SetDemosaicAttr(IspDev, &pstDemosaicAttr);
+				}
+				break;
+			}
+		case SFHDR_SW:
+			{
+				break;
+			}
+		case MIRROR_TURN:
+			{
+				if(value==0)
+					VI_Mirror_Flip(HI_FALSE,HI_FALSE);
+				if(value==1)
+					VI_Mirror_Flip(HI_TRUE,HI_FALSE);
+				if(value==2)
+					VI_Mirror_Flip(HI_FALSE,HI_TRUE);
+				if(value==3)
+					VI_Mirror_Flip(HI_TRUE,HI_TRUE);
+				break;
+			}
+		case PFI_SW:
+			{
+				if(value==PFI_ON)
+				{/*
+					ISP_IMAGE_ATTR_S pstImageAttr;
+					HI_MPI_ISP_GetImageAttr(IspDev, &pstImageAttr);
+					pstImageAttr.u16FrameRate =25;
+					HI_MPI_ISP_SetImageAttr(IspDev, &pstImageAttr);*/
+				}
+				if(value == PFI_OFF)
+				{/*
+					ISP_IMAGE_ATTR_S pstImageAttr;
+					HI_MPI_ISP_GetImageAttr(IspDev, &pstImageAttr);
+					pstImageAttr.u16FrameRate =30;
+					HI_MPI_ISP_SetImageAttr(IspDev, &pstImageAttr);*/
+				}
+				break;
+			}
+		case LOW_FRAME:
+			{
+				//HI_MPI_ISP_SetSlowFrameRate(value);
+				break;
+			}
+		case WDR_SW:
+			{
+				if (sensorid == SENSOR_OV4689)
+				{
+					if(value==0) //关闭wdr
+					{
+						sensor_wdr_flag =0;
+						jv_sensor_wdr_switch(0);
 					}
 					else
 					{
-							ISP_DRC_ATTR_S pstDRCAttr;
-                            HI_MPI_ISP_GetDRCAttr(IspDev, &pstDRCAttr);
-							if(value ==1)
-							{
-								pstDRCAttr.bEnable = HI_TRUE;
-								pstDRCAttr.enOpType = OP_TYPE_MANUAL;
-								pstDRCAttr.stManual.u8Strength =70;
-								pstDRCAttr.u8Asymmetry=7;
-								pstDRCAttr.u8SecondPole=180;
-								pstDRCAttr.u8Stretch=55;
-								/*
-								DRCStrengthTarget = 128
-								DRCu16BrightGainLmt = 127
-								DRCu16DarkGainLmtC = 127
-								DRCu16DarkGainLmtY = 127
-                                				DRCu8Asymmetry = 2
-								DRCu8LocalMixingBrigtht = 45
-								DRCu8LocalMixingDark = 45
-								DRCu8LocalMixingThres = 2
-								DRCu8RangeVar = 0
-								DRCu8SecondPole = 180
-								DRCu8SpatialVar = 10
-								DRCu8Stretch = 54*/
-							}
-							else
-								pstDRCAttr.bEnable = HI_FALSE;
-							HI_MPI_ISP_SetDRCAttr(IspDev, &pstDRCAttr);      //关闭软件HDR
-
+						sensor_wdr_flag =1;
+						jv_sensor_wdr_switch(1);
 					}
-                    break;
-                }
+				}
+				else
+				{
+					ISP_DRC_ATTR_S pstDRCAttr;
+					HI_MPI_ISP_GetDRCAttr(IspDev, &pstDRCAttr);
+					if(value ==1)
+					{
+						pstDRCAttr.bEnable = HI_TRUE;
+						pstDRCAttr.enOpType = OP_TYPE_MANUAL;
+						pstDRCAttr.stManual.u8Strength =70;
+						pstDRCAttr.u8Asymmetry=7;
+						pstDRCAttr.u8SecondPole=180;
+						pstDRCAttr.u8Stretch=55;
+						/*
+						   DRCStrengthTarget = 128
+						   DRCu16BrightGainLmt = 127
+						   DRCu16DarkGainLmtC = 127
+						   DRCu16DarkGainLmtY = 127
+						   DRCu8Asymmetry = 2
+						   DRCu8LocalMixingBrigtht = 45
+						   DRCu8LocalMixingDark = 45
+						   DRCu8LocalMixingThres = 2
+						   DRCu8RangeVar = 0
+						   DRCu8SecondPole = 180
+						   DRCu8SpatialVar = 10
+						   DRCu8Stretch = 54*/
+					}
+					else
+						pstDRCAttr.bEnable = HI_FALSE;
+					HI_MPI_ISP_SetDRCAttr(IspDev, &pstDRCAttr);      //关闭软件HDR
+				}
+				break;
+			}
 #endif
-        case GET_ID:
-                {
-#if 0
-					 int ret;											
-					 if(sensorType != SENSOR_UNKNOWN)
-					 {
-						*(int *)value = sensorid =sensorType;
-						return 0;
-					 }
-					ret = reg_i2c_read(0x6d,0x300b,2,1);
-                    if(ret==0x32)
-                    {
-                        *(int *)value = SENSOR_OV9732;
-                        sensorType =sensorid = SENSOR_OV9732;         							
-						printf(">>>>check sensor ID : OV9732----test<<\n");
-                        return 0;
-                    }
-                    
-					 ret = reg_i2c_read(0x34,0x3013,2,1);
-					 printf("%d\n",ret);
-                    if(ret==0x40)
-                    {
-                        *(int *)value = SENSOR_IMX323;
-                        sensorType =sensorid = SENSOR_IMX323;         							
-						printf(">>>>check sensor ID : IMX1323----test<<\n");
-                        return 0;
-                    }
-					 ret = reg_i2c_read(0x6c,0x300c,2,1);
-                     if(ret== 0x50)
-                     {		
-                        *(int *)value = SENSOR_OV9750;
-                        sensorType =sensorid = SENSOR_OV9750;
-						if(hwinfo.bHomeIPC || (!strcmp(hwinfo.devName, "E2-5013W")))
+		case GET_ID:
+			{
+				int ret = 0;	
+				int tmp_sensorid = SENSOR_UNKNOWN;			 
+				if(sensorType != SENSOR_UNKNOWN)
+				{
+					*(int *)value = sensorid =sensorType;
+					return 0;
+				}
+
+				if( *(int *)value > SENSOR_UNKNOWN &&  *(int *)value < SENSOR_MAX )
+					tmp_sensorid = *(int *)value;
+				else
+					tmp_sensorid = SENSOR_UNKNOWN;
+
+				//平台当前兼容sensor数量
+				int sensor_num = sizeof(Check_Sensor)/sizeof(Check_Sensor[1]);
+				int i = 0;
+
+				//预检测确认sensor类型
+				Pre_Check_Sensor();
+				//二次启动及之后 ( sensor.sh文件存在)
+				if(SENSOR_UNKNOWN != tmp_sensorid)
+				{
+					for(i=0;i<sensor_num;i++)
+					{
+						if(Check_Sensor[i].SensorType == tmp_sensorid)
 						{
-							*(int *)value = SENSOR_OV9750m;
-							sensorType =sensorid = SENSOR_OV9750m;   //  家庭安防的为MIPI接口
-						}
-						printf(">>>>check sensor ID : OV9750----test<<<\n");
-                        return 0;
-                     }
-                     
-                    ret = reg_i2c_read(0x6c,0x300a,2,1);
-                    //printf(">99999999999999>>>ret=%d<<<\n",ret);
-                    if(ret==0x27)
-                    {
-                        *(int *)value = SENSOR_OV2710;
-                        sensorType =sensorid = SENSOR_OV2710;         							
-						printf(">>>>check sensor ID : OV2710----test<<<\n");
-                        return 0;
-                    }
-
-					reg_i2c_write(0x78, 0xfd, 1, 1, 0);//ov2735选定页
-					//ret =reg_i2c_read(0x79,0xfd,1,1);
-					//printf(">test-----0xfd-------test>>>ret=%d<<<\n",ret);
-					ret = ((reg_i2c_read(0x79,0x02,1,1)<<8)|(reg_i2c_read(0x79,0x03,1,1)));
-					if(ret == 0x2735)
-					{
-						*(int *)value = SENSOR_OV2735;
-						sensorType =sensorid = SENSOR_OV2735;
-						printf(">>>>check sensor ID : 0x%x----test<<\n", ret);
-						return 0;
-					}
-
-                    ret = reg_i2c_read(0xee,0x00,1,1);
-                    if(ret == 0x12)
-                    {
-                        *(int *)value = SENSOR_PO1210;
-                        sensorType =sensorid = SENSOR_PO1210;         							
-						printf(">>>>check sensor ID : PO1210----test<<<\n");
-                        return 0;
-                    }
-
-                    ret = ((reg_i2c_read(0x6e,0xf0,1,1)<<8)|(reg_i2c_read(0x6e,0xf1,1,1)));
-                    if(ret == 0x2023)
-                    {
-                        *(int *)value = SENSOR_GC2003;
-                        sensorType =sensorid = SENSOR_GC2003;         							
-						printf(">>>>check sensor ID : GC2003----test<<<\n");
-                        return 0;
-                    }
-
-                    ret = reg_i2c_read(0x20,0x3000,2,2);
-                    if(ret == 0x2402 )
-                    {
-                        *(int *)value = SENSOR_AR0130;
-                         sensorType =sensorid = SENSOR_AR0130;
-                         printf(">>>>check sensor ID : AR0130----test<<<\n");
-                         return 0;
-                    } 
-                    
-                    ret = reg_i2c_read(0x20,0x3000,2,2);
-					if(ret == 0x256)
-					{
-						*(int *)value = SENSOR_AR0237;
-						sensorType =sensorid = SENSOR_AR0237;
-						printf(">>>>check sensor ID : AR0237<<<<\n");
-						return 0;
-					}
-
-                    ret = ((reg_i2c_read(0x64,0x00,1,1)<<8)|(reg_i2c_read(0x64,0x01,1,1)));
-                    if(ret == 0x0803)
-                    {
-                        *(int *)value = SENSOR_BG0803;
-                        sensorType =sensorid = SENSOR_BG0803;         							
-						printf(">>>>check sensor ID : BG0803----test<<<\n");
-                        return 0;
-                    }
-					ret = ((reg_i2c_read(0x60,0x3107,2,1)<<8)|(reg_i2c_read(0x60,0x3108,2,1)));
-                    if(ret==0x2045)
-                    {
-                        *(int *)value = SENSOR_SC2045;
-                        sensorType =sensorid = SENSOR_SC2045;         							
-						printf(">>>>check sensor ID : SC2045----test<<\n");
-                        return 0;
-                    }
-					ret = reg_i2c_read(0x60,0x3107,2,2);
-                    if(ret==0x2135)
-                    {
-                        *(int *)value = SENSOR_SC2135;
-                        sensorType =sensorid = SENSOR_SC2135;         							
-						printf(">>>>check sensor ID : SC2135----test<<\n");
-                        return 0;
-                    }
-
-#else
-
-					 int ret = 0;	
-					 int tmp_sensorid = SENSOR_UNKNOWN;			 
-					 if(sensorType != SENSOR_UNKNOWN)
-					 {
-						*(int *)value = sensorid =sensorType;
-						return 0;
-					 }
-					 
-					 
-					 if( *(int *)value > SENSOR_UNKNOWN &&  *(int *)value < SENSOR_MAX )
-							 tmp_sensorid = *(int *)value;
-					 else
-						 tmp_sensorid = SENSOR_UNKNOWN;
-					 
-					 
-					 //平台当前兼容sensor数量
-					 int sensor_num = sizeof(Check_Sensor)/sizeof(Check_Sensor[1]);
-					 int i = 0;
-					 
-					//预检测确认sensor类型
-					Pre_Check_Sensor();
-				 	 //二次启动及之后 ( sensor.sh文件存在)
-				 	if(SENSOR_UNKNOWN != tmp_sensorid)
-				 	{
-					 	for(i=0;i<sensor_num;i++)
-					 	{
-						 	if(Check_Sensor[i].SensorType == tmp_sensorid)
-						 	{
-						 		if(Check_Sensor[i].CommType == I2C)
-									ret = reg_i2c_read(Check_Sensor[i].I2c_Attr.device_addr,Check_Sensor[i].I2c_Attr.reg_addr,Check_Sensor[i].I2c_Attr.reg_width,Check_Sensor[i].I2c_Attr.data_width);
-								else
-									ret = reg_spi_read(Check_Sensor[i].spi_id_reg);
-								//如果sensor信息与当前信息相符，则返回
-								if(Check_Sensor[i].Id_Reg_Value == ret && Check_Sensor[i].Check_Flag)
-								{
-										*(int *)value = Check_Sensor[i].SensorType;
-										sensorType = sensorid = Check_Sensor[i].SensorType;   
-										if(sensorType ==SENSOR_OV2735)
-										{
-											ret = reg_i2c_read(0x78,0x4,1,1);
-											if(ret ==0x6 ||ret ==0x7)
-											{
-												bOV2735B =TRUE;
-												printf("check ov2735B sensor !!!!!!\n");
-											}
-										}
-										printf(">>>>check sensor ID : %s <<<<<\n",Check_Sensor[i].Sensor_Name);
-										return 0;
-								}
-								else//如果sensor信息与原来存储信息不符，则重新轮询一遍
-								{	
-									 if(tmp_sensorid != SENSOR_UNKNOWN)
-									 {
-										tmp_sensorid = SENSOR_UNKNOWN;
-										break;
-									 }
-								}
-						 	}
-						 }
-				 	  }
-					
-					 //首次启动(sensor.sh文件不存在，或者文件内容与i2c读出信息不符)
-					 if(SENSOR_UNKNOWN == tmp_sensorid)
-					 {
-					 	//首次轮询判断设备名
-					 	for(i=0;i<sensor_num;i++)
-					 	{	
-							if( Check_Sensor[i].Check_Flag )
+							if(Check_Sensor[i].CommType == I2C)
+								ret = reg_i2c_read(Check_Sensor[i].I2c_Attr.device_addr,Check_Sensor[i].I2c_Attr.reg_addr,Check_Sensor[i].I2c_Attr.reg_width,Check_Sensor[i].I2c_Attr.data_width);
+							else
+								ret = reg_spi_read(Check_Sensor[i].spi_id_reg);
+							//如果sensor信息与当前信息相符，则返回
+							if(Check_Sensor[i].Id_Reg_Value == ret && Check_Sensor[i].Check_Flag)
 							{
-						 		if(Check_Sensor[i].CommType == I2C)
-									ret = reg_i2c_read(Check_Sensor[i].I2c_Attr.device_addr,Check_Sensor[i].I2c_Attr.reg_addr,Check_Sensor[i].I2c_Attr.reg_width,Check_Sensor[i].I2c_Attr.data_width);
-								else
-									ret = reg_spi_read(Check_Sensor[i].spi_id_reg);
-								//如果sensor信息与当前信息相符，则返回
-								if(Check_Sensor[i].Id_Reg_Value == ret  )
+								*(int *)value = Check_Sensor[i].SensorType;
+								sensorType = sensorid = Check_Sensor[i].SensorType;   
+								if(sensorType ==SENSOR_OV2735)
 								{
-									*(int *)value = Check_Sensor[i].SensorType;
-									sensorType = sensorid = Check_Sensor[i].SensorType;
-									if(sensorType ==SENSOR_OV2735)
-									{
-										ret = reg_i2c_read(0x78,0x4,1,1);
-										if(ret ==0x6 ||ret ==0x7)
-										{
-											bOV2735B =TRUE;
-											printf("check ov2735B sensor !!!!!!\n");
-										}
-									}
-									printf(">>>>check sensor ID : %s <<<<<\n",Check_Sensor[i].Sensor_Name);
-									return 0;
+									ret = reg_i2c_read(0x78,0x4,1,1);
+									if(ret ==0x6 ||ret ==0x7)
+										bOV2735B =TRUE;
+								}
+								printf("========read sensor id : %s========\n",Check_Sensor[i].Sensor_Name);
+								return 0;
+							}
+							else//如果sensor信息与原来存储信息不符，则重新轮询一遍
+							{	
+								if(tmp_sensorid != SENSOR_UNKNOWN)
+								{
+									tmp_sensorid = SENSOR_UNKNOWN;
+									break;
 								}
 							}
-					  	}
-					 }
+						}
+					}
+				}
 
-#endif			
-				
-                }
+				//首次启动(sensor.sh文件不存在，或者文件内容与i2c读出信息不符)
+				if(SENSOR_UNKNOWN == tmp_sensorid)
+				{
+					//首次轮询判断设备名
+					for(i=0;i<sensor_num;i++)
+					{	
+						if( Check_Sensor[i].Check_Flag )
+						{
+							if(Check_Sensor[i].CommType == I2C)
+								ret = reg_i2c_read(Check_Sensor[i].I2c_Attr.device_addr,Check_Sensor[i].I2c_Attr.reg_addr,Check_Sensor[i].I2c_Attr.reg_width,Check_Sensor[i].I2c_Attr.data_width);
+							else
+								ret = reg_spi_read(Check_Sensor[i].spi_id_reg);
+							//如果sensor信息与当前信息相符，则返回
+							if(Check_Sensor[i].Id_Reg_Value == ret)
+							{
+								*(int *)value = Check_Sensor[i].SensorType;
+								sensorType = sensorid = Check_Sensor[i].SensorType;
+								if(sensorType ==SENSOR_OV2735)
+								{
+									ret = reg_i2c_read(0x78,0x4,1,1);
+									if(ret ==0x6 ||ret ==0x7)
+										bOV2735B =TRUE;
+								}
+								printf("========read sensor id : %s========\n",Check_Sensor[i].Sensor_Name);
+								return 0;
+							}
+						}
+					}
+				}
+			}
 			//匹配不成功
-			 *(int *)value = SENSOR_UNKNOWN;
-			 sensorType = sensorid = SENSOR_UNKNOWN;   
-             printf(">>>>check sensor ID error !!! <<<\n");	
-             return 0;
-
-
-             break;
-										                     
-        
+			*(int *)value = SENSOR_UNKNOWN;
+			sensorType = sensorid = SENSOR_UNKNOWN;   
+			printf("=======read sensor id error========\n");	
+			return 0;
+			break;
 		default:
 			break;
 	}
@@ -2388,14 +2187,14 @@ int isp_ioctl(int fd,int cmd,unsigned long value)
 
 int __base_isp_set_fps(float frameRate)
 {
-	if(frameRate>=2)
+	if(frameRate >= 2)
 	{
 		ISP_PUB_ATTR_S stPubAttr;
 		HI_MPI_ISP_GetPubAttr(0, &stPubAttr);	
 		stPubAttr.f32FrameRate = frameRate;
 		HI_MPI_ISP_SetPubAttr(0, &stPubAttr);
 		CURRENT_SENSOR_FPS =stPubAttr.f32FrameRate;
-		printf("now sensor fps  %f\n",CURRENT_SENSOR_FPS);
+		printf("set sensor %f fps.\n",CURRENT_SENSOR_FPS);
 	}
 	return 0;
 }

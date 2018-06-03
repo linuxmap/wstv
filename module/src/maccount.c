@@ -33,7 +33,6 @@ void maccount_fix_with_language(int nLanguage)
 	{
 		if (stAccount[i].nIndex != -1)
 		{
-//			Printf("nIndex:%d, ID:%s, PW:%s\n", stAccount[i].nIndex, stAccount[i].acID, stAccount[i].acPW);
 			if (strcmp(stAccount[i].acID, "guest") == 0)
 			{
 				if (nLanguage == LANGUAGE_EN)
@@ -58,7 +57,6 @@ void maccount_fix_with_language(int nLanguage)
 			}
 		}
 	}
-//	Printf("xian stAccount set over\n");
 	//修改后立刻保存
 	_maccount_save();
 }
@@ -84,7 +82,7 @@ static int __maccount_read()
 	buffer = malloc(len);
 	if (!buffer)
 	{
-		Printf("ERROR: Failed malloc memory\n");
+		printf("failed malloc memory\n");
 		fclose(fIn);
 		return -1;
 	}
@@ -163,7 +161,7 @@ static S32 _maccount_save()
 	fOut=fopen(ACCOUNT_FILE, "wb");
 	if(!fOut)
 	{
-		Printf("Failed open account file: %s, err: %s\n", ACCOUNT_FILE, strerror(errno));
+		printf("failed open account file: %s, err: %s\n", ACCOUNT_FILE, strerror(errno));
 		return -1;
 	}
 	memcpy(list, stAccount, sizeof(stAccount));

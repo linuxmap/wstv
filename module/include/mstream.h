@@ -1,13 +1,6 @@
-
-/*	mstream.h
-	Copyright (C) 2011 Jovision Technology Co., Ltd.
-	此文件用来组织视频相关代码
-	更改历史详见svn版本库日志
-*/
-
 #ifndef __MSTREAM_H__
 #define __MSTREAM_H__
-#include <jv_ai.h>
+#include "jv_ai.h"
 #include "jv_stream.h"
 #ifdef __cplusplus
 extern "C" {
@@ -18,7 +11,6 @@ typedef struct
 	int ior_reverse;				//是否反选
 	RECT roi[MAX_ROI_REGION];		//范围，以VIWidthxVIHeight为基准
 	int roiWeight;				///< 权重。其值介于  0 ~ 255之间
-//	jv_stream_roi jv_roi;			//roi信息
 }mstream_roi_t;
 
 typedef struct
@@ -39,9 +31,7 @@ typedef struct
 	int maxQP;
 
 	BOOL bRectStretch; //对于16：9与4：3之间的差异，是拉伸，还是裁剪。为真时表示拉伸
-	//感 兴趣区域编码
-//	mstream_roi_t mroi;
-	jv_payload_type_e vencType;		// 视频编码协议类型
+	VENC_TYPE vencType;		// 视频编码协议类型
 	BOOL bLDCEnable;
 	int  nLDCRatio;
 }mstream_attr_t;

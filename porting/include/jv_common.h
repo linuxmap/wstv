@@ -33,6 +33,7 @@
 #include <mqueue.h>
 #include <stdarg.h>
 
+#include "defines.h"
 #include "jv_product_def.h"
 
 //是否调试版本
@@ -183,24 +184,6 @@ typedef int					S32;
 typedef unsigned long long	U64;
 typedef long long			S64;
 
-typedef	void				VOID;
-
-#ifndef BOOL	// b
-#define BOOL int
-#endif
-
-#ifndef TRUE
-#define TRUE 1
-#endif
-
-#ifndef FALSE
-#define FALSE 0
-#endif
-
-#ifndef NULL
-	#define NULL			0L
-#endif
-
 #ifdef OK
 #undef OK
 #endif
@@ -326,62 +309,26 @@ typedef enum{
 	SENSOR_OV9712      ,
 	SENSOR_OV9732      ,
 	SENSOR_AR0130      ,
-	SENSOR_M034        ,
-	SENSOR_IMX122		,
 	SENSOR_AR0330      ,
-	SENSOR_H22         ,
-	SENSOR_IMX138      ,
-	SENSOR_IMX138_NEW  ,      //全功能版138更换了I2C总线，在此处标志是全功能版的imx138
-	SENSOR_GC1004      ,
-	SENSOR_GC1024     ,
 	SENSOR_OV2710      ,
-	SENSOR_AR0130_4L   ,    //四颗灯的ar0130
-	SENSOR_BF3116      ,    //BYD 3116 
 	SENSOR_OV9750      ,
-	SENSOR_SC1035      ,
 	SENSOR_IMX178      ,
-	SENSOR_OV2710_HI   ,    //对应2710  40帧频的版本
-	SENSOR_H42         ,
 	SENSOR_OV4689      ,    
-	SENSOR_PO4100	   ,
-	SENSOR_PO1210	   ,
-	SENSOR_OV4689_3M   ,
 	SENSOR_AR0230      ,
-	SENSOR_BF3016      , 
 	SENSOR_IMX290      ,
 	SENSOR_IMX123      ,
 	SENSOR_OV5658      ,
-	SENSOR_IMX185	   ,
 	SENSOR_IMX225      ,
 	SENSOR_BG0701      ,
-	SENSOR_SC1045      ,
-	SENSOR_NT99231     ,
 	SENSOR_BT601       ,	//动力机芯模拟sensor型号
 	SENSOR_AR0237	   ,   //AR0237MIPI
 	SENSOR_AR0237DC	   ,   //AR0237DC
-	SENSOR_GC2003	   ,
 	SENSOR_OV9750m	   ,  //mipi接口的ov9750
-	SENSOR_BG0803      ,
-	SENSOR_SC2035      ,
-	SENSOR_IMX323      ,
-	SENSOR_SC1135      ,
-	SENSOR_OV9752      ,
 	SENSOR_SC2045      ,
 	SENSOR_MN34227     ,
-	SENSOR_SC1145      ,
 	SENSOR_SC2135      ,
-	SENSOR_MN34220	   ,
 	SENSOR_OV2735	   ,
 	SENSOR_IMX291      ,//50
-	SENSOR_IMX291_MX129Z18X,
-	SENSOR_PS5230      ,
-	SENSOR_SC3035      ,
-	SENSOR_IMX323Q,
-	SENSOR_IMX291_YS200W20X,
-	SENSOR_IMX326,
-	SENSOR_AR0237_YS200W20X,
-	SENSOR_IMX291_MX200W2_8,
-	SENSOR_IMX291_YS200W20AT,
 	SENSOR_SC2235,
 	SENSOR_MAX
 }SensorType_e;
@@ -398,7 +345,6 @@ typedef enum
 	IRCUT_SW_BY_ADC1,		//ADC通道1
 	IRCUT_SW_BY_ADC2,		//ADC通道2
 	IRCUT_SW_BY_ISP ,      //软硬结合或者纯软光敏
-
 }ENUM_IRSW_MODE;
 
 typedef enum{

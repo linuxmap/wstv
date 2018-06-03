@@ -10,7 +10,6 @@
 #include <utl_timer.h>
 #include <utl_iconv.h>
 #include <utl_ifconfig.h>
-#include <utl_net_lan.h>
 #include <jv_isp.h>
 #include <SYSFuncs.h>
 #include <sp_connect.h>
@@ -53,7 +52,6 @@ static BOOL __ipcinfo_fd_check(int tid,void *param)
 	buf[ret-1] = '\0';
 	pclose(fd);
 	int fdcnt = atoi(buf);
-//	printf("-----------------------%d\n",fdcnt);
 	if(fdcnt>200 && fdcnt <500)
 		mlog_write("Handle exception:handle count [%d]",fdcnt);
 	else if(fdcnt>=500 && fdcnt<=800)
@@ -542,17 +540,6 @@ static BOOL __ipcinfo_reboot_timer(int tid, void *param)
 	time_t tt = time(NULL);
 	localtime_r(&tt, &tm);
 
-	//开机时间改为15年1月1日了，下边的判读失效
-//	if (tm.tm_year < 2010-1900
-//			&& tm.tm_mon == 0
-//			&& tm.tm_mday == 1)
-//	{
-////		printf("time not correct now\n");
-//		return TRUE;
-//	}
-
-//	printf("%s  reboot set:%d-%d:00:00;  now:%d-%d:%d:%d\n", __FUNCTION__, day, ipcinfo.rebootHour,
-//	    tm.tm_wday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 	if (day == -1 || day == tm.tm_wday)
 	{
 		if ((ipcinfo.rebootHour==tm.tm_hour) && (tm.tm_min==0) 

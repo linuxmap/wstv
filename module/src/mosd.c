@@ -268,7 +268,6 @@ int mchnosd_init(void)
 	/********************************初始化头信息lk20131214************************/
 	flpen = (U8*)osdstatus.pCN;
 	osdstatus.flheader = (FL_Header*)flpen;
-//	printf("**********************YSIZE:%d",osdstatus.flheader->YSize);
 	/*****************************************************************************/
 	pthread_mutex_init(&osdstatus.mutex, NULL);
 	pthread_mutex_init(&osdstatus_snap.mutex, NULL);
@@ -414,7 +413,6 @@ char *mchnosd_time2str(char *timeFormat, time_t nsecond, char *str)
 			*p++ = *timeFormat++;
 		}
 	}
-	//Printf("time str: %s\n", str);
 	return str;
 }
 
@@ -496,12 +494,10 @@ int mchnosd_get_str_bmp_ex(char *str, unsigned char *buffer, int width, int font
 		pData = (U16*)(buffer + pos);
 		if(acOSD[i] < 0x20)
 			acOSD[i]=0x20;
-		//printf("*********************%x,%x***********\n",acOSD[i],acOSD[i+1]);
 		if(acOSD[i] > 0x7F) //中文
 		{
 			//根据字库头信息，定位字符在字库中的位置lk20131214
 			index = GetPosWithMbcs(acOSD[i],acOSD[i+1]);
-			//printf("*********************%x,%x***********\n",acOSD[i],acOSD[i+1]);
 			pRead8 = (U8*)(osdstatus.pCN + sizeof(FL_Header) + index * (FONT_HEIGHT/8*FONT_HEIGHT));
 			//pRead8 = (U8*)(osdstatus.pCN + (94*(acOSD[i]-0xA1) + (acOSD[i+1]-0xA1))*(FONT_HEIGHT*FONT_HEIGHT/8));
 			for (j=0; j<fontsize; j++)

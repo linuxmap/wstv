@@ -1182,7 +1182,7 @@ HI_S32 SAMPLE_COMM_VI_SetMipiAttr(BOOL bWDREnable)
 		if(bWDREnable)
 			pstcomboDevAttr = &LVDS_4lane_SENSOR_IMX123_12BIT_WDR_ATTR;
 	}
-	else if(sns_type == SENSOR_OV4689||sns_type ==SENSOR_OV4689_3M)
+	else if(sns_type == SENSOR_OV4689)
 	{
 		pstcomboDevAttr = &MIPI_4lane_SENSOR_OV4689_12BIT_ATTR;
 
@@ -1374,16 +1374,6 @@ HI_S32 SAMPLE_COMM_ISP_Init(HI_BOOL WdrEnble)
         stPubAttr.stWndRect.u32Width    = VI_WIDTH;
         stPubAttr.stWndRect.u32Height   = VI_HEIGHT;
 	}
-	else if(sns_type == SENSOR_OV4689_3M)
-	{
-		stPubAttr.enBayer               = BAYER_BGGR;
-        stPubAttr.f32FrameRate          = frm;
-        stPubAttr.stWndRect.s32X        = 0;
-        stPubAttr.stWndRect.s32Y        = 0;
-        stPubAttr.stWndRect.u32Width    = VI_WIDTH;
-        stPubAttr.stWndRect.u32Height   = VI_HEIGHT;
-
-	}
 	else if(sns_type == SENSOR_OV2710)
 	{
 		stPubAttr.enBayer               = BAYER_BGGR;
@@ -1519,14 +1509,6 @@ HI_S32 SAMPLE_COMM_VI_StartDev()
 	else if(sns_type == SENSOR_OV2710)
 	{
 		devAttr = &DEV_ATTR_OV2710_DC_1080P;
-		devAttr->stDevRect.s32X = 0;
-		devAttr->stDevRect.s32Y = 0;
-		devAttr->stDevRect.u32Width  = VI_WIDTH;
-		devAttr->stDevRect.u32Height = VI_HEIGHT;
-	}
-	else if(sns_type == SENSOR_OV4689_3M)
-	{
-		devAttr = &DEV_ATTR_MIPI_BASE_OV4689_3M;
 		devAttr->stDevRect.s32X = 0;
 		devAttr->stDevRect.s32Y = 0;
 		devAttr->stDevRect.u32Width  = VI_WIDTH;
@@ -2093,14 +2075,6 @@ static void __check_sensor(void)
 				VI_HEIGHT = 1080;
 				hwinfo.encryptCode = ENCRYPT_200W;
 			}
-			else if (strcmp(str, "ov4689_3m") == 0)
-			{
-				sns_type = SENSOR_OV4689_3M;
-				//strcpy(hwinfo.type,"N91-HC-W");
-				VI_WIDTH = 2048;
-				VI_HEIGHT = 1520;
-				hwinfo.encryptCode = ENCRYPT_300W;
-			}
 			else if(strcmp(str, "ar0330") == 0)
 			{
 				sns_type = SENSOR_AR0330;
@@ -2243,12 +2217,6 @@ static void __check_sensor(void)
 			cmd = "SENSOR=ov4689";
 			hwinfo.encryptCode = ENCRYPT_300W;
 		}
-		else if(sensor == SENSOR_OV4689_3M)
-		{
-			sns_type = SENSOR_OV4689_3M;
-			cmd = "SENSOR=ov4689_3m";
-			hwinfo.encryptCode = ENCRYPT_300W;
-		}
 		else if(sensor == SENSOR_AR0330)
 		{
 			sns_type = SENSOR_AR0330;
@@ -2350,10 +2318,6 @@ static VOID InitVI(int mode)
 	if(sns_type == SENSOR_IMX178)
 	{
 		s32Ret = _get_sensor_ptr(SENSOR_SO_BASE_DIR"/libsns_imx178.so", &sensor);
-	}
-	else if(sns_type == SENSOR_OV4689||sns_type == SENSOR_OV4689_3M)
-	{
-		s32Ret = _get_sensor_ptr(SENSOR_SO_BASE_DIR"/libsns_ov4689.so", &sensor);
 	}
 	else if(sns_type == SENSOR_AR0330)
 	{

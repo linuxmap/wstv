@@ -604,7 +604,6 @@ static void *OnPtzPatrolThread(void *param)
 				{
 					if (g_PtzStatus[i].guardLastTime + g_PtzStatus[i].pGuardInf.guardTime < now)
 					{
-//						Printf("guadlast: %d, %d, %d\n", (int)g_PtzStatus[i].guardLastTime , g_PtzStatus[i].pGuardInf.guardTime , (int)now);
 						switch(g_PtzStatus[i].pGuardInf.guardType)
 						{
 						default:
@@ -727,7 +726,6 @@ void inline PtzUpStart(U32 nCh, S32 nSpeed)
     }
     else
     {
-        //Printf("PTZ Control:DecoderDownStart\n");
         DecoderDownStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate, nSpeed);
     }
     //释放互斥量
@@ -760,12 +758,10 @@ void inline PtzUpStop(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bUpDownSwitch)
     {
-        //Printf("PTZ Control:DecoderUpStop\n");
         DecoderUpStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-        //Printf("PTZ Control:DecoderDownStop\n");
         DecoderDownStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -810,12 +806,10 @@ void inline PtzDownStart(U32 nCh, S32 nSpeed)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bUpDownSwitch)
     {
-        //Printf("PTZ Control:DecoderDownStart\n");
         DecoderDownStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate, nSpeed);
     }
     else
     {
-        //Printf("PTZ Control:DecoderUpStart\n");
         DecoderUpStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate, nSpeed);
     }
 
@@ -850,12 +844,10 @@ void inline PtzDownStop(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bUpDownSwitch)
     {
-        //Printf("PTZ Control:DecoderDownStop\n");
         DecoderDownStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-        //Printf("PTZ Control:DecoderUpStop\n");
         DecoderUpStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -900,12 +892,10 @@ void inline PtzLeftStart(U32 nCh, S32 nSpeed)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bLeftRightSwitch)
     {
-        //Printf("PTZ Control:DecoderLeftStart\n");
         DecoderLeftStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate, nSpeed);
     }
     else
     {
-        //Printf("PTZ Control:DecoderRightStart\n");
         DecoderRightStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate, nSpeed);
     }
 
@@ -940,12 +930,10 @@ void inline PtzLeftStop(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bLeftRightSwitch)
     {
-        //Printf("PTZ Control:DecoderLeftStop\n");
         DecoderLeftStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-        //Printf("PTZ Control:DecoderRightStop\n");
         DecoderRightStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -990,12 +978,10 @@ void inline PtzRightStart(U32 nCh, S32 nSpeed)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bLeftRightSwitch)
     {
-        //Printf("PTZ Control:DecoderRightStart\n");
         DecoderRightStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate, nSpeed);
     }
     else
     {
-        //Printf("PTZ Control:DecoderLeftStart\n");
         DecoderLeftStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate, nSpeed);
     }
 
@@ -1030,12 +1016,10 @@ void inline PtzRightStop(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bLeftRightSwitch)
     {
-        //Printf("PTZ Control:DecoderRightStop\n");
         DecoderRightStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-        //Printf("PTZ Control:DecoderLeftStop\n");
         DecoderLeftStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -1095,7 +1079,6 @@ void PtzPanTiltStart(U32 nCh, BOOL bLeft, BOOL bUp, int leftSpeed, int upSpeed)
     if (pPtz->bLeftRightSwitch)
     {
     	bLeft = !bLeft;
-        //Printf("PTZ Control:DecoderRightStop\n");
     }
 	DecoderPanTiltStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate, bLeft, bUp, leftSpeed, upSpeed);
 
@@ -1142,17 +1125,14 @@ void inline PtzIrisOpenStart(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bIrisZoomSwitch)
     {
-       // Printf("PTZ Control:DecoderIrisOpenStart\n");
         DecoderIrisOpenStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (0 == pPtz->bZoomSwitch)
     {
-      //  Printf("PTZ Control:DecoderZoomInStart\n");
         DecoderZoomInStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-      //  Printf("PTZ Control:DecoderZoomOutStart\n");
         DecoderZoomOutStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -1171,17 +1151,14 @@ void inline PtzIrisOpenStop(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bIrisZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderIrisOpenStop\n");
         DecoderIrisOpenStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (0 == pPtz->bZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderZoomInStop\n");
         DecoderZoomInStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-        //Printf("PTZ Control:DecoderZoomOutStop\n");
         DecoderZoomOutStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -1197,17 +1174,14 @@ void inline PtzIrisCloseStart(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bIrisZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderIrisCloseStart\n");
         DecoderIrisCloseStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (0 == pPtz->bZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderZoomOutStart\n");
         DecoderZoomOutStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-        //Printf("PTZ Control:DecoderZoomInStart\n");
         DecoderZoomInStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -1226,17 +1200,14 @@ void inline PtzIrisCloseStop(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bIrisZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderIrisCloseStop\n");
         DecoderIrisCloseStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (0 == pPtz->bZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderZoomOutStop\n");
         DecoderZoomOutStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-        //Printf("PTZ Control:DecoderZoomInStop\n");
         DecoderZoomInStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -1252,17 +1223,14 @@ void inline PtzFocusNearStart(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bFocusZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderFocusNearStart\n");
         DecoderFocusNearStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (0 == pPtz->bZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderZoomInStart\n");
         DecoderZoomInStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-        //Printf("PTZ Control:DecoderZoomOutStart\n");
         DecoderZoomOutStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -1280,17 +1248,14 @@ void inline PtzFocusNearStop(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bFocusZoomSwitch)
     {
-       // Printf("PTZ Control:DecoderFocusNearStop\n");
         DecoderFocusNearStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (0 == pPtz->bZoomSwitch)
     {
-      // Printf("PTZ Control:DecoderZoomInStop\n");
         DecoderZoomInStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-      //  Printf("PTZ Control:DecoderZoomOutStop\n");
         DecoderZoomOutStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -1307,17 +1272,14 @@ void inline PtzFocusFarStart(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bFocusZoomSwitch)
     {
-       // Printf("PTZ Control:DecoderFocusFarStart\n");
         DecoderFocusFarStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (0 == pPtz->bZoomSwitch)
     {
-       // Printf("PTZ Control:DecoderZoomOutStart\n");
         DecoderZoomOutStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-       // Printf("PTZ Control:DecoderZoomInStart\n");
         DecoderZoomInStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -1335,17 +1297,14 @@ void inline PtzFocusFarStop(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (0 == pPtz->bFocusZoomSwitch)
     {
-      //  Printf("PTZ Control:DecoderFocusFarStop\n");
         DecoderFocusFarStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (0 == pPtz->bZoomSwitch)
     {
-      //  Printf("PTZ Control:DecoderZoomOutStop\n");
         DecoderZoomOutStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-     //  Printf("PTZ Control:DecoderZoomInStop\n");
         DecoderZoomInStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -1362,22 +1321,18 @@ void inline PtzZoomOutStart(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (1 == pPtz->bIrisZoomSwitch)
     {
-      //  Printf("PTZ Control:DecoderIrisOpenStart\n");
         DecoderIrisOpenStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (1 == pPtz->bFocusZoomSwitch)
     {
-     //   Printf("PTZ Control:DecoderFocusNearStart\n");
         DecoderFocusNearStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (0 == pPtz->bZoomSwitch)
     {
-     //   Printf("PTZ Control:DecoderZoomOutStart\n");
         DecoderZoomOutStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-       // Printf("PTZ Control:DecoderZoomOutStart\n");
         DecoderZoomInStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -1395,22 +1350,18 @@ void inline PtzZoomOutStop(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (1 == pPtz->bIrisZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderIrisOpenStop\n");
         DecoderIrisOpenStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (1 == pPtz->bFocusZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderFocusNearStop\n");
         DecoderFocusNearStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (0 == pPtz->bZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderZoomOutStop\n");
         DecoderZoomOutStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-        //Printf("PTZ Control:DecoderZoomInStop\n");
         DecoderZoomInStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -1427,22 +1378,18 @@ void inline PtzZoomInStart(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (1 == pPtz->bIrisZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderIrisCloseStart\n");
         DecoderIrisCloseStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (1 == pPtz->bFocusZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderFocusFarStart\n");
         DecoderFocusFarStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (0 == pPtz->bZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderZoomInStart\n");
         DecoderZoomInStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-        //Printf("PTZ Control:DecoderZoomOutStart\n");
         DecoderZoomOutStart(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -1460,22 +1407,18 @@ void inline PtzZoomInStop(U32 nCh)
     PPTZ pPtz = g_PtzStatus[nCh].pPtz;
     if (1 == pPtz->bIrisZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderIrisCloseStop\n");
         DecoderIrisCloseStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (1 == pPtz->bFocusZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderFocusFarStop\n");
         DecoderFocusFarStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else if (0 == pPtz->bZoomSwitch)
     {
-        //Printf("PTZ Control:DecoderZoomInStop\n");
         DecoderZoomInStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
     else
     {
-        //Printf("PTZ Control:DecoderZoomOutStop\n");
         DecoderZoomOutStop(jv_rs485_get_fd(), pPtz->nAddr, pPtz->nProtocol, pPtz->nBaudRate);
     }
 
@@ -1593,7 +1536,6 @@ void inline PtzLocatePreset(U32 nCh, S32 nPreset)
                         0);
 	}
 
-    //tcdrain(jv_rs485_get_fd());
     Printf("goto preset %d\n", nPreset);
 
     //释放互斥量
@@ -1659,34 +1601,16 @@ void inline PtzAutoStop(U32 nCh)
 //返回值   : 0:成功; -1:到最大数量; -2:该预置点已经存在(可以添加重复预置点，去掉)
 S32 AddPatrolNod(PTZ_PATROL_INFO *pPatrol, U32 nPreset, U32 nStayTime)
 {
-//    PPTZ pPtz = &GetGlobal_PTZ()[nCh];
-    //Printf ("nch=%d, preset=%d, staytime=%d\n",nCh, nPreset, nStayTime);
-
     if(pPatrol->nPatrolSize >= MAX_PATROL_NOD)
     {
-        return -1;      //
+        return -1;
     }
 
-//    //在当前链表中找要添加的预置点
-//    for (i=0; i<pPatrol->nPatrolSize; i++)
-//    {
-//        if (pPatrol->aPatrol[i].nPreset == nPreset)
-//        {
-//            return -2;
-//        }
-//    }
-
-//    if (i == pPatrol->nPatrolSize)
-//    {
-	//添加
-	//printf ("===1===    nPatrolSize=%d, preset=%d, staytime=%d\n", pPatrol->nPatrolSize, nPreset, nStayTime);
 	pPatrol->aPatrol[pPatrol->nPatrolSize].nPreset = nPreset;
     if(nStayTime < 5)
         nStayTime = 5;
 	pPatrol->aPatrol[pPatrol->nPatrolSize].nStayTime = nStayTime;
 	pPatrol->nPatrolSize++;
-    //printf ("===2===   nPatrolSize=%d,  preset=%d, staytime=%d\n", pPatrol->nPatrolSize, nPreset, nStayTime);
-//    }
 
     return 0;
 }
@@ -1727,7 +1651,6 @@ S32 ModifyPatrolNod(PTZ_PATROL_INFO *pPatrol, U32 nOldPreset, U32 nNewPreset, U3
 {
     U32 i;
     S32 index = -1;
-    //Printf ("nch=%d, preset=%d, staytime=%d\n",nCh, nPreset, nStayTime);
 
     //修改值和待修改值一致，直接查找修改
     if (nOldPreset == nNewPreset)

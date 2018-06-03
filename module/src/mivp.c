@@ -578,7 +578,6 @@ static void __IvpAlarmOut(Alarm_Out_t *alarm_param, _UINT32 type)
 		{
 			if (alarm_param->bOutEMail)
 			{
-				//Printf("Now malarm_sendmail\n");
 				if(type == e_IPV_ALARM_TYPE_HIDE)	//遮挡报警
 					malarm_sendmail(0, mlog_translate("MIVA Alarm: IVA Video Covered Alarm Start")); //借用mlog的多语言管理
 				else if (type == e_IPV_ALARM_TYPE_ABANDONED_OBJ)

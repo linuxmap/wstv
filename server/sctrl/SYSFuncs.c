@@ -1917,7 +1917,7 @@ VOID ReadConfigInfo()
     s_stSensorAttr[i].antifog = 0;
 	s_stSensorAttr[i].light= 4;
     s_stSensorAttr[i].bSupportWdr=hwinfo.wdrBsupport;
-	if(hwinfo.sensor == SENSOR_M034 || hwinfo.sensor == SENSOR_AR0230)
+	if(hwinfo.sensor == SENSOR_AR0230)
 	{
 #if (defined PLATFORM_hi3516D)
 		s_stSensorAttr[i].bEnableWdr=FALSE;
@@ -1947,20 +1947,15 @@ VOID ReadConfigInfo()
     s_stSensorAttr[i].effect_flag=1<<EFFECT_AWB;
     
     if (hwinfo.sensor == SENSOR_OV9712
-    		|| hwinfo.sensor == SENSOR_H22
-    		|| hwinfo.sensor == SENSOR_GC1004|| hwinfo.sensor == SENSOR_GC1024
     		|| hwinfo.sensor == SENSOR_AR0330|| hwinfo.sensor == SENSOR_OV2710
-    		|| hwinfo.sensor == SENSOR_AR0130_4L||hwinfo.sensor == SENSOR_IMX122
-    		|| hwinfo.sensor == SENSOR_IMX138 || hwinfo.sensor == SENSOR_AR0130
-    	 	|| hwinfo.sensor == SENSOR_BF3116 || hwinfo.sensor == SENSOR_SC1035
-    	 	|| hwinfo.sensor == SENSOR_OV9750 || hwinfo.sensor == SENSOR_OV2710_HI||hwinfo.sensor==SENSOR_OV9732
-    	 	|| hwinfo.sensor == SENSOR_H42 || hwinfo.sensor == SENSOR_PO4100 ||hwinfo.sensor == SENSOR_PO1210
+    		|| hwinfo.sensor == SENSOR_AR0130
+    	 	|| hwinfo.sensor == SENSOR_OV9750 ||hwinfo.sensor==SENSOR_OV9732
     	 	|| hwinfo.sensor == SENSOR_AR0230 || hwinfo.sensor == SENSOR_IMX123 || hwinfo.sensor == SENSOR_IMX178
-    	 	|| hwinfo.sensor == SENSOR_OV4689 || hwinfo.sensor == SENSOR_OV4689_3M||hwinfo.sensor == SENSOR_SC1045
-    	 	|| hwinfo.sensor == SENSOR_BG0701 || hwinfo.sensor == SENSOR_IMX290 || hwinfo.sensor == SENSOR_GC2003
-    	 	|| hwinfo.sensor == SENSOR_BG0803 || hwinfo.sensor == SENSOR_AR0237 || hwinfo.sensor == SENSOR_AR0237DC
-    	 	|| hwinfo.sensor == SENSOR_SC1045 || hwinfo.sensor == SENSOR_SC2035 || hwinfo.sensor == SENSOR_SC2045
-    	 	|| hwinfo.sensor == SENSOR_SC2135 || hwinfo.sensor == SENSOR_SC1135 || hwinfo.sensor == SENSOR_SC1145
+    	 	|| hwinfo.sensor == SENSOR_OV4689
+    	 	|| hwinfo.sensor == SENSOR_BG0701 || hwinfo.sensor == SENSOR_IMX290
+    	 	|| hwinfo.sensor == SENSOR_AR0237 || hwinfo.sensor == SENSOR_AR0237DC
+    	 	|| hwinfo.sensor == SENSOR_SC2045
+    	 	|| hwinfo.sensor == SENSOR_SC2135
     	 	|| hwinfo.sensor == SENSOR_OV2735 || hwinfo.sensor == SENSOR_MN34227 || hwinfo.sensor == SENSOR_SC2235
     		)
     {
@@ -2418,7 +2413,7 @@ SETTING:
 	int flag = 0;
 	int tmpWidth,tmpHeight;
 	
-	if((hwinfo.sensor == SENSOR_BF3116 && s_stAttr[0].height >= 960) || (hwinfo.sensor == SENSOR_AR0130 && s_stAttr[0].height > 960))
+	if((hwinfo.sensor == SENSOR_AR0130 && s_stAttr[0].height > 960))
 	{
 		tmpWidth = s_stAttr[0].width;
 		tmpHeight = s_stAttr[0].height;

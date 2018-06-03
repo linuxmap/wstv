@@ -485,15 +485,12 @@ int jv_ai_get_frame(int channelid, jv_audio_frame_t *frame)
     AUDIO_STREAM_S stStream;
 
 	ret = HI_MPI_AENC_GetStream(channelid+AI_OFFSET, &stStream, 0);
-//	if (channelid == 0)
-//		Printf("chid: %d, ret: %d\n", channelid, ret);
 	if (ret == HI_SUCCESS)
 	{
 		if (sAudioAttr[channelid].encType == JV_AUDIO_ENC_PCM)
 		{
 			int i;
 			unsigned short *src = (unsigned short *)stStream.pStream;
-//			printf("src: 0x%04x, 0x%04x,   ", src[0], src[1]);
 			stStream.u32Len /= 2;
 			for (i=0;i<stStream.u32Len;i++)
 			{
@@ -515,7 +512,6 @@ int jv_ai_get_frame(int channelid, jv_audio_frame_t *frame)
 			}
 			frame->u32Len = stStream.u32Len;
 
-//			printf("src: 0x%02x, 0x%02x\n", frame->aData[0], frame->aData[1]);
 			if (0)
 			{
 				int j;
@@ -531,7 +527,6 @@ int jv_ai_get_frame(int channelid, jv_audio_frame_t *frame)
 						{
 							printf(" ");
 						}
-						//i+=10;
 						printf("n\n");
 					}
 				}
@@ -539,7 +534,6 @@ int jv_ai_get_frame(int channelid, jv_audio_frame_t *frame)
 		}
 		else
 		{
-//			Printf("data: %p, len: %d\n", stStream.pStream, stStream.u32Len);
 			//海思有4字节的帧头
 			frame->u32Len = stStream.u32Len-4;
 			memcpy(frame->aData, &stStream.pStream[4], frame->u32Len);
@@ -547,7 +541,6 @@ int jv_ai_get_frame(int channelid, jv_audio_frame_t *frame)
 			if (0)
 			{
 				int i;
-
 				for (i=0;i<16;i++)
 					printf("%02x, ", frame->aData[i]);
 				printf("\n");

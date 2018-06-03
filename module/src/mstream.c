@@ -393,13 +393,11 @@ popen111(const char *cmdstring, const char *type)
 			Printf("calloc Failed: maxfd: %d, pid_t: %d\n", maxfd, sizeof(pid_t));
             return(NULL);  
     }  
-  Printf("test\n");
     if (pipe(pfd) < 0)  
     {
 		Printf("pipe Failed\n");
         return(NULL);   /* errno set by pipe() */  
     }
-	Printf("test\n");
   
     if ( (pid = fork()) < 0)  
     {
@@ -407,7 +405,6 @@ popen111(const char *cmdstring, const char *type)
         return(NULL);   /* errno set by fork() */  
     }
     else if (pid == 0) {                            /* child */  
-		Printf("test\n");
         if (*type == 'r') {  
             close(pfd[0]);  
             if (pfd[1] != STDOUT_FILENO) {  
@@ -429,17 +426,13 @@ popen111(const char *cmdstring, const char *type)
         execl(SHELL, "sh", "-c", cmdstring, (char *) 0);  
         _exit(127);  
     }  
-                                /* parent */  
-								Printf("test\n");
     if (*type == 'r') {  
-		Printf("test\n");
         close(pfd[1]);  
         if ( (fp = fdopen(pfd[0], type)) == NULL)  
         {
 			Printf("fdopen Failed\n");
             return(NULL);  
         }
-		Printf("test\n");
     } else {  
         close(pfd[0]);  
         if ( (fp = fdopen(pfd[1], type)) == NULL)  
@@ -448,9 +441,7 @@ popen111(const char *cmdstring, const char *type)
 		return(NULL);  
 	}
     }  
-	Printf("test\n");
     childpid[fileno(fp)] = pid; /* remember child pid for this fd */  
-	Printf("test\n");
     return(fp);  
 }  
 
@@ -624,7 +615,6 @@ int devGetInfoMng(DEV_INFO_TYPEs type, char *buf, int chn, int platformId)
         }
         case e_DEV_INFO_VIDEO_CODEC: //返回视频编码
         {
-        	//Printf(".....................devGetInfoMng e_DEV_INFO_VIDEO_CODEC\n");
         	switch(status.streamlist[0].vencType)
         	{
         	default:
@@ -638,7 +628,6 @@ int devGetInfoMng(DEV_INFO_TYPEs type, char *buf, int chn, int platformId)
         {
         	if(!status.streamlist[0].bAudioEn)
         		return -1;
-            //return AC_G711A;	//返回音频编码
 			jv_audio_attr_t ai_attr;
     		jv_ai_get_attr(0, &ai_attr);
 			if(buf != NULL)
@@ -646,45 +635,37 @@ int devGetInfoMng(DEV_INFO_TYPEs type, char *buf, int chn, int platformId)
 				AUDIO_CODEC_ATTR* audio_attr = (AUDIO_CODEC_ATTR*)buf;
 				audio_attr->MicDev = 1;
 				audio_attr->sampleRate = ai_attr.sampleRate;
-	//			memcpy(buf, (char *)&audio_attr, sizeof(audio_attr));
-
 			}
     		switch (ai_attr.encType)
     		{
     		case JV_AUDIO_ENC_ADPCM: 
                 {
-                    Printf(".....................devGetInfoMng e_DEV_INFO_AUDIO_CODEC   audioType:  AC_ADPCM\n");
         			return AC_ADPCM;
         		}
     		case JV_AUDIO_ENC_G711_A:
                 {
-                	Printf(".....................devGetInfoMng e_DEV_INFO_AUDIO_CODEC   audioType:  AC_G711A\n");
         			return AC_G711A;
         		}
     		case JV_AUDIO_ENC_G711_U:
                 {
-                	Printf(".....................devGetInfoMng e_DEV_INFO_AUDIO_CODEC   audioType:  AC_G711U\n");
         			return AC_G711U;
         		}
     		case JV_AUDIO_ENC_G726_40K:
                 {
-                	Printf(".....................devGetInfoMng e_DEV_INFO_AUDIO_CODEC   audioType:  AC_G726\n");
         			return AC_G726;
         		}
 			case JV_AUDIO_ENC_AAC:
                 {
-                	Printf(".....................devGetInfoMng e_DEV_INFO_AUDIO_CODEC   audioType:  AC_AAC\n");
         			return AC_AAC;
         		}
             default:
                 {
-                	Printf(".....................devGetInfoMng e_DEV_INFO_AUDIO_CODEC   audioType:  AC_G711U\n");
         			return AC_G711U;
         		}
     		}
         }
         case e_DEV_INFO_USER_INFO:   //获取用户账号信息,填充MNG_ACC
-        {printf(".....................devGetInfoMng e_DEV_INFO_USER_INFO\n");
+		{
         	MNG_ACC user = {0};
             MNG_ACC *tmp = (MNG_ACC*)buf;
         	ACCOUNT *act;
@@ -697,7 +678,6 @@ int devGetInfoMng(DEV_INFO_TYPEs type, char *buf, int chn, int platformId)
         		act = maccount_get(i);
                 if(strcmp(tmp->name, act->acID) == 0)
                 {
-                    printf("====================%s:%s(%s)   %d\n",act->acID,act->acPW,act->acDescript,act->nPower);
                     //user.level = act->nPower;
                     strncpy(user.description,act->acDescript,16);
                     strcpy(user.name,act->acID);

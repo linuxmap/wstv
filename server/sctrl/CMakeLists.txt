@@ -111,6 +111,11 @@ if(IVP_SUPPORT)
 		)
 endif()
 
+if (TUYA_SUPPORT)
+	set(TUYA_LIBS IOTCAPIs AVAPIs tuya_ipc)
+	set(TUYA_SVR_LIB tuya)
+endif()
+
 set(SMARTCONFIG9083
 	smartconfig
 	pcap
@@ -160,6 +165,7 @@ endif()
 
 TARGET_LINK_LIBRARIES(sctrl 
 					${YST_SVR_LIBS}
+					${TUYA_SVR_LIB}
 					${WEBER}
 					osd_server
 					${GB28181_LIBS}
@@ -183,6 +189,7 @@ TARGET_LINK_LIBRARIES(sctrl
 					nl80211
 					${JMC}
 					${YST_PROTOCOL_LIBS}
+					${TUYA_LIBS}
 					${OBSS_CLOUD_STORAGE}
 					#pool
 					PTZ

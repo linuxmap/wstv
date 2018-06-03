@@ -1551,7 +1551,7 @@ static void *thread_isp_helper(void *param)
 		//stExpAttr.stAuto.stSysGainRange.u32Max = 160*1024; 
 		//HI_MPI_ISP_SetExposureAttr(IspDev, &stExpAttr);
 	}
-	else if (sensor == SENSOR_OV4689||sensor == SENSOR_OV4689_3M)
+	else if (sensor == SENSOR_OV4689)
 	{
 
 	}

@@ -34,7 +34,6 @@
 #include <jv_ao.h>
 #include "mgb28181.h"
 #include <onvif-main.h>
-#include <utl_net_lan.h>
 #include <jv_gpio.h>
 #include <jv_ptz.h>
 #include "mvoicedec.h"
@@ -97,8 +96,6 @@ VOID *MainThrd(VOID *pArgs)
 			utl_system("sync;echo 3 > /proc/sys/vm/drop_caches");
 		}
 	}
-
-	Printf("Begin logout...\n");
 
 	return NULL;
 }
@@ -233,7 +230,6 @@ BOOL __check_valid(unsigned int dwCardType)
 	unsigned int lowData = dwCardType & 0x00FF;
 	if (lowData == 0x11)//没有11，11实际上是9712+
 		lowData = 0x10;
-//	printf("%d == %d\n", lowData , (hwinfo.encryptCode & 0xFF));
 	if (lowData == (hwinfo.encryptCode & 0xFF))
 		return TRUE;
 
@@ -255,7 +251,6 @@ BOOL __check_factory_flag()
 		if (access(gp.FactoryFlagPath, F_OK) == 0)
 		{
 			gp.bFactoryFlag = TRUE;
-			printf("=====Detect check_factorytest.flag %s!!!\n", gp.FactoryFlagPath);
 			break;
 		}
 	}
@@ -283,7 +278,7 @@ BOOL __check_factory_flag()
 
 	if (fp == NULL)
 	{
-		printf("Open factory test cfg file %s failed: %s!!!\n", gp.FactoryFlagPath, strerror(errno));
+		printf("Open factory cfg file %s failed: %s!\n", gp.FactoryFlagPath, strerror(errno));
 		return gp.bFactoryFlag;
 	}
 

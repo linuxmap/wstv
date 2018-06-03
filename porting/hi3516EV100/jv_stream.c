@@ -1568,7 +1568,7 @@ int jv_stream_set_attr(int channelid, jv_stream_attr *attr)
 	int rc = 0;
 	int oldWidth, oldHeight;
 	jv_venc_rc_mode_e oldRcMode;
-	jv_payload_type_e oldVencType;
+	VENC_TYPE oldVencType;
 	int oldFramerate = 0;
 
 	pthread_mutex_lock(&stream_mutex);

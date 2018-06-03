@@ -63,7 +63,7 @@ typedef enum{
 	JV_PT_JPEG = 2,
 	JV_PT_MJPEG = 3,
 	JV_PT_MAX
-}jv_payload_type_e;
+}VENC_TYPE;
 
 typedef enum
 {
@@ -98,7 +98,7 @@ typedef struct
 	BOOL bRectStretch; //对于16：9与4：3之间的差异，是拉伸，还是裁剪。为真时表示拉伸
 	//感 兴趣区域编码
 	jv_stream_roi roiInfo;
-	jv_payload_type_e vencType;		// 视频编码协议类型
+	VENC_TYPE vencType;		// 视频编码协议类型
 }jv_stream_attr;
 
 /**
@@ -268,7 +268,7 @@ int jv_stream_read(int channelid, jv_frame_info_t *info);
 
 
 #ifdef ZRTSP_SUPPORT
-#include <libzrtsp.h>
+#include "libzrtsp.h"
 int jv_stream_get_spspps(int chn,SPS_PPS *rtsp_sps_pps);
 NALU_TYPEs jv_stream_get_nalu_tpye();
 #endif

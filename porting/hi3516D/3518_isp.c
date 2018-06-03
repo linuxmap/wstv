@@ -1967,7 +1967,7 @@ int isp_ioctl(int fd,int cmd,unsigned long value)
 						uu_value += 52; 
 					uu_value = -1;
 				 }
-				 else if(sensorid == SENSOR_OV4689||sensorid == SENSOR_OV4689_3M)
+				 else if(sensorid == SENSOR_OV4689)
 				 {
 				 	uu_value = value;
 					if(strstr(hwinfo.product,"STC"))

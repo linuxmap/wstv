@@ -504,7 +504,6 @@ static void* __msensor_ircut_check(void *param)
 		usleep(1000 * 1000);
 	}
 
-	//Printf("sensor check running...%d == %d, nSensorDelay: %d\n", nSensorMode[0] ,nSensorMode[1], nSensorDelay);
 	return NULL;
 }
 

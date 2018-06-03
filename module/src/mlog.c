@@ -70,9 +70,7 @@ VOID mlog_write(char *strLog, ...)
 	if (!s_enable)
 		return ;
 	pthread_mutex_lock(&stLog.mutexLog);
-//	Printf("test\n");
 	strLog = mlog_translate(strLog);
-//	Printf("test\n");
 
 	va_start(list, strLog);
 

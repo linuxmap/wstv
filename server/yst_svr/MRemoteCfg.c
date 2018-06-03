@@ -26,7 +26,6 @@
 #include <utl_cmd.h>
 #include <utl_queue.h>
 #include <jv_ai.h>
-#include <utl_net_lan.h>
 #include "jv_ao.h"
 #include "sgrpc.h"
 #include "utl_iconv.h"
@@ -418,7 +417,7 @@ VOID SetDVRParam(REMOTECFG *remotecfg, char *pData)
 	{
 		mstream_get_param(nCh, &stAttr[nCh]);
 	}
-	jv_payload_type_e oldType = stAttr[0].vencType;
+	VENC_TYPE oldType = stAttr[0].vencType;
 	nCh = 0;
 	ipcinfo_get_param(&ipcinfo);
 	malarm_get_param(&alarm);
