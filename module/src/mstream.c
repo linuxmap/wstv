@@ -101,7 +101,6 @@ BOOL __check_stream_timer(int tid, void *param)
 
 	for (i=0;i<hwinfo.streamCnt;i++)
 	{
-		//printf("streamcnt[%d]: %d\n", i, sStreamCnt[i]);
 		if (sStreamCnt[i])
 		{
 			sStreamCnt[i] = 0;
@@ -112,7 +111,7 @@ BOOL __check_stream_timer(int tid, void *param)
 			streamDog[i]++;
 			if (streamDog[i] > 10)
 			{
-				printf("mtransmit.c:__check_stream_timer: ERROR Happened, Failed got stream %d reboot\n", i);
+				printf("failed got stream %d reboot!\n", i);
 				mlog_write("stream error reboot");
 				utl_system("reboot");
 			}
@@ -191,7 +190,6 @@ static void _mstream_parse(int channelid, jv_frame_info_t *info)
 	            if(autype != audioType)
 	            {
 	                autype = audioType;
-	                Printf("=======\n   transStream   audioType:  %d\n", audioType);
 	            }
 		    	transStream(channelid, info->buffer, info->len, info->timestamp, e_NALU_TYPE_AUDIO, audioType, 0x80000001);
 		    }
@@ -216,7 +214,6 @@ static void _mstream_parse(int channelid, jv_frame_info_t *info)
 
 	{
     	jv_audio_attr_t ai_attr;
-    	// jv_ai_get_attr(channelid, &ai_attr);		// 不能用channelid，只有一个声道
     	jv_ai_get_attr(0, &ai_attr);
 
 		Rtmp_SendData(RTMP_LIVE_HDL(0, channelid), Rtmp_ConvDataType(info->frametype, ai_attr.encType),

@@ -1,3 +1,4 @@
+#include "tuya.h"
 #include "tuya_ipc_api.h"
 #include "tuya_ipc_dp_handler.h"
 #include "tuya_ipc_mgr_utils.h"
@@ -152,33 +153,30 @@ void *thread_live_video(void *arg)
     pthread_exit(0);
 }
 
-VOID usage(CHAR *app_name)
-{
-    printf("%s -m mode -t token -r raw path -h\n", (CHAR *)basename(app_name));
-    printf("\t m: 0-WIFI_INIT_AUTO 1-WIFI_INIT_AP 2-WIFI_INIT_DEBUG, refer to WIFI_INIT_MODE_E\n"
-        "\t t: token get form qrcode info\n"
-        "\t r: raw source file path\n"
-        "\t h: help info\n");
-
-    return;
-}
-
-INT tuya_main(INT argc, CHAR** argv)
+int tuya_init()
 {
     INT res = -1;
     CHAR *token = "";;
     WIFI_INIT_MODE_E mode = WIFI_INIT_AUTO;
 
+	printf("===================%s %d\n", __func__, __LINE__);
+	printf("===================%s %d\n", __func__, __LINE__);
     /* 启动SDK */
     IPC_APP_Init_SDK(mode, token);
+	printf("===================%s %d\n", __func__, __LINE__);
+	printf("===================%s %d\n", __func__, __LINE__);
 
     /* 判断SDK是否连接到MQTT */
     while(IPC_APP_Get_Mqtt_Status() != 1)
     {
         sleep(1);
     }
+	printf("===================%s %d\n", __func__, __LINE__);
+	printf("===================%s %d\n", __func__, __LINE__);
     /* 当MQTT连接成功后，上传本地所有状态 */
     IPC_APP_upload_all_status();
+	printf("===================%s %d\n", __func__, __LINE__);
+	printf("===================%s %d\n", __func__, __LINE__);
 
     /* 开启线层，同步服务器和本地时间 */
     pthread_t sync_time_thread;
@@ -188,5 +186,10 @@ INT tuya_main(INT argc, CHAR** argv)
 	/*tuya_ipc_reset();*/
 
     return 0;
+}
+
+int tuya_deInit()
+{
+	return 0;
 }
 

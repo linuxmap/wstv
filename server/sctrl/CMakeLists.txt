@@ -19,6 +19,7 @@ INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/tutk)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/media_svr)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/yst_svr)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/oct_svr)
+INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/tuya)
 
 PROJECT(SCTRL)
 
@@ -112,7 +113,7 @@ if(IVP_SUPPORT)
 endif()
 
 if (TUYA_SUPPORT)
-	set(TUYA_LIBS IOTCAPIs AVAPIs tuya_ipc)
+	set(TUYA_LIBS tuya_ipc AVAPIs IOTCAPIs)
 	set(TUYA_SVR_LIB tuya)
 endif()
 
@@ -182,7 +183,7 @@ TARGET_LINK_LIBRARIES(sctrl
 					${SOUND_WAVE_DEC_LIBS}
 					porting 
 					WIFI
-					cJSON
+					#cJSON
 					${MP4LIBS}
 					${SSLLIBS}
 					utility

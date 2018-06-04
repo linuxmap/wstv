@@ -60,6 +60,7 @@
 #include "utl_filecfg.h"
 #include "mdooralarm.h"
 #include "mfirmup.h"
+#include "tuya.h"
 
 #define EARLYEST_YEAR_SEC	1420070400 //2015年1月1日8点
 
@@ -608,6 +609,10 @@ S32 main(int argc, char *argv[])
 		mivp_left_set_callback(remotecfg_mivp_left_callback);
 		mivp_removed_set_callback(remotecfg_mivp_removed_callback);
 	}
+#endif
+
+#ifdef TUYA_SUPPORT
+	tuya_init();
 #endif
 
 #ifdef TINY_ONVIF_SUPPORT
