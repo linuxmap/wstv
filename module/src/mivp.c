@@ -23,7 +23,6 @@
 #include "mcloud.h"
 
 #include "mivp.h"
-#include "cgrpc.h"
 #include "utl_iconv.h"
 #include "utl_filecfg.h"
 #include "utl_splice.h"
@@ -33,7 +32,6 @@
 #include "ivp.h"
 #include "ocl.h"
 #include "mfirmup.h"
-#include "alarm_service.h"
 #include <utl_cmd.h>
 #include "mmva.h"
 #include "MRemoteCfg.h"
@@ -546,33 +544,6 @@ static void __IvpAlarmOut(Alarm_Out_t *alarm_param, _UINT32 type)
 			alarm_param->bOutVMS = FALSE;
 			ipcinfo_t param;
 			ipcinfo_get_param(&param);
-			AlarmInfo_t alarmInfo;
-			alarmInfo.channel = 0;
-			jv_ystNum_parse(alarmInfo.dev_id, param.nDeviceInfo[6], param.ystID);
-			strcpy(alarmInfo.dev_type, "ipc");
-			strcpy(alarmInfo.detector_id, "12345");
-			strcpy(alarmInfo.type, "analyse");
-			if(type == e_IPV_ALARM_TYPE_HIDE)	//ÕÚµ²±¨¾¯
-			{
-				strcpy(alarmInfo.subtype, "videoHide");
-				utl_iconv_gb2312toutf8(mlog_translate("IVA Video Covered Alarm to VMS"), alarmInfo.pir_code, sizeof(alarmInfo.pir_code));
-			}
-			else if (type == e_IPV_ALARM_TYPE_ABANDONED_OBJ)
-			{
-//				strcpy(alarmInfo.subtype, "videoHide");
-//				utl_iconv_gb2312toutf8(mlog_translate("IVA Video Covered Alarm to VMS"), alarmInfo.pir_code, sizeof(alarmInfo.pir_code));
-			}
-			else if (type == e_IPV_ALARM_TYPE_REMOVED_OBJ)
-			{
-//				strcpy(alarmInfo.subtype, "videoHide");
-//				utl_iconv_gb2312toutf8(mlog_translate("IVA Video Covered Alarm to VMS"), alarmInfo.pir_code, sizeof(alarmInfo.pir_code));
-			}
-			else
-			{
-				strcpy(alarmInfo.subtype, "invasion");
-				utl_iconv_gb2312toutf8(mlog_translate("IVA Alarm to VMS"), alarmInfo.pir_code, sizeof(alarmInfo.pir_code));
-			}
-			cgrpc_alarm_report(&alarmInfo);
 		}
 		if (!ignore_flag)
 		{

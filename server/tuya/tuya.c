@@ -156,7 +156,7 @@ void *thread_live_video(void *arg)
 int tuya_init()
 {
     INT res = -1;
-    CHAR *token = "";;
+    CHAR *token = "AYUMUIc20qTxQK";;
     WIFI_INIT_MODE_E mode = WIFI_INIT_AUTO;
 
 	printf("===================%s %d\n", __func__, __LINE__);

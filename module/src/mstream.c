@@ -66,23 +66,6 @@ static stream_status_t status;
 static int list_stream = 0;
 static int only_stream = 0;
 
-#define SIZE_SKIPFRAME		12				//skip帧长度,skip帧不应该存在,而应该在播放时使用帧率控制
-
-static int nMaxFramerate = 0;
-//static U8 acSkipFrame[SIZE_SKIPFRAME]={0};
-static U32 nFrameCounter[MAX_STREAM]={0};
-
-//补skip帧索引,lck20120814
-static BOOL arrSkip[][30]=
-{
-{	1,	2,	3,	4,	5,	6,	7,	8,	9,	10,	11,	12,	13,	14,	15,	16,	17,	18,	19,	20,	21,	22,	23,	24,	25,	26,	27,	28,	29,	30},//标记
-{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0}, //30帧
-{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0},	//25帧
-{	1,	0,	0,	0,	0,	1,	0,	0,	0,	0,	1,	0,	0,	0,	0,	1,	0,	0,	0,	0,	1,	0,	0,	0,	0,	1,	0,	0,	0,	0},	//20帧
-{	1,	1,	0,	0,	0,	1,	1,	0,	0,	0,	1,	1,	0,	0,	0,	1,	1,	0,	0,	0,	1,	1,	0,	0,	0,	1,	1,	0,	0,	0},	//15帧
-{	1,	1,	1,	0,	0,	1,	1,	1,	0,	0,	1,	1,	1,	0,	0,	1,	1,	1,	0,	0,	1,	1,	1,	0,	0,	1,	1,	1,	0,	0},	//10帧
-{	1,	1,	1,	1,	0,	1,	1,	1,	1,	0,	1,	1,	1,	1,	0,	1,	1,	1,	1,	0,	1,	1,	1,	1,	0,	1,	1,	1,	1,	0},	//05帧
-};
 int mstream_start(int channelid);
 int mstream_stop(int channelid);
 
@@ -335,7 +318,6 @@ static void _mstream_process(void *param)
 						if (videoFrameType == JV_FRAME_TYPE_I)
 						{
 							focus_reference_value = info.len;
-//							printf("focus_reference_value: %d\n", focus_reference_value);
 						}
 
 						if(status.streamlist[0].bAudioEn)
@@ -980,7 +962,6 @@ int mstream_init(void)
 	//获取支持的最大帧率,lck20120814
 	jvstream_ability_t ability;
 	jv_stream_get_ability(0, &ability);
-	nMaxFramerate = ability.maxFramerate;
 
 	group.running = TRUE;
 	pthread_mutex_init(&group.mutex, NULL);

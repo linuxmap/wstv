@@ -25,7 +25,6 @@
 #include "mvoicedec.h"
 #include <msoftptz.h>
 #include "mcloud.h"
-#include "alarm_service.h"
 #include "mplay_remote.h"
 #include "mioctrl.h"
 #include "mdebug.h"

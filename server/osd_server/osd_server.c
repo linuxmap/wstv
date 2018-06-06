@@ -10,8 +10,8 @@
 #include <netinet/in.h>  
 #include <arpa/inet.h> 
 #include <fcntl.h>
-#include <cJSON.h>
-#include <mosd.h>
+#include "cJSON.h"
+#include "mosd.h"
 #include "osd_server.h"
 #include "sp_user.h"
 #include "utl_filecfg.h"

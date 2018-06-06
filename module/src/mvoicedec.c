@@ -21,7 +21,6 @@
 #include "malarmout.h"
 #include "mtransmit.h"
 #include "mioctrl.h"
-#include "bls.h"
 #include "xw_media_device.h"
 #include "JvServer.h"
 
@@ -701,39 +700,6 @@ static void __send_msg_code_voice_set(char *info)
 		sWifiInfo.ap2Set.passwd, sWifiInfo.ap2Set.iestat[0], sWifiInfo.ap2Set.iestat[1]);
 
 	sWifiInfo.toset = TRUE;
-
-
-	//∞Ÿ∂»‘∆
-	BLSInfoType BLSinfo;
-	memset(&BLSinfo, 0, sizeof(BLSInfoType));
-	//access_token
-	start = end + 1;
-	if (*start == 0)
-		return;
-	end = strchr(start, ';');
-	if (end != NULL)
-	{
-		if (start != end)
-		{
-			*end = 0;
-			memcpy(BLSinfo.access_token, start, sizeof(BLSinfo.access_token));
-		}
-	}
-	//stream_id
-	start = end + 1;
-	if (*start == 0)
-		return;
-	end = strchr(start, ';');
-	if (end != NULL)
-	{
-		if (start != end)
-		{
-			*end = 0;
-			memcpy(BLSinfo.stream_ID, start, sizeof(BLSinfo.stream_ID));
-		}
-	}
-	printf("voice setting access_token: %s, streamid: %s\n", BLSinfo.access_token,
-				BLSinfo.stream_ID);
 }
 
 static void __ai_pcm_callback(int channelid, jv_audio_frame_t *frame)

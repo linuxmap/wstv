@@ -4,7 +4,6 @@
 #include "mlog.h"
 #include "mstream.h"
 #include "mbizclient.h"
-#include "sgrpc.h"
 #include "utl_aes.h"
 
 #define SECRET_KEY		0x1053564A
@@ -183,7 +182,6 @@ static S32 _maccount_save()
 
 	//保存时，顺便修改一下RTSP的密码
 	mstream_rtsp_user_changed();
-	sgrpc_account_refresh();
 	return 0;
 }
 

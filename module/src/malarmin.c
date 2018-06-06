@@ -19,9 +19,7 @@
 #include "malarmin.h"
 #include "mipcinfo.h"
 #include "mcloud.h"
-#include "cgrpc.h"
 #include "utl_iconv.h"
-#include "alarm_service.h"
 #include "mbizclient.h"
 
 static MAlarmIn_t alarmincfg;
@@ -172,16 +170,6 @@ int _malarmin_process(int tid, void *param)
 		{
 			ipcinfo_t info;
 			ipcinfo_get_param(&info);
-			AlarmInfo_t alarmInfo;
-			alarmInfo.channel = 0;
-			jv_ystNum_parse(alarmInfo.dev_id, info.nDeviceInfo[6], info.ystID);
-			strcpy(alarmInfo.dev_type, "ipc");
-			strcpy(alarmInfo.detector_id, "12345");
-			strcpy(alarmInfo.type, "io");
-			strcpy(alarmInfo.subtype, "pir");
-			//strcpy(alarmInfo.content, "pir alarm");
-			utl_iconv_gb2312toutf8("人体红外感应报警", alarmInfo.pir_code, sizeof(alarmInfo.pir_code));
-			cgrpc_alarm_report(&alarmInfo);
 		}
 		if (!ignore_flag)
 		{

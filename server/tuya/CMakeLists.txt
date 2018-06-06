@@ -13,6 +13,7 @@ SET(TUYASRC
 	tuya_ipc_mgr_handler.c
 	tuya_ipc_mgr_utils.c
 	tuya_linux_wifi.c
+	cJSON_Direct.c
 	tuya.c
 	)
 

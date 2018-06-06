@@ -27,17 +27,14 @@
 #include <utl_queue.h>
 #include <jv_ai.h>
 #include "jv_ao.h"
-#include "sgrpc.h"
 #include "utl_iconv.h"
 #include "mivp.h"
 #include "utl_timer.h"
 #include "mcloud.h"
-#include "cgrpc.h"
 #include "utl_iconv.h"
 #include "muartcomm.h"
 #include "mioctrl.h"
 #include "mvoicedec.h"
-#include "alarm_service.h"
 #include "maudio.h"
 #include "mptz.h"
 #include "msensor.h"
@@ -1862,7 +1859,6 @@ void DoorAlarmSend(unsigned char* name, int arg)
 		strcpy(alarmInfo.subtype, "doorAlarm");
 		//strcpy(alarmInfo.content, "door alarm");
 		utl_iconv_gb2312toutf8("ÃÅ´Å±¨¾¯", alarmInfo.pir_code, sizeof(alarmInfo.pir_code));
-		cgrpc_alarm_report(&alarmInfo);
 
 	}*/
 
@@ -2042,19 +2038,6 @@ static void _remotecfg_data_proc(REMOTECFG *remotecfg)
 	}
 	else if (strncmp("grpc:", js, 5) == 0)
 	{
-		char tmpBuf[128*1024];
-		memset(tmpBuf, 0, sizeof(tmpBuf));
-		utl_iconv_utf8togb2312(js+5, tmpBuf, sizeof(tmpBuf));
-		char *p = sgrpc_parse_yst(tmpBuf);
-		if (p)
-		{
-			memset(tmpBuf, 0, sizeof(tmpBuf));
-			len = utl_iconv_gb2312toutf8(p, tmpBuf, sizeof(tmpBuf));
-			tmpBuf[len] = '\0';
-			strcpy(js+5, tmpBuf);
-			MT_TRY_SendChatData(remotecfg->nCh, remotecfg->nClientID, JVN_RSP_TEXTDATA, (U8*)js, strlen(js)+1);
-			sgrpc_free_yst(p);
-		}
 	}
 
 	Printf("stPacket.nPacketType=%d\n", remotecfg->stPacket.nPacketType);

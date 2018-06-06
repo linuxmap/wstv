@@ -8,7 +8,7 @@ INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/sctrl)
 PROJECT(UTILITY)
 
 SET(UTILITYSRC
-	#md5.c
+	md5.c
 	utl_audio
 	utl_cmd.c
 	utl_common.c

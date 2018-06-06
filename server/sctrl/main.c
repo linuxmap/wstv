@@ -40,8 +40,6 @@
 #include "mioctrl.h"
 #include "msoftptz.h"
 #include "maudio.h"
-#include "sgrpc.h"
-#include "cgrpc.h"
 #include "jv_rtc.h"
 #include "mcloud.h"
 #include "muartcomm.h"
@@ -49,10 +47,8 @@
 #include "upnp_device_main.h"
 #include "jv_spi_flash.h"
 #include "ks_api.h"
-#include "alarm_service.h"
 #include "jv_uartcomm.h"
 #include "mbizclient.h"
-#include "bls.h"
 #include <malloc.h>
 #include "sp_connect.h"
 #include "mdebug.h"
@@ -66,7 +62,7 @@
 
 //正版验证函数
 //U32 BoardInfo[13]; //GUID(4),SN(1),DATE(1),GROUP(1),CARDTYPE(1),MODEL(1),ENCYR_VER(1),YSTNUM(1),DEV_VER(1),USER(1)
-extern U32 yst(U32*, U32);
+//extern U32 yst(U32*, U32);
 
 GPARAM gp;
 int debugFlag = 0;
@@ -383,6 +379,7 @@ S32 main(int argc, char *argv[])
 	jv_flash_write_lock_init();
 	jv_flash_write_lock();
 
+		printf("======%d\n", __LINE__);
 	if (argc >= 2)
 	{
 		char *param;
@@ -408,11 +405,13 @@ S32 main(int argc, char *argv[])
 		}
 	}
 
+		printf("======%d\n", __LINE__);
 #if MEM_DEBUG
 	extern void RegMemCmd();
 	RegMemCmd();
 #endif
 
+		printf("======%d\n", __LINE__);
 	//添加FIX配置文件，记录一些值得记录的信息
 	{
 		if (access(CONFIG_FIXED_PATH, F_OK) != 0)
@@ -421,6 +420,7 @@ S32 main(int argc, char *argv[])
 		__hwconfig_file_generate(CONFIG_HWCONFIG_FILE);
 	}
 
+		printf("======%d\n", __LINE__);
 	Printf("IPCam Init...\n");
 	Printf("Config Path: %s\n",CONFIG_PATH);
 	printf("building date: %s: %s\n", __DATE__,__TIME__);
@@ -429,6 +429,7 @@ S32 main(int argc, char *argv[])
 	// 工厂标志判断
 	__check_factory_flag();
 
+#if 0
 	//正版验证
 	if (0 == yst(nDeviceInfo, 13))
 	{
@@ -442,7 +443,9 @@ S32 main(int argc, char *argv[])
 		#endif
 		}
 	}
+#endif
 
+		printf("======%d\n", __LINE__);
 	FILE *fp = fopen("/tmp/encrypt", "wb");
 	if (fp)
 	{
@@ -455,37 +458,48 @@ S32 main(int argc, char *argv[])
 		fclose(fp);
 	}
 
+		printf("======%d\n", __LINE__);
     //忽略SIGPIPE信号，避免TCP连接的死机问题
 	signal(SIGPIPE, SIG_IGN);
 
+		printf("======%d\n", __LINE__);
 	utl_timer_init();
 	utl_cmd_init();
 	utl_system_init();
+		printf("======%d\n", __LINE__);
 	ipcinfo_init();
 	jv_gpio_init();
+		printf("======%d\n", __LINE__);
 	jv_uartcomm_init();
 	ipcinfo_set_buf(nDeviceInfo, nDeviceInfo);
+		printf("======%d\n", __LINE__);
 	ipcinfo_set_value(sn, nDeviceInfo[4]);
 
+		printf("======%d\n", __LINE__);
 	snprintf(main_version, sizeof(main_version), "%s", "V2.2");
 	memset(ipc_version, 0, sizeof(ipc_version));
 	snprintf(ipc_version, sizeof(ipc_version), "%s%s", MAIN_VERSION, SUB_VERSION);
 
+		printf("======%d\n", __LINE__);
 	if (access(CONFIG_FIXED_FILE, F_OK) != 0)
 	{
 		FILE *fp = fopen(CONFIG_FIXED_FILE, "wb");
 		if (fp)
 		{
+		printf("======%d\n", __LINE__);
 			fprintf(fp, "firstversion=%s\n", IPCAM_VERSION);
 			fclose(fp);
 		}
+		printf("======%d\n", __LINE__);
 	}
 
+		printf("======%d\n", __LINE__);
 	gp.ttNow = time(NULL);	//获取当前时间
 	//设置主线程状态
 	gp.nExit	= EXIT_DEFAULT;
 	gp.bRunning	= TRUE;
 
+		printf("======%d\n", __LINE__);
 	char temp[32];
 	JVCommonParam_t comParam;
 	SYSFuncs_GetValue(CONFIG_FILE, "rotate", temp, sizeof(temp));
@@ -498,13 +512,15 @@ S32 main(int argc, char *argv[])
 	comParam.ipcGroup = nDeviceInfo[6];
 	jv_common_init(&comParam);
 	
+		printf("======%d\n", __LINE__);
 	if (!__check_valid(nDeviceInfo[8] ))
 	{
 		printf("invalid product: 0x%x\n", nDeviceInfo[8]);
-		return FALSE;
+		/*return FALSE;*/
 	}
 
 	{
+		printf("======%d\n", __LINE__);
 #define GREEN "\033[1;32m"
 #define END "\033[0m"
 		char ystid[20] = {0};
@@ -512,6 +528,7 @@ S32 main(int argc, char *argv[])
 		printf(GREEN"\n==========> DEVICE YST ID: %s <==========\n\n"END, ystid);
 	}
 
+		printf("======%d\n", __LINE__);
 	maudio_init();
 	mvoicedec_init();			//在网络线程启动之前初始化，否则声波配置没数据
     net_init(nDeviceInfo[0]);
@@ -527,7 +544,7 @@ S32 main(int argc, char *argv[])
 	mstorage_init();
 	mstream_init();
 	//门磁报警
-	mdooralarm_init(DoorAlarmInsert, DoorAlarmSend, DoorAlarmStop);
+	/*mdooralarm_init(DoorAlarmInsert, DoorAlarmSend, DoorAlarmStop);*/
 
 	//加载基本信息
 	ReadConfigInfo();
@@ -639,10 +656,6 @@ S32 main(int argc, char *argv[])
 #ifdef BIZ_CLIENT_SUPPORT
 	mbizclient_init();
 #endif
-
-	/*GRPC客户端*/
-	cgrpc_init();
-	sgrpc_init();
 
 	//主线程
 	MainThrd(NULL);

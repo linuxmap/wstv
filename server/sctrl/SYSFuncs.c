@@ -24,7 +24,6 @@
 #include "msoftptz.h"
 #include "mivp.h"
 #include "mcloud.h"
-#include "sgrpc.h"
 #include "mgb28181.h"
 #include "maudio.h"
 #include "mvoicedec.h"
@@ -3393,9 +3392,6 @@ int SYSFuncs_factory_default_without_reboot()
 		remotecfg_init();
 	}
 #endif
-
-	printf("sgrpc_account_refresh, time=%ld\n", time(NULL));
-	sgrpc_account_refresh();
 
 	return 0;
 }

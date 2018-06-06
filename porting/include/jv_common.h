@@ -329,7 +329,7 @@ typedef enum{
 	SENSOR_SC2135      ,
 	SENSOR_OV2735	   ,
 	SENSOR_IMX291      ,//50
-	SENSOR_SC2235,
+	SENSOR_SC2235	   ,//24
 	SENSOR_MAX
 }SensorType_e;
 

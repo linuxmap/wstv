@@ -16,14 +16,12 @@
 #include "jv_gpio.h"
 #include "mipcinfo.h"
 #include "mcloud.h"
-#include "cgrpc.h"
 #include "utl_iconv.h"
 #include "mfirmup.h"
 #include "utl_jpg2bmp.h"
 #include "utl_common.h"
 #include "JVNSDKDef.h"
 #include "JvServer.h"
-#include "alarm_service.h"
 #include "sctrl.h"
 #include "mbizclient.h"
 #include "mdevclient.h"
@@ -320,18 +318,6 @@ static void _mdetect_process(void *param)
 		{
 			ipcinfo_t info;
 			ipcinfo_get_param(&info);
-			AlarmInfo_t alarmInfo;
-			alarmInfo.channel = 0;
-			jv_ystNum_parse(alarmInfo.dev_id,info.nDeviceInfo[6], info.ystID);
-			strcpy(alarmInfo.dev_type, "ipc");
-			strcpy(alarmInfo.detector_id, "12345");
-			strcpy(alarmInfo.type, "video");
-			strcpy(alarmInfo.subtype, "motionDetect");
-			//strcpy(alarmInfo.content, "motionDetect");
-			//utl_iconv_gb2312toutf8("video- ”∆µ", alarmInfo.type, sizeof(alarmInfo.type));
-			//utl_iconv_gb2312toutf8("“∆∂Ø’Ï≤‚±®æØ", alarmInfo.subtype, sizeof(alarmInfo.subtype));
-			utl_iconv_gb2312toutf8("“∆∂Ø’Ï≤‚±®æØ", alarmInfo.pir_code, sizeof(alarmInfo.pir_code));
-			cgrpc_alarm_report(&alarmInfo);
 		}
 		if(!ignore_flag)
 		{

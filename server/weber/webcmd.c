@@ -31,10 +31,11 @@
 #include "../sctrl/SYSFuncs.h"
 #include "../sctrl/sctrl.h"
 #include "../yst_svr/mtransmit.h"
-#include <cJSON_Direct.h>
-#include <utl_ifconfig.h>
-#include <utl_iconv.h>
-#include <jv_isp.h>
+#include "cJSON.h"
+#include "cJSON_Direct.h"
+#include "utl_ifconfig.h"
+#include "utl_iconv.h"
+#include "jv_isp.h"
 #include "mptz.h"
 #include <math.h>
 

@@ -3,19 +3,12 @@ INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/libs/include/ivp)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/libs/include/mml/core)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/libs/include/bizclient)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/libs/include/cloud)
-INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/libs/include/bls)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/porting/include)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/module/include)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/weber)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/osd_server)
-INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/bls)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/gb28181)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/sport)
-INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/sgrpc)
-INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/uart_tcp)
-INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/telestore)
-INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/Tencent)
-INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/tutk)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/media_svr)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/yst_svr)
 INCLUDE_DIRECTORIES(${IPCAM_SOURCE_DIR}/server/oct_svr)
@@ -166,12 +159,10 @@ endif()
 
 TARGET_LINK_LIBRARIES(sctrl 
 					${YST_SVR_LIBS}
-					${TUYA_SVR_LIB}
 					${WEBER}
 					osd_server
 					${GB28181_LIBS}
 					${TINY_ONVIF_LIBS}
-					sgrpc
 					sport 
 					module 
 					smtp
@@ -184,13 +175,14 @@ TARGET_LINK_LIBRARIES(sctrl
 					porting 
 					WIFI
 					#cJSON
+					${TUYA_SVR_LIB}
+					${TUYA_LIBS}
 					${MP4LIBS}
 					${SSLLIBS}
 					utility
 					nl80211
 					${JMC}
 					${YST_PROTOCOL_LIBS}
-					${TUYA_LIBS}
 					${OBSS_CLOUD_STORAGE}
 					#pool
 					PTZ

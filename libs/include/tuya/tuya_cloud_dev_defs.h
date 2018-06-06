@@ -10,7 +10,7 @@
 extern "C" {
 #endif
 
-#include "cJSON.h"
+#include "../../../server/tuya/cJSON.h"
 #include "defines.h"
 #include "tuya_cloud_types.h"
 #include "tuya_cloud_error_code.h"
