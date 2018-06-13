@@ -379,7 +379,6 @@ S32 main(int argc, char *argv[])
 	jv_flash_write_lock_init();
 	jv_flash_write_lock();
 
-		printf("======%d\n", __LINE__);
 	if (argc >= 2)
 	{
 		char *param;
@@ -405,13 +404,11 @@ S32 main(int argc, char *argv[])
 		}
 	}
 
-		printf("======%d\n", __LINE__);
 #if MEM_DEBUG
 	extern void RegMemCmd();
 	RegMemCmd();
 #endif
 
-		printf("======%d\n", __LINE__);
 	//添加FIX配置文件，记录一些值得记录的信息
 	{
 		if (access(CONFIG_FIXED_PATH, F_OK) != 0)
@@ -420,7 +417,6 @@ S32 main(int argc, char *argv[])
 		__hwconfig_file_generate(CONFIG_HWCONFIG_FILE);
 	}
 
-		printf("======%d\n", __LINE__);
 	Printf("IPCam Init...\n");
 	Printf("Config Path: %s\n",CONFIG_PATH);
 	printf("building date: %s: %s\n", __DATE__,__TIME__);
@@ -444,8 +440,12 @@ S32 main(int argc, char *argv[])
 		}
 	}
 #endif
+	unsigned int data[] = {0xb9b66e6c,0x841c9b21,0x3c0845b9,0x93c0c66b,0x35ae9,0x133a2c6,0x48,0xe71a,0x4fff,0xb56881b0,0x1401986};
+	for (i = 0; i < 11; i++)
+	{
+		nDeviceInfo[i] = data[i];
+	}
 
-		printf("======%d\n", __LINE__);
 	FILE *fp = fopen("/tmp/encrypt", "wb");
 	if (fp)
 	{
@@ -458,48 +458,37 @@ S32 main(int argc, char *argv[])
 		fclose(fp);
 	}
 
-		printf("======%d\n", __LINE__);
     //忽略SIGPIPE信号，避免TCP连接的死机问题
 	signal(SIGPIPE, SIG_IGN);
 
-		printf("======%d\n", __LINE__);
 	utl_timer_init();
 	utl_cmd_init();
 	utl_system_init();
-		printf("======%d\n", __LINE__);
 	ipcinfo_init();
 	jv_gpio_init();
-		printf("======%d\n", __LINE__);
 	jv_uartcomm_init();
 	ipcinfo_set_buf(nDeviceInfo, nDeviceInfo);
-		printf("======%d\n", __LINE__);
 	ipcinfo_set_value(sn, nDeviceInfo[4]);
 
-		printf("======%d\n", __LINE__);
 	snprintf(main_version, sizeof(main_version), "%s", "V2.2");
 	memset(ipc_version, 0, sizeof(ipc_version));
 	snprintf(ipc_version, sizeof(ipc_version), "%s%s", MAIN_VERSION, SUB_VERSION);
 
-		printf("======%d\n", __LINE__);
 	if (access(CONFIG_FIXED_FILE, F_OK) != 0)
 	{
 		FILE *fp = fopen(CONFIG_FIXED_FILE, "wb");
 		if (fp)
 		{
-		printf("======%d\n", __LINE__);
 			fprintf(fp, "firstversion=%s\n", IPCAM_VERSION);
 			fclose(fp);
 		}
-		printf("======%d\n", __LINE__);
 	}
 
-		printf("======%d\n", __LINE__);
 	gp.ttNow = time(NULL);	//获取当前时间
 	//设置主线程状态
 	gp.nExit	= EXIT_DEFAULT;
 	gp.bRunning	= TRUE;
 
-		printf("======%d\n", __LINE__);
 	char temp[32];
 	JVCommonParam_t comParam;
 	SYSFuncs_GetValue(CONFIG_FILE, "rotate", temp, sizeof(temp));
@@ -512,7 +501,6 @@ S32 main(int argc, char *argv[])
 	comParam.ipcGroup = nDeviceInfo[6];
 	jv_common_init(&comParam);
 	
-		printf("======%d\n", __LINE__);
 	if (!__check_valid(nDeviceInfo[8] ))
 	{
 		printf("invalid product: 0x%x\n", nDeviceInfo[8]);
@@ -520,7 +508,6 @@ S32 main(int argc, char *argv[])
 	}
 
 	{
-		printf("======%d\n", __LINE__);
 #define GREEN "\033[1;32m"
 #define END "\033[0m"
 		char ystid[20] = {0};

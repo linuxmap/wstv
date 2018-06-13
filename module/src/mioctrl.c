@@ -309,7 +309,7 @@ static void *_io_ctrl_thread(void *param)
 							else if(
 								HWTYPE_MATCH(HW_TYPE_HA210) ||
 								HWTYPE_MATCH(HW_TYPE_HA230) ||
-								HWTYPE_MATCH(HW_TYPE_C5) ||
+								HWTYPE_MATCH(HW_TYPE_C5)
 								)
 							{
 								_mio_led_ctrl(IO_LED_GREEN, IO_BLINK);
