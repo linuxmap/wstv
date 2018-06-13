@@ -960,9 +960,6 @@ static void *__set_wifi(void *arg)
 /*音频输入输出切换到24k采样率 来使能声波配置WIFI功能，这时声音不能被编码*/
 int mvoicedec_enable()
 {
-	if (strcmp(hwinfo.devName, "HXBJRB") == 0)
-		return 0;
-
 	if (!hwinfo.bSupportVoiceConf)
 		return 0;
 
@@ -1008,7 +1005,7 @@ int mvoicedec_disable()
 int mvoicedec_init(void)
 {
 	pthread_t sThreadID;
-	if(!hwinfo.bHomeIPC || strcmp(hwinfo.devName, "HXBJRB") == 0)
+	if(!hwinfo.bHomeIPC)
 		return 0;
 
 	if (!hwinfo.bSupportVoiceConf)

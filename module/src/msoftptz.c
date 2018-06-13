@@ -112,29 +112,23 @@ static void *__msoftptz_thread(void *arg)
 		jv_ptz_self_check(channel);
 
 		JVPTZ_Pos_t pos;
-		if(strcmp(hwinfo.devName, "JD-H40810") == 0)
-		{
-		}
-		else
-		{
-			// 产测或支持巡航时，才回到中心点或上次定位点
-			if ((gp.bFactoryFlag && gp.TestCfg.bYTOriginReset)
+		// 产测或支持巡航时，才回到中心点或上次定位点
+		if ((gp.bFactoryFlag && gp.TestCfg.bYTOriginReset)
 				|| hwinfo.bSupportPatrol)
+		{
+			//go to last position after self_check
+			if(__msoftptz_pos_read(&pos)==0)
 			{
-				//go to last position after self_check
-				if(__msoftptz_pos_read(&pos)==0)
-				{
-					printf("go to last position(%d,%d)after self_check.\n",pos.left,pos.up);
-					msoftptz_goto(channel,&pos);
-				}
-				else
-				{
-					printf("no position file.\n");
-					// pos.left=0x8000;//最大0x10000，走到中间位置
-					// pos.up=0x8000;
-					pos = stoppos;
-					msoftptz_goto(channel,&pos);
-				}
+				printf("go to last position(%d,%d)after self_check.\n",pos.left,pos.up);
+				msoftptz_goto(channel,&pos);
+			}
+			else
+			{
+				printf("no position file.\n");
+				// pos.left=0x8000;//最大0x10000，走到中间位置
+				// pos.up=0x8000;
+				pos = stoppos;
+				msoftptz_goto(channel,&pos);
 			}
 		}
 	}
@@ -520,22 +514,7 @@ int msoftptz_speed_get(int channel)
 		else
 		{
 			//没有设置过巡航速度或者手动移动的速度
-			if (!strcmp(hwinfo.devName, "H411AJL") ||
-				!strcmp(hwinfo.devName, "H51X") ||
-				!strcmp(hwinfo.devName,"H510-EN") ||
-				!strcmp(hwinfo.devName, "A14-PC7000-MT1") ||
-				!strcmp(hwinfo.devName,"HA520D-H1") ||
-				!strcmp(hwinfo.devName, "HC520D-H1") ||
-				!strcmp(hwinfo.devName,"H411-H1") ||
-				!strcmp(hwinfo.devName, "HC421S-H1") || 
-				!strcmp(hwinfo.devName, "JD-H40810") ||
-				!strcmp(hwinfo.devName, "HC420-H2") ||
-				!strcmp(hwinfo.devName, "HC300"))
-				speed = 255;
-			else if (!strcmp(hwinfo.devName, "H511"))
-				speed = 100;
-			else
-				speed = 3;
+			speed = 3;
 		}
 	}
 	pthread_mutex_unlock(&sPTZInfo.mutex);

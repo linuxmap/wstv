@@ -92,8 +92,6 @@ ipcinfo_t *ipcinfo_get_param(ipcinfo_t *param)
 	if(hwinfo.bHomeIPC)
 	{
 		strcpy(ipcinfo.type, hwinfo.devName);
-		if(!strcmp(ipcinfo.type,"H210V2-S") || !strcmp(ipcinfo.type,"H210-S"))
-			ipcinfo.type[strlen(ipcinfo.type)-2] = '\0';
 	}
 	
 	snprintf(ipcinfo.version, 20, "%s", IPCAM_VERSION);

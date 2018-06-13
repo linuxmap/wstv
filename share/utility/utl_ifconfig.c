@@ -1322,33 +1322,10 @@ int __bNetCard_Exist(char *ifname,int bAll)
 
 BOOL utl_ifconfig_bSupport_ETH_check()
 {
-	if (PRODUCT_MATCH("H210") || 
-		PRODUCT_MATCH("H210C") || 
-		PRODUCT_MATCH("H600") ||
-		PRODUCT_MATCH("BMDQ") ||
-		PRODUCT_MATCH("AY") ||
-		PRODUCT_MATCH("MF") ||
-		PRODUCT_MATCH("H210-S") ||
-		PRODUCT_MATCH("H301") ||
-		PRODUCT_MATCH("HA320-H1") ||
-		PRODUCT_MATCH("HA320-H1-A") || 
-		PRODUCT_MATCH("HV120-H1") ||
-		PRODUCT_MATCH("HA121-H2")  ||
-		PRODUCT_MATCH("H303") ||
-		PRODUCT_MATCH("A1") ||
-		PRODUCT_MATCH("S530") ||
-		PRODUCT_MATCH("HXBJRB") ||
-		PRODUCT_MATCH("JW-501DM") ||
-		PRODUCT_MATCH("JW-502DM") ||
-		PRODUCT_MATCH("DR-H20910") || 
-		PRODUCT_MATCH("JD-H40810") ||
-		PRODUCT_MATCH("HW-H21110") || 
-		HWTYPE_MATCH(HW_TYPE_HA210) ||
+	if (HWTYPE_MATCH(HW_TYPE_HA210) ||
 		HWTYPE_MATCH(HW_TYPE_A4) ||
 		HWTYPE_MATCH(HW_TYPE_V3))
-	{
 		return FALSE;
-	}
 
 	// 20180402后的内核版本，如果没有有线网卡，不会出现eth0网卡结点
 	return __bNetCard_Exist("eth0", TRUE);
@@ -1580,19 +1557,6 @@ static int _utlWait(int sock,int timeoutMS)
 	}
 	else
 		return ret;
-	//ret = select(sock+1, &rfds, NULL, NULL, &tv);
-	/*if (ret == -1)
-	{
-		printf("getwifistatus:select error\n");
-		return ret;
-	}
-	else if(ret == 0)
-	{
-		printf("getwifistatus:recvfrom timeout\n");
-	    return ret;
-	}
-	else
-		return ret;*/
 }
 static int _utlRecv(int sockfd,char *buf,int len)
 {
@@ -1643,7 +1607,6 @@ int utlGetWifiStatus(char * dev)
 	int size;
 	int ret = 0;
 
-	//DBG_INFO(("getWifiStatus:\n"));
 	s = _utlSocket(2);
 	if (s < 0)
 	{
@@ -1681,7 +1644,6 @@ int utlGetWifiStatus(char * dev)
 		close(s);
 		return -4;
 	}
-	//DBG_INFO(("getWifiStatus: wait\n"));
 	if (_utlWait(s, 1000) != 0)
 	{
 		printf(("getWifiStatus: wait failed\n"));
@@ -1690,7 +1652,6 @@ int utlGetWifiStatus(char * dev)
 		return -5;
 	}
 
-	//DBG_INFO(("getWifiStatus: read\n"));
 	len = _utlRecv(s, buf, sizeof(buf));
 	if (len <= 0)
 	{
@@ -1845,7 +1806,6 @@ int __wifi_sta_after_auth(int st, wifiap_t *ap)
 		int count = 0;
 		do
 		{
-			printf("================================> check ipaddr!! \n");
 			sleep(1);
 			IsGet=_getGateWay("wlan0",gw);
 			if (IsGet)
@@ -2736,7 +2696,7 @@ static void *_netlink_check_process(void *param)
 						maudio_resetAIAO_mode(2);
 						maudio_speaker(VOICD_WAITSET, TRUE, TRUE, TRUE);
 					}
-					if (hwinfo.bSupportVoiceConf && strcmp(hwinfo.devName, "HXBJRB") != 0)
+					if (hwinfo.bSupportVoiceConf)
 					{
 						printf("**************声波配置**************\n");
 						speakerowerStatus = JV_SPEAKER_OWER_VOICE;
@@ -3009,7 +2969,6 @@ void net_init(unsigned int macBase)
 {
 	if (utl_ifconfig_bSupport_ETH_check() == FALSE)
 	{
-		//H210这种没有网口的设备，关闭eth0
 		utl_system("ifconfig eth0 down");
 		utl_system("killall udhcpc");
 	}
@@ -3049,11 +3008,8 @@ void net_init(unsigned int macBase)
 		utl_system("/progs/networkcfg.sh"); //ifconfig down时被清掉路由表
 		if (utl_ifconfig_bSupport_ETH_check() == FALSE)
 		{
-			//H210这种没有网口的设备，关闭eth0
 			utl_system("ifconfig eth0 down");
-			
 			utl_system("killall udhcpc");
-			
 		}
 	}while(0);
 	memset(&wifilist, 0, sizeof(wifilist));

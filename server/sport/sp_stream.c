@@ -44,20 +44,6 @@ int sp_stream_get_param(int channelid, SPStreamAttr_t *attr)
 	attr->encLevel = ENCODE_H264_LEVEL_MAIN;
 	attr->quality = 40;
 
-	if((!strcmp(hwinfo.devName, "SW-H210V3") || 
-		!strcmp(hwinfo.devName, "SW-H411V3")) &&
-		(hwinfo.sensor == SENSOR_AR0130 || 
-		hwinfo.sensor == SENSOR_OV9750))
-	{
-		if(attr->height == 720)
-			attr->height = 960;
-	}
-	if(!strcmp(hwinfo.devName, "SW-H411V4"))
-	{
-		if(attr->height == 720)
-			attr->height = 960;
-	}
-
 	return 0;
 }
 
@@ -183,22 +169,6 @@ int sp_stream_set_param(int channelid, SPStreamAttr_t *attr)
 		tmpHeight = mattr.height;
 	}
 
-	if((!strcmp(hwinfo.devName, "SW-H210V3") || 
-		!strcmp(hwinfo.devName, "SW-H411V3")) &&
-		(hwinfo.sensor == SENSOR_AR0130 || 
-		hwinfo.sensor == SENSOR_OV9750))
-	{
-		if(mattr.height > 720)
-		{
-			mattr.height = 720;
-		}
-	}
-	if(!strcmp(hwinfo.devName, "SW-H411V4"))
-	{
-		if(attr->height == 720)
-			attr->height = 960;
-	}
-
 	mstream_set_param(channelid, &mattr);
 	mstream_flush(channelid);
 	if(channelid == 0)
@@ -249,23 +219,6 @@ int sp_stream_get_ability(int channelid, SPStreamAbility_t *ability)
 					sResList[channelid][sResCnt[channelid]].h = ab.resList[i].height;
 					//海康NVR分辨率列表只支持1536，兼容之
 					sResList[channelid][sResCnt[channelid]].h = sResList[channelid][sResCnt[channelid]].h==1520?1536:sResList[channelid][sResCnt[channelid]].h;
-					if((!strcmp(hwinfo.devName, "SW-H210V3") || 
-						!strcmp(hwinfo.devName, "SW-H411V3")) &&
-						(hwinfo.sensor == SENSOR_AR0130 || 
-						hwinfo.sensor == SENSOR_OV9750))
-					{
-						if(ab.resList[i].height == 720)
-						{
-							sResList[channelid][sResCnt[channelid]].h = 960;
-						}
-					}
-					if(!strcmp(hwinfo.devName, "SW-H411V4"))
-					{
-						if(ab.resList[i].height == 720)
-						{
-							sResList[channelid][sResCnt[channelid]].h = 960;
-						}
-					}
 					sResCnt[channelid]++;
 				}
 			}

@@ -415,60 +415,48 @@ void jv_ao_adec_end()
 
 int jv_ao_mute(BOOL bMute)
 {
-	if (strcmp(hwinfo.devName,"HXBJRB") == 0)
+	if (access("/dev/AW8733A", F_OK) != 0)
 	{
-		if (higpios.audioOutMute.group != -1)
+		if (HWTYPE_MATCH(HW_TYPE_C8A))
 		{
-			jv_gpio_write(higpios.audioOutMute.group, higpios.audioOutMute.bit, bMute?1:0);
+			utl_system("insmod /home/ipc_drv/extdrv/AW8733A.ko Group=7 Index=1 MuxReg=0x200F00E4 MuxVal=0 OnVal=1");
 		}
-	}
-	else
-	{
-		if (access("/dev/AW8733A", F_OK) != 0)
-		{
-			if (
-				HWTYPE_MATCH(HW_TYPE_C8A)
-				)
-			{
-				utl_system("insmod /home/ipc_drv/extdrv/AW8733A.ko Group=7 Index=1 MuxReg=0x200F00E4 MuxVal=0 OnVal=1");
-			}
-			else
-			{
-				utl_system("insmod /home/ipc_drv/extdrv/AW8733A.ko Group=6 Index=1 MuxReg=0x200F00C4 MuxVal=0 OnVal=1");
-			}
-			usleep(1000*1000);
-			
-			if (access("/dev/AW8733A", F_OK) != 0)
-			{
-				utl_system("mknod /dev/AW8733A c 10 `cat /proc/misc | grep AW8733A | awk '{print $1}'`");
-				usleep(100*1000);
-			}
-		}
-
-		int fd = -1;
-		fd = open("/dev/AW8733A", 0);
-		if (fd == -1)
-		{
-			printf("\n\n open AW8733A error !! \n\n");
-			return 0;
-		}
-		if (bMute == 1)
-			ioctl(fd, AW8733A_SET_PA, 0);
 		else
 		{
-			if (HWTYPE_MATCH(HW_TYPE_A4))
-			{
-				ioctl(fd, AW8733A_SET_PA, 2);
-			}
-			else
-			{
-				ioctl(fd, AW8733A_SET_PA, 4);
-			}
+			utl_system("insmod /home/ipc_drv/extdrv/AW8733A.ko Group=6 Index=1 MuxReg=0x200F00C4 MuxVal=0 OnVal=1");
 		}
-		
-		close(fd);
+		usleep(1000*1000);
+
+		if (access("/dev/AW8733A", F_OK) != 0)
+		{
+			utl_system("mknod /dev/AW8733A c 10 `cat /proc/misc | grep AW8733A | awk '{print $1}'`");
+			usleep(100*1000);
+		}
 	}
-	
+
+	int fd = -1;
+	fd = open("/dev/AW8733A", 0);
+	if (fd == -1)
+	{
+		printf("\n\n open AW8733A error !! \n\n");
+		return 0;
+	}
+	if (bMute == 1)
+		ioctl(fd, AW8733A_SET_PA, 0);
+	else
+	{
+		if (HWTYPE_MATCH(HW_TYPE_A4))
+		{
+			ioctl(fd, AW8733A_SET_PA, 2);
+		}
+		else
+		{
+			ioctl(fd, AW8733A_SET_PA, 4);
+		}
+	}
+
+	close(fd);
+
 	return 0;
 }
 

@@ -79,37 +79,6 @@ void ComtransThrd(void* ptr)
 					p++;
 				}
 				Printf("ComtransThrd   rlen=%d[<=10]  Hex: \n", rlen);
-				if(strcmp(hwinfo.devName, "HXBJRB") == 0)
-				{
-					//printf("com recv msg:%s, len=%d\n", rbuf, rlen);
-					memcpy(pstFExt->acData, rbuf, rlen);
-					pstFExt->nParam3 = rlen;
-
-					// 向所有接入的分控发送串口信息
-					PNETLINKINFO pNetLinkInfo = NULL;
-					NETLINKINFO info;
-					int i=0;
-					while(1)
-					{
-#ifdef YST_SVR_SUPPORT
-						pNetLinkInfo = __NETLINK_GetByIndex(i, &info);
-#endif
-						if (pNetLinkInfo)
-						{
-							//printf("send com msg to client %d, channel %d\n", pNetLinkInfo->nClientID, pNetLinkInfo->nChannel);
-							MT_TRY_SendChatData(pNetLinkInfo->nChannel, pNetLinkInfo->nClientID, JVN_RSP_TEXTDATA, (U8*)stFPacket, 20+pstFExt->nParam3);
-						}
-						else
-						{
-							break;
-						}
-						i++;
-					}
-
-					p = rbuf;
-					rlen = 0;
-					memset(rbuf, 0, sizeof(rbuf));
-				}
 			}
 		}
 		usleep(100*1000);
@@ -120,8 +89,7 @@ void ComtransThrd(void* ptr)
 
 void muartcomm_init()
 {
-	if(strcmp(hwinfo.devName, "HXBJRB") != 0)
-		return;
+	return;
 
 	urtfd = OpenDev("/dev/ttyAMA1");
 
@@ -143,8 +111,7 @@ void muartcomm_init()
 
 VOID ComTransProc(REMOTECFG *cfg)
 {
-	if(strcmp(hwinfo.devName, "HXBJRB") != 0)
-		return;
+	return;
 
 	EXTEND *pstEx = (EXTEND*)(cfg->stPacket.acData);
 
@@ -180,12 +147,6 @@ VOID ComTransProc(REMOTECFG *cfg)
 		break;
 	case EX_COMTRANS_SEND:
 		{
-			if(strcmp(hwinfo.devName, "HXBJRB") == 0)
-			{
-				//printf("com send data: %s\n", (char *)pstEx->acData);
-				DecoderSendCommand(urtfd, (char *)pstEx->acData, pstEx->nParam3, 0);
-				break;
-			}
 		}
 		break;
 	case EX_COMTRANS_SET:

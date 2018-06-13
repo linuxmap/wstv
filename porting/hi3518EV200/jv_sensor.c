@@ -944,9 +944,6 @@ BOOL jv_sensor_b_night(void)
 	static BOOL bLastSatus =0xff;
    int mode=1;
 
-	if(strcmp(hwinfo.devName, "HXBJRB") == 0)
-		return FALSE;
-
    if(bCheckNightDayUsingAE)
    		return bAeNight;
    

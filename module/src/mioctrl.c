@@ -243,15 +243,6 @@ static void *_io_ctrl_thread(void *param)
 						case DEV_ST_ETH_OK:
 						case DEV_ST_WIFI_OK:
 							if (
-								PRODUCT_MATCH("H301") ||
-								PRODUCT_MATCH("HA320-H1") || 
-								PRODUCT_MATCH("HA320-H1-A") || 
-								PRODUCT_MATCH("HV120-H1") ||
-								PRODUCT_MATCH("HA121-H2") ||
-								PRODUCT_MATCH("H303") || 
-								PRODUCT_MATCH("A1") ||
-								PRODUCT_MATCH("HA620-H1") ||
-								PRODUCT_MATCH("H600") ||
 								HWTYPE_MATCH(HW_TYPE_A4) ||
 								HWTYPE_MATCH(HW_TYPE_C3) ||
 								HWTYPE_MATCH(HW_TYPE_C3W) ||
@@ -262,23 +253,13 @@ static void *_io_ctrl_thread(void *param)
 								_mio_led_ctrl(IO_LED_RED, IO_OFF);
 								_mio_led_ctrl(IO_LED_BLUE, IO_ON);
 							}
-							else if(strcmp(hwinfo.devName,"HXBJRB") == 0)
-							{
-								_mio_led_ctrl(IO_LED_GREEN, IO_BLINK);
-							}
 							else
 							{
 								_mio_led_ctrl(IO_LED_GREEN, IO_ON);
 							}
 							break;
 						case DEV_ST_WIFI_SETTING:
-							if( PRODUCT_MATCH("H301") ||
-								PRODUCT_MATCH("HA320-H1") ||
-								PRODUCT_MATCH("HA320-H1-A") || 
-								PRODUCT_MATCH("HV120-H1") ||
-								PRODUCT_MATCH("H303") ||
-								PRODUCT_MATCH("A1") ||
-								PRODUCT_MATCH("HA620-H1") ||
+							if(
 								HWTYPE_MATCH(HW_TYPE_A4) ||
 								HWTYPE_MATCH(HW_TYPE_C3) ||
 								HWTYPE_MATCH(HW_TYPE_C3W) ||
@@ -289,11 +270,6 @@ static void *_io_ctrl_thread(void *param)
 								_mio_led_ctrl(IO_LED_BLUE, IO_OFF);
 								_mio_led_ctrl(IO_LED_RED, IO_BLINK);
 							}
-							else if(PRODUCT_MATCH("H600"))
-							{
-								_mio_led_ctrl(IO_LED_RED, IO_OFF);
-								_mio_led_ctrl(IO_LED_BLUE, IO_BLINK);
-							}
 							else
 							{
 								_mio_led_ctrl(IO_LED_GREEN, IO_BLINK);
@@ -301,14 +277,6 @@ static void *_io_ctrl_thread(void *param)
 							break;
 						case DEV_ST_WIFI_CONNECTED:
 							if(
-								PRODUCT_MATCH("H301") || 
-								PRODUCT_MATCH("HA320-H1") ||  
-								PRODUCT_MATCH("HA320-H1-A") || 
-								PRODUCT_MATCH("HV120-H1") ||
-								PRODUCT_MATCH("H303") || 
-								PRODUCT_MATCH("A1") ||
-								PRODUCT_MATCH("HA620-H1") ||
-								PRODUCT_MATCH("H600") ||
 								HWTYPE_MATCH(HW_TYPE_A4) ||
 								HWTYPE_MATCH(HW_TYPE_C3) ||
 								HWTYPE_MATCH(HW_TYPE_C3W) ||
@@ -328,14 +296,6 @@ static void *_io_ctrl_thread(void *param)
 							break;
 						case DEV_ST_WIFI_CONNECTING:
 							if(
-								PRODUCT_MATCH("H301") ||
-								PRODUCT_MATCH("HA320-H1") ||
-								PRODUCT_MATCH("HA320-H1-A") || 
-								PRODUCT_MATCH("HV120-H1") ||
-								PRODUCT_MATCH("H303") ||
-								PRODUCT_MATCH("A1") ||
-								PRODUCT_MATCH("HA620-H1") ||
-								PRODUCT_MATCH("H600") ||
 								HWTYPE_MATCH(HW_TYPE_A4) ||
 								HWTYPE_MATCH(HW_TYPE_C3) ||
 								HWTYPE_MATCH(HW_TYPE_C3W) ||
@@ -346,18 +306,11 @@ static void *_io_ctrl_thread(void *param)
 								_mio_led_ctrl(IO_LED_RED, IO_OFF);
 								_mio_led_ctrl(IO_LED_BLUE, IO_BLINK);
 							}
-							else if(PRODUCT_MATCH("HXBJRB"))
-							{
-								_mio_led_ctrl(IO_LED_GREEN, IO_ON);
-							}
-							else if(PRODUCT_MATCH("HC520D-H1") ||
-								PRODUCT_MATCH("HA520D-H1") ||
-								PRODUCT_MATCH("HC420-H2") ||
-								PRODUCT_MATCH("HC421S-H1") ||
+							else if(
 								HWTYPE_MATCH(HW_TYPE_HA210) ||
 								HWTYPE_MATCH(HW_TYPE_HA230) ||
 								HWTYPE_MATCH(HW_TYPE_C5) ||
-								PRODUCT_MATCH("HC530A"))
+								)
 							{
 								_mio_led_ctrl(IO_LED_GREEN, IO_BLINK);
 							}
@@ -367,19 +320,7 @@ static void *_io_ctrl_thread(void *param)
 							}
 							break;
 						case DEV_ST_NET_NONE:
-							if(PRODUCT_MATCH("H600"))
-							{
-								_mio_led_ctrl(IO_LED_RED, IO_OFF);
-								_mio_led_ctrl(IO_LED_BLUE, IO_ON);
-							}
-							else if (
-								PRODUCT_MATCH("H301") ||
-								PRODUCT_MATCH("HA320-H1") ||
-								PRODUCT_MATCH("HA320-H1-A") || 
-								PRODUCT_MATCH("HV120-H1") ||
-								PRODUCT_MATCH("H303") || 
-								PRODUCT_MATCH("A1") ||
-								PRODUCT_MATCH("HA620-H1") ||
+							if (
 								HWTYPE_MATCH(HW_TYPE_A4) ||
 								HWTYPE_MATCH(HW_TYPE_C3) ||
 								HWTYPE_MATCH(HW_TYPE_C3W) ||
@@ -389,10 +330,6 @@ static void *_io_ctrl_thread(void *param)
 							{
 								_mio_led_ctrl(IO_LED_RED, IO_ON);
 								_mio_led_ctrl(IO_LED_BLUE, IO_OFF);
-							}
-							else if(strcmp(hwinfo.devName,"HXBJRB") == 0)
-							{
-								_mio_led_ctrl(IO_LED_GREEN, IO_ON);
 							}
 							break;
 						default:

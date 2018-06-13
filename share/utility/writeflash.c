@@ -253,43 +253,6 @@ static void _firmup_get_config(firmup_info_t *info)
     utl_fcfg_get_value_ex(JOVISION_CONFIG_FILE, "product", product, sizeof(product));
 	utl_fcfg_get_value_ex(CONFIG_HWCONFIG_FILE, "product", devName, sizeof(devName)); //devname
 	
-	int bHomeIPC = 0;
-	if (!strcmp(devName, "H200") ||
-		!strcmp(devName, "H210") ||
-		!strcmp(devName,"VISTAWIFI") ||
-		!strcmp(devName,"A14-PC7000-HD1") ||
-		!strcmp(devName, "H210C") ||
-		!strcmp(devName, "H210V2C") ||
-		!strcmp(devName, "H211") ||
-		!strcmp(devName, "H400") ||
-		!strcmp(devName, "H401") ||
-		!strcmp(devName, "H411") ||
-		!strcmp(devName, "VS-DPCW-122") ||
-		!strcmp(devName, "J2000IP-CmPTZ-111-V2.0") ||
-		!strcmp(devName, "H411V1_1") ||
-		!strcmp(devName, "H411C") ||
-		!strcmp(devName, "H411V2") ||
-		!strcmp(devName, "H411S-V3") ||
-		!strcmp(devName, "C1-S2") ||
-		!strcmp(devName, "H51X") ||
-		!strcmp(devName, "H511") ||
-		!strcmp(devName, "H600") ||
-		!strcmp(devName, "H610") ||
-		!strcmp(devName, "H210V2") ||
-		!strcmp(devName, "H210V2-BR") ||
-		!strcmp(devName, "H210-S3") || 
-		!strcmp(devName, "H210-S") ||
-		!strcmp(devName, "H210V2-S") ||
-		!strcmp(devName, "H210-H1") ||
-		!strcmp(devName, "H301") ||
-		!strcmp(devName, "A2") ||
-		!strcmp(devName, "H303") ||
-		!strcmp(devName, "A1") ||
-		!strcmp(devName, "H211"))
-	{
-		bHomeIPC = 1;
-	}
-	
 	utl_fcfg_start_getnext(JOVISION_CONFIG_FILE);
 	
 	while(1)
@@ -304,27 +267,11 @@ static void _firmup_get_config(firmup_info_t *info)
 		//printf("%s=%s\n", kv->key, kv->value);
 		if (strcmp("firmup-url", kv->key) == 0)
 		{
-			if(bHomeIPC)
-			{
-				if(NULL == strstr(kv->value,"homeipc"))
-				{
-					_strreplace(kv->value,"ipc","homeipc",chTmp);
-					sprintf(chNewPath,"%s/%s",chTmp,devName);		//家用设备多了类型目录
-				
-					printf("=================> new Path is : %s \n",chNewPath);
-					bchangeflag =1;
-				}
-				else
-					strcpy(chNewPath,kv->value);
-			}
-			else
-			{
-				if(NULL == strstr(kv->value,"3518esi") && strstr(product,"JVS-HI3518ES"))
-					sprintf(chNewPath,"%s%s",kv->value,"i");	//IPC也改了路径名称
-				else 
-					strcpy(chNewPath,kv->value);
-				printf("=================> IPC new Path is : %s \n",chNewPath);
-			}
+			if(NULL == strstr(kv->value,"3518esi") && strstr(product,"JVS-HI3518ES"))
+				sprintf(chNewPath,"%s%s",kv->value,"i");	//IPC也改了路径名称
+			else 
+				strcpy(chNewPath,kv->value);
+			printf("=================> IPC new Path is : %s \n",chNewPath);
 			if (info->urlCnt < 4)
 			{
 				strcpy(info->url[info->urlCnt++], chNewPath);

@@ -276,29 +276,6 @@ static void __gpio_init()
 		jv_gpio_muxctrl(0x200F00D4, 0);
 		jv_gpio_dir_set_bit(higpios.resetkey.group, higpios.resetkey.bit, 0);
 	}
-	else if (PRODUCT_MATCH("HXBJRB"))
-	{
-		jv_gpio_muxctrl(0x200F00CC, 3);  //UART2_RXD
-		jv_gpio_muxctrl(0x200F00D0, 3);  //UART2_TXD
-
-		//audio out mute
-		higpios.audioOutMute.group = 6;
-		higpios.audioOutMute.bit = 7;
-		jv_gpio_muxctrl(0x200F00DC, 0);
-		jv_gpio_dir_set_bit(higpios.audioOutMute.group, higpios.audioOutMute.bit, 1);
-
-		//reset
-		higpios.resetkey.group = 6;
-		higpios.resetkey.bit = 5;
-		jv_gpio_muxctrl(0x200F00D4, 0);
-		jv_gpio_dir_set_bit(higpios.resetkey.group, higpios.resetkey.bit, 0);
-
-		//status led
-		higpios.statusledG.group = 0;
-		higpios.statusledG.bit = 1;
-		jv_gpio_muxctrl(0x200F0074, 0);
-		jv_gpio_dir_set_bit(higpios.statusledG.group, higpios.statusledG.bit, 1);
-	}
 	else
 	{
 		//IR LED

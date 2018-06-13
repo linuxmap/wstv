@@ -574,39 +574,6 @@ int __alarm_service_voice_setaudio(BOOL bSpeaking)
 			{
 				jv_ao_ctrl(ai_attr.level);
 			}
-			else
-			{
-				if( !strcmp(hwinfo.devName,"H411") ||
-					!strcmp(hwinfo.devName,"VH2101") ||
-					!strcmp(hwinfo.devName,"H411KEDA") ||
-					!strcmp(hwinfo.devName, "H411C") ||
-					!strcmp(hwinfo.devName, "WHHT") ||
-					!strcmp(hwinfo.devName, "AT-15H2") || 
-					!strcmp(hwinfo.devName, "HZD-600DM") || 
-					!strcmp(hwinfo.devName, "AJL-H40610-S1") || 
-					!strcmp(hwinfo.devName, "AJL-H40610-S2") || 
-					!strcmp(hwinfo.devName, "JD-H40810"))
-					jv_ao_ctrl(0x02);
-				else if (!strcmp(hwinfo.devName,"H301") || !strcmp(hwinfo.devName, "H303") || !strcmp(hwinfo.devName, "A1"))
-					jv_ao_ctrl(0x07);
-				else if(!strcmp(hwinfo.devName, "HA320-H1") ||
-						!strcmp(hwinfo.devName, "VH2011") ||
-						!strcmp(hwinfo.devName, "HV120-H1"))
-					jv_ao_ctrl(0x09);
-				else if(!strcmp(hwinfo.devName,"H411S-H1") || 
-						!strcmp(hwinfo.devName,"VH2201") || 
-						!strcmp(hwinfo.devName,"H411V2") || 
-						!strcmp(hwinfo.devName,"HC420S-H2") || 
-						!strcmp(hwinfo.devName,"HC520D-H1") || 
-						!strcmp(hwinfo.devName,"HC420-H2") ||
-						!strcmp(hwinfo.devName,"H411-H1") ||
-						!strcmp(hwinfo.devName,"SW-H411V3"))
-					jv_ao_ctrl(0x0E);
-				else if(!strcmp(hwinfo.devName,"H411V1_1"))
-					jv_ao_ctrl(0x08);
-				else
-					;			//调过值的设备按调试值赋值，其他设备默认吧
-			}
 		}
 		if(hwinfo.bHomeIPC)
 			maudio_readfiletoao(VOICE_CHATSTARTTIP);

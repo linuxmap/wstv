@@ -598,14 +598,6 @@ VOID NetworkProc(REMOTECFG *remotecfg)
 		}
 		else if(pstEx->nParam1 == 1)//¿ªÆôSTA
 		{
-			if(strcmp(hwinfo.devName,"HXBJRB") == 0)
-			{
-				wifiap_t wifiap;
-				utl_ifconfig_wifi_start_sta();
-				utl_ifconfig_wifi_info_get(&wifiap);
-				net_deinit();
-				utl_ifconfig_wifi_connect(&wifiap);
-			}
 		}
 		break;
 	case EX_WIFI_ON:
@@ -756,19 +748,6 @@ U32 build_stream_param(char *pData)
 		nSize += strlen(acItem);
 		strcat(pData, acItem);
 
-		if((!strcmp(hwinfo.devName, "SW-H210V3") || 
-			!strcmp(hwinfo.devName, "SW-H411V3")) &&
-			(hwinfo.sensor == SENSOR_AR0130 || 
-			hwinfo.sensor == SENSOR_OV9750))
-		{
-			if(stAttr.height == 720)
-				stAttr.height = 960;
-		}
-		if(!strcmp(hwinfo.devName, "SW-H411V4"))
-		{
-			if(stAttr.height == 720)
-				stAttr.height = 960;
-		}
 		sprintf(acItem, "width=%d;height=%d;", stAttr.width, stAttr.height);
 		nSize += strlen(acItem);
 		strcat(pData, acItem);

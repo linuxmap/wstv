@@ -693,19 +693,6 @@ VOID SetDVRParam(REMOTECFG *remotecfg, char *pData)
 #ifndef PLATFORM_hi3516EV100 
 				//分辨率调节
 				U32 nValue = atoi(pValue);
-				if((PRODUCT_MATCH( "SW-H210V3") || 
-					PRODUCT_MATCH("SW-H411V3")) &&
-					(hwinfo.sensor == SENSOR_AR0130 || 
-					hwinfo.sensor == SENSOR_OV9750))
-				{
-					if(nValue > 720)
-						nValue = 720;
-				}
-				if(PRODUCT_MATCH("SW-H411V4"))
-				{
-					if(nValue > 720)
-						nValue = 720;
-				}
 				if(nCh==0 && nValue!=stAttr[nCh].height)
 				{
 					int i;
@@ -2398,53 +2385,6 @@ void remote_start_chat(int nLocalChannel, int clientid)
 				ai_attr.level = 0x06;
 			}
 			jv_ao_ctrl(ai_attr.level);
-		}
-		else
-		{
-			if( PRODUCT_MATCH("H411") ||
-				PRODUCT_MATCH("J2000IP-CmPTZ-111-V2.0") ||
-				PRODUCT_MATCH("H411KEDA") ||
-				PRODUCT_MATCH("H411C") ||
-				PRODUCT_MATCH("WHHT") ||
-				PRODUCT_MATCH("AT-15H2") || 
-				PRODUCT_MATCH("HZD-600DM") || 
-				PRODUCT_MATCH("HZD-600DN") || 
-				PRODUCT_MATCH("AJL-H40610-S1") || 
-				PRODUCT_MATCH("AJL-H40610-S2") || 
-				PRODUCT_MATCH("JD-H40810") || 
-				PRODUCT_MATCH("SW-H411V4"))
-				jv_ao_ctrl(0x02);
-			else if (PRODUCT_MATCH("H301") || 
-				PRODUCT_MATCH("H303") || 
-				PRODUCT_MATCH("A1") ||
-				PRODUCT_MATCH("HW-H21110"))
-				jv_ao_ctrl(0x07);
-			else if(
-				    PRODUCT_MATCH("HA320-H1") ||
-					PRODUCT_MATCH("HA320-H1-A") || 
-					PRODUCT_MATCH("HV120-H1") ||
-					PRODUCT_MATCH("HA121-H2") ||
-					HWTYPE_MATCH(HW_TYPE_C3) ||
-					HWTYPE_MATCH(HW_TYPE_C3W) ||
-					HWTYPE_MATCH(HW_TYPE_V3) ||
-					HWTYPE_MATCH(HW_TYPE_V6)
-					)
-				jv_ao_ctrl(0x09);
-			else if(PRODUCT_MATCH("H411S-H1") || 
-					PRODUCT_MATCH("H411V2") || 
-					PRODUCT_MATCH("HC420S-H2") || 
-					PRODUCT_MATCH("HC420S-Q1") ||
-					PRODUCT_MATCH("HA520D-H1") ||
-					PRODUCT_MATCH("HC520D-H1") || 
-					PRODUCT_MATCH("HC420-H2") ||
-					PRODUCT_MATCH("H411-H1") ||
-					PRODUCT_MATCH("SW-H411V3"))
-				jv_ao_ctrl(0x0E);
-			else if(PRODUCT_MATCH("H411V1_1") ||
-					PRODUCT_MATCH("VS-DPCW-122"))
-				jv_ao_ctrl(0x08);
-			else
-				;			//调过值的设备按调试值赋值，其他设备默认吧
 		}
 		pre_clientid = clientid;
 	}

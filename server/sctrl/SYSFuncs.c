@@ -1798,9 +1798,6 @@ VOID ReadConfigInfo()
 	s_ipcinfo.sntpInterval = 24;
 
 	s_ipcinfo.nLanguage = LANGUAGE_CN;
-	if (strcmp(hwinfo.devName, "HXBJRB") == 0 ||
-		strcmp(hwinfo.devName, "DR-H20910") == 0)
-		s_ipcinfo.nLanguage = LANGUAGE_EN;
 	if (hwinfo.bInternational)		// ¹ú¼Ê°æ
 		s_ipcinfo.nLanguage = LANGUAGE_EN;
 	strcpy(s_ipcinfo.ntpServer, "cn.pool.ntp.org");
@@ -1821,13 +1818,7 @@ VOID ReadConfigInfo()
 	{
 		s_osd[i].bShowOSD = TRUE;
 		s_osd[i].position = MCHNOSD_POS_LEFT_BOTTOM;
-		if (strcmp(hwinfo.devName, "HXBJRB") == 0 ||
-			ipcinfo.nDeviceInfo[6] == 'H')
-		{
-			s_osd[i].position = MCHNOSD_POS_HIDE;
-		}
-		if (ipcinfo.nDeviceInfo[6] == 'H' &&
-			strcmp(hwinfo.devName, "HXBJRB") != 0)
+		if (ipcinfo.nDeviceInfo[6] == 'H')
 			s_osd[i].timePos = MCHNOSD_POS_LEFT_TOP;
 		else
 			s_osd[i].timePos = MCHNOSD_POS_RIGHT_TOP;
@@ -2021,16 +2012,6 @@ VOID ReadConfigInfo()
 		{
 			s_stAttr[i].framerate = 22;
 			s_stAttr[i].bitrate = 2048;
-		}
-		else if(strcmp(hwinfo.devName, "HXBJRB") == 0)
-		{
-			s_stAttr[i].width = 352;
-			s_stAttr[i].height = 288;
-			s_stAttr[i].framerate = 20;
-			s_stAttr[i].rcMode = JV_VENC_RC_MODE_VBR;
-			s_stAttr[i].bitrate = 344;
-			s_stAttr[i].minQP = 20;
-			s_stAttr[i].maxQP = 40;
 		}
 		else if(strcmp(hwinfo.devName,"YL") == 0)
 		{
@@ -2625,25 +2606,6 @@ VOID WriteConfigInfo()
 	fprintf(fOut, "resListCnt=%d;", ability.resListCnt);
 	for (i=0;i<ability.resListCnt;i++)
 	{
-		if((!strcmp(hwinfo.devName, "SW-H210V3") || 
-			!strcmp(hwinfo.devName, "SW-H411V3")) &&
-			(hwinfo.sensor == SENSOR_AR0130 || 
-			hwinfo.sensor == SENSOR_OV9750))
-		{
-			if(ability.resList[i].height == 720)
-			{
-				fprintf(fOut, "resList=%dx%d;", ability.resList[i].width, 960);
-				continue;
-			}
-		}
-		if(!strcmp(hwinfo.devName, "SW-H411V4"))
-		{
-			if(ability.resList[i].height == 720)
-			{
-				fprintf(fOut, "resList=%dx%d;", ability.resList[i].width, 960);
-				continue;
-			}
-		}
 		fprintf(fOut, "resList=%dx%d;", ability.resList[i].width, ability.resList[i].height);
 	}
 	for (i=0;i<HWINFO_STREAM_CNT;i++)
@@ -3321,10 +3283,7 @@ int SYSFuncs_factory_default_without_reboot()
 			{
 				maudio_resetAIAO_mode(2);
 				maudio_speaker(VOICD_WAITSET, TRUE, TRUE, TRUE);
-				if (strcmp(hwinfo.devName, "HXBJRB") != 0)
-				{
-					maudio_resetAIAO_mode(1);
-				}
+				maudio_resetAIAO_mode(1);
 			}
 #else
 			maudio_resetAIAO_mode(2);
@@ -3338,10 +3297,7 @@ int SYSFuncs_factory_default_without_reboot()
 		{
 			maudio_resetAIAO_mode(2);
 			maudio_speaker(VOICD_WAITSET, TRUE, TRUE, TRUE);
-			if (strcmp(hwinfo.devName, "HXBJRB") != 0)
-			{
-				maudio_resetAIAO_mode(1);
-			}
+			maudio_resetAIAO_mode(1);
 
 			if (utl_ifconfig_bsupport_smartlink(utl_ifconfig_wifi_get_model()))
 			{
